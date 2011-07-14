@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<?php
+// Initialize Extjs on development ENV
+if (APPLICATION_ENV == 'development') {
+	 $this->headLink ()->prependStylesheet ( './javascript/extjs/resources/css/ext-all-debug.css' );
+	 $this->headScript ()->prependFile ( './javascript/extjs/ext-debug.js' );
+} // Initialize Extjs on production ENV
+else {
+	 $this->headLink ()->appendStylesheet ( './javascript/extjs/resources/css/ext-all.css' );
+	 $this->headScript ()->prependFile ( './javascript/extjs/ext.js' );
+}
+
+// Load medalyser js files
+$this->headScript ()->appendFile ( './app.js' );
+
+// Output aggregated css & js files
+echo $this->headLink();
+echo $this->headScript();
+?>
+</head>
+<body></body>
+</html>
