@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @Entity 
- * @Table(name="mc_patient_address") 
+ * @Table(name="ma_patient_address") 
  */
 class Patientaddress {
 	

@@ -1,7 +1,7 @@
 Ext.define('MA.controller.NewPatientWizard', {
     extend: 'Ext.app.Controller',
 
-    stores: ['MarriageStatus','Countries','AddressType'],
+    stores: ['MarriageStatus','Countries','AddressType','Race'],
 
    // models: ['NewPatientWizard'],
 

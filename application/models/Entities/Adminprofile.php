@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @Entity (repositoryClass="Repositories\Account") 
- * @Table(name="mc_admin_profile") 
+ * @Table(name="ma_admin_profile") 
  * @HasLifecycleCallbacks
  */
 class Adminprofile {
