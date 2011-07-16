@@ -67,6 +67,11 @@ class Patientprofile
      * @JoinTable(name="ma_patients_schools")
      */
     private $schools;
+    /**
+     * @ManyToMany(targetEntity="Patientinsurance", inversedBy="patients")
+     * @JoinTable(name="ma_patients_insurances")
+     */
+    private $insurances;
     public function __construct ()
     {
         $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
@@ -356,46 +361,46 @@ class Patientprofile
     {
         $this->updated = $updated;
     }
-	/**
-	 * @return the $race
-	 */
-	public function getRace() {
-		return $this->race;
-	}
-
-	/**
-	 * @return the $language
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
-
-	/**
-	 * @return the $schools
-	 */
-	public function getSchools() {
-		return $this->schools;
-	}
-
-	/**
-	 * @param field_type $race
-	 */
-	public function setRace($race) {
-		$this->race = $race;
-	}
-
-	/**
-	 * @param field_type $language
-	 */
-	public function setLanguage($language) {
-		$this->language = $language;
-	}
-
-	/**
-	 * @param field_type $schools
-	 */
-	public function setSchools($schools) {
-		$this->schools = $schools;
-	}
-
+    /**
+     * @return the $race
+     */
+    public function getRace ()
+    {
+        return $this->race;
+    }
+    /**
+     * @return the $language
+     */
+    public function getLanguage ()
+    {
+        return $this->language;
+    }
+    /**
+     * @return the $schools
+     */
+    public function getSchools ()
+    {
+        return $this->schools;
+    }
+    /**
+     * @param field_type $race
+     */
+    public function setRace ($race)
+    {
+        $this->race = $race;
+    }
+    /**
+     * @param field_type $language
+     */
+    public function setLanguage ($language)
+    {
+        $this->language = $language;
+    }
+    /**
+     * @param field_type $schools
+     */
+    public function setSchools ($schools)
+    {
+        $this->schools = $schools;
+    }
 }

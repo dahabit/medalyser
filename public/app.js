@@ -27,7 +27,7 @@ Ext.application({
 						xtype : 'tabpanel', // TabPanel itself has no title
 						activeTab : 0, // First tab active by default
 						items : {
-							title : 'Default Tab',
+							title : 'Dashboard',
 							html : 'The first tab\'s content. Others may be added dynamically'
 						}
 					}]

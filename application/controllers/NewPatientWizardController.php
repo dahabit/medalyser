@@ -28,10 +28,11 @@ class NewPatientWizardController extends Zend_Controller_Action
     {
         $languages = Zend_Locale::getLanguageTranslationList();
         $language=array();
-        foreach ($languages as $value) {
-            $language[]=$value;
+        for ($i = 0; $i < count($languages); $i++) {
+        	            $id = key($languages);
+            $name = $languages[$id];
         }
-        $this->_response->appendBody(Zend_Json::encode($language));
+        $this->_response->appendBody(Zend_Json::encode($languages));
     }
     public function submitformAction ()
     {
@@ -73,8 +74,8 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $account->setLastname(
                     $this->_request->getParam('lastname'));
                     //convert date and time to object so doctrine doesn't echo errors
-                    $account->setBirthdate(
-                    $this->_request->getParam('birthdate'));
+                    $birthdate= $this->_request->getParam('birthdate');
+                    $account->setBirthdate(new DateTime($birthdate));
                     $account->setMaritalstatus(
                     $this->_request->getParam('maritalstatus'));
                     $account->setPrimaryemail(
