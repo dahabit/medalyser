@@ -6,14 +6,17 @@
 if (APPLICATION_ENV == 'development') {
 	 $this->headLink ()->prependStylesheet ( './javascript/extjs/resources/css/ext-all.css' );
 	 $this->headScript ()->prependFile ( './javascript/extjs/ext-debug.js' );
+	 // Load medalyser js files
+$this->headScript ()->appendFile ( './app.js' );
 } // Initialize Extjs on production ENV
 else {
 	 $this->headLink ()->appendStylesheet ( './javascript/extjs/resources/css/ext-all.css' );
 	 $this->headScript ()->prependFile ( './javascript/extjs/ext.js' );
+	 // Load minimized build of medalyser
+	 $this->headScript ()->appendFile ( './app-all.js' );
 }
 
-// Load medalyser js files
-$this->headScript ()->appendFile ( './app.js' );
+
 
 // Output aggregated css & js files
 echo $this->headLink();
