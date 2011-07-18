@@ -34,10 +34,10 @@ Ext
 							// Ext.Msg.alert('active
 							// item:'+activeItem,'itemsCount:'+itemsCount);
 							if (activeItem !== 0) {
-								//Ext.getCmp('card-prev').enable();
+								// Ext.getCmp('card-prev').enable();
 								Ext.getCmp('card-prev').show();
 							} else {
-								//Ext.getCmp('card-prev').disable();
+								// Ext.getCmp('card-prev').disable();
 								Ext.getCmp('card-prev').hide();
 							}
 							var onClickSubmit = function() {
@@ -167,7 +167,8 @@ Ext
 							fieldLabel : 'Primary Email',
 							vtype : 'email',
 							name : 'primaryemail',
-							msgTarget : 'under'
+							msgTarget : 'under',
+							allowBlank:true
 						};
 						var card_0_userpass_name = {
 							xtype : 'fieldcontainer',
@@ -234,7 +235,7 @@ Ext
 							fieldLabel : 'Birthdate',
 							name : 'birthdate',
 							maxValue : new Date(), // limited to the current
-													// date or prior
+							// date or prior
 							format : 'Y-m-d'
 
 						};
@@ -254,6 +255,28 @@ Ext
 							name : 'maritalstatus',
 							fieldLabel : 'Marital Status',
 							store : 'MarriageStatus',
+							queryMode : 'local',
+							displayField : 'name',
+							valueField : 'id',
+							typeAhead : true,
+							forceSelection : true
+						};
+						var card_0_race = {
+							xtype : 'combo',
+							name : 'race',
+							fieldLabel : 'Race',
+							store : 'Race',
+							queryMode : 'local',
+							displayField : 'name',
+							valueField : 'id',
+							typeAhead : true,
+							forceSelection : true
+						};
+						var card_0_language = {
+							xtype : 'combo',
+							name : 'language',
+							fieldLabel : 'Language',
+							store : Ext.create('MA.store.Language'),
 							queryMode : 'local',
 							displayField : 'name',
 							valueField : 'id',
@@ -294,7 +317,9 @@ Ext
 															items : [
 																	card_0_birthdate,
 																	card_0_sex,
-																	card_0_marital_status ]
+																	card_0_marital_status,
+																	card_0_language,
+																	card_0_race ]
 														} ]
 													},
 													{
@@ -500,7 +525,7 @@ Ext
 																						id : 'country'
 																								+ counter.no
 																					} // eof
-																						// countries;
+																					// countries;
 																					,
 																					Ext
 																							.getCmp('addaddress'),
@@ -556,6 +581,18 @@ Ext
 																											'patientaddress')
 																									.remove(
 																											'removeaddress'
+																													+ activeRemoveButtonId);
+																							Ext
+																									.getCmp(
+																											'patientaddress')
+																									.remove(
+																											'addresstype'
+																													+ activeRemoveButtonId);
+																							Ext
+																									.getCmp(
+																											'patientaddress')
+																									.remove(
+																											'zip'
 																													+ activeRemoveButtonId);
 
 																							Ext
@@ -651,7 +688,7 @@ Ext
 										text : '&laquo; Previous',
 										handler : Ext.Function.bind(cardNav,
 												this, [ -1 ]),
-										hidden:true
+										hidden : true
 									},
 									{
 										id : 'card-next',

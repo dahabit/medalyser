@@ -27,9 +27,9 @@ class NewPatientWizardController extends Zend_Controller_Action
     public function getlanguagesAction ()
     {
         $languages = Zend_Locale::getLanguageTranslationList();
-        $language=array();
-        for ($i = 0; $i < count($languages); $i++) {
-        	            $id = key($languages);
+        $language = array();
+        for ($i = 0; $i < count($languages); $i ++) {
+            $id = key($languages);
             $name = $languages[$id];
         }
         $this->_response->appendBody(Zend_Json::encode($languages));
@@ -67,23 +67,12 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $account = new \Entities\Patientprofile();
                     // Assign the account attributes
                     /////////////////////PAGE 1//////////////////// 
-                    $account->setFirstname(
-                    $this->_request->getParam('firstname'));
-                    $account->setMiddlename(
-                    $this->_request->getParam('middlename'));
-                    $account->setLastname(
-                    $this->_request->getParam('lastname'));
+                    $allFormElements = $this->getRequest()->getParams();
+                    $account->setAllFormElements($allFormElements);
                     //convert date and time to object so doctrine doesn't echo errors
-                    $birthdate= $this->_request->getParam('birthdate');
-                    $account->setBirthdate(new DateTime($birthdate));
-                    $account->setMaritalstatus(
-                    $this->_request->getParam('maritalstatus'));
-                    $account->setPrimaryemail(
-                    $this->_request->getParam('primaryemail'));
-                    $account->setSex($this->_request->getParam('sex'));
-                    $account->setSocialsecurity(
-                    $this->_request->getParam('socialsecurity'));
-                    $account->setProfilephoto($profilephotoname);
+                    $account->setBirthdate(
+                    new DateTime(
+                    $this->_request->getParam('birthdate')));
                     $account->setCreated(new DateTime("now"));
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
@@ -157,15 +146,6 @@ class NewPatientWizardController extends Zend_Controller_Action
                         }
                     }
                     //$account->getAddresses ()->add ( $address );
-                    // Phone numbers
-                    $account->setHomephone(
-                    $this->_request->getParam('homephone'));
-                    $account->setBusinessphone(
-                    $this->_request->getParam('businessphone'));
-                    $account->setMobilephone(
-                    $this->_request->getParam('mobilephone'));
-                    $account->setFaxphone(
-                    $this->_request->getParam('faxphone'));
                     /////////////////////end of PAGE 2/////////////////////
                     /////////////////////PAGE 3/////////////////////
                     /////////////////////end of PAGE 3/////////////////////
@@ -177,13 +157,11 @@ class NewPatientWizardController extends Zend_Controller_Action
                         $this->em->flush();
                         $form = array('success' => true, 
                         'msg' => 'New patient successfully created');
-                        $this->_response->appendBody(
-                        Zend_Json::encode($form));
+                        $this->_response->appendBody(Zend_Json::encode($form));
                     } catch (Exception $e) {
                         $error = array('success' => false, 
                         'msg' => 'Error saving data to the database.Please contact administrator.');
-                        $this->_response->appendBody(
-                        Zend_Json::encode($error));
+                        $this->_response->appendBody(Zend_Json::encode($error));
                         //log exception to firebug
                         $this->_response->appendBody(
                         Zend_Json::encode($error));
@@ -203,10 +181,14 @@ class NewPatientWizardController extends Zend_Controller_Action
                 //Output validation error messagaes as json format
                 $validationerror = array('success' => false, 
                 'msg' => 'Some entered data are not acceptable. Please check back, correct them and try submitting the form again.', 
-                $form->getMessages());
+                'errors' => $form->getMessages());
                 $this->_response->appendBody(
                 Zend_Json::encode($validationerror));
             }
+        } else { //Output validation error messagaes as json format
+            $validationerror = array('success' => false, 
+            'msg' => 'Invalid request.');
+            $this->_response->appendBody(Zend_Json::encode($validationerror));
         }
     }
 }
