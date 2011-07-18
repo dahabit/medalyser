@@ -47,4 +47,16 @@ class Patientinsurance
         $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
         $this->insurancecompanies = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    public function __set ($key, $val)
+    {
+        if (property_exists($this, $name)) {
+            $this->$key = $val;
+        }
+    }
+    public function __get ($name)
+    {
+        if (property_exists($this, $name)) {
+            return $this->$name;
+        }
+    }
 }

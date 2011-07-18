@@ -70,10 +70,9 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $allFormElements = $this->getRequest()->getParams();
                     $account->setAllFormElements($allFormElements);
                     //convert date and time to object so doctrine doesn't echo errors
-                    $account->setBirthdate(
-                    new DateTime(
-                    $this->_request->getParam('birthdate')));
-                    $account->setCreated(new DateTime("now"));
+                    $account->birthdate = new DateTime(
+                    $this->_request->getParam('birthdate'));
+                    $account->created=new DateTime("now");
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
                     // Addresses
