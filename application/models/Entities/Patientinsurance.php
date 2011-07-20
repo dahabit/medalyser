@@ -35,12 +35,15 @@ class Patientinsurance
     private $contracttype;
     //(in an insurance policy) A specified amount of money that the insured must pay before an insurance company will pay a claim 
     //The annual deductible is the fixed dollar amount you pay each calendar year before certain services are covered.
+    /** @Column(type="integer", length=30) */
     private $annualdedtuctible;
     // private $deductiblepaid;
     /** @Column(type="date", nullable=true) */
     private $effectivedate;
     /** @Column(type="date", nullable=true) */
     private $expiredate;
+    /** @Column(type="integer", length=10) */
+    private $copay;
     public function __construct ()
     {
         $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
