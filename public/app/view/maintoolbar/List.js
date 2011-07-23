@@ -11,16 +11,14 @@ Ext
 						this.items = [
 								{
 									xtype : 'buttongroup',
-									//title : '',
+									// title : '',
 									columns : 2,
 									items : [ {
 										xtype : 'button',
-										text : '',
-										icon : '',
-										iconCls : 'startbutton',
+										text : null,
+										iconCls : 'icon-startbutton',
 										width : 64,
 										height : 64,
-										id : 'startbutton',
 										menu : {
 											xtype : 'menu',
 											items : [ {
@@ -39,10 +37,12 @@ Ext
 								{
 									xtype : 'tabpanel',
 									activeTab : 1,
-									height : 100,					
-									width:600,
+									height : 100,
+									width : 600,
 									border : false,
-									defaults:{border:false},
+									defaults : {
+										border : false
+									},
 									items : [
 											{
 												xtype : 'panel',

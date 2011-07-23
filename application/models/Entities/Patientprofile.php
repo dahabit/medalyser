@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity 
  * @Table(name="ma_patient_profile") 
  */
-class Patientprofile
+class Patientprofile extends MAEntityHelper
 {
     /**
      * @Id @Column(type="integer")
@@ -79,7 +79,7 @@ class Patientprofile
     }
     public function __set ($key, $val)
     {
-        if (property_exists($this, $name)) {
+        if (property_exists($this, $key)) {
             $this->$key = $val;
         }
     }
@@ -87,26 +87,6 @@ class Patientprofile
     {
         if (property_exists($this, $name)) {
             return $this->$name;
-        }
-    }
-    /**
-     * Set all submitted form values at the same time.
-     * @param field_type $allFormElements
-     */
-    public function setAllFormElements ($allFormElements)
-    {
-        foreach ($allFormElements as $name => $value1) {
-            if (is_array($value1)) {
-                foreach ($value1 as $name => $value2) {
-                    if (property_exists(__CLASS__, $name)) {
-                        $this->$name = $value2;
-                    }
-                }
-            } else {
-                if (property_exists(__CLASS__, $name)) {
-                    $this->$name = $value1;
-                }
-            }
         }
     }
 }

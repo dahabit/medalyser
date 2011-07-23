@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="ma_admin_profile") 
  * @HasLifecycleCallbacks
  */
-class Adminprofile
+class Adminprofile extends MAEntityHelper
 {
     /**
      * @Id @Column(type="integer")
@@ -29,7 +29,7 @@ class Adminprofile
     {}
     public function __set ($key, $val)
     {
-        if (property_exists($this, $name)) {
+        if (property_exists($this, $key)) {
             $this->$key = $val;
         }
     }

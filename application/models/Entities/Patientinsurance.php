@@ -52,7 +52,7 @@ class Patientinsurance
     }
     public function __set ($key, $val)
     {
-        if (property_exists($this, $name)) {
+        if (property_exists($this, $key)) {
             $this->$key = $val;
         }
     }

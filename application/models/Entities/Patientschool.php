@@ -22,10 +22,14 @@ class Patientschool
     }
     public function __set ($key, $val)
     {
-        $this->$key = $val;
+        if (property_exists($this, $key)) {
+            $this->$key = $val;
+        }
     }
-    public function __get ($key)
+    public function __get ($name)
     {
-        return $this->$key;
+        if (property_exists($this, $name)) {
+            return $this->$name;
+        }
     }
 }

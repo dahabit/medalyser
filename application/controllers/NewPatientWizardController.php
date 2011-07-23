@@ -1,5 +1,4 @@
 <?php
-use Entities\Patientaddress;
 class NewPatientWizardController extends Zend_Controller_Action
 {
     public function init ()
@@ -68,11 +67,11 @@ class NewPatientWizardController extends Zend_Controller_Action
                     // Assign the account attributes
                     /////////////////////PAGE 1//////////////////// 
                     $allFormElements = $this->getRequest()->getParams();
-                    $account->setAllFormElements($allFormElements);
+                    $account->setNonNestedFormElements($allFormElements);
                     //convert date and time to object so doctrine doesn't echo errors
                     $account->birthdate = new DateTime(
                     $this->_request->getParam('birthdate'));
-                    $account->created=new DateTime("now");
+                    $account->created = new DateTime("now");
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
                     // Addresses
