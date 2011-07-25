@@ -4,24 +4,64 @@
 <?php
 // Initialize Extjs on development ENV
 if (APPLICATION_ENV == 'development') {
-	 $this->headLink ()->prependStylesheet ( './javascript/extjs/resources/css/ext-all.css' );
-	 $this->headScript ()->prependFile ( './javascript/extjs/ext-debug.js' );
-	 // Load medalyser js files
-$this->headScript ()->appendFile ( './app.js' );
+    $this->headLink()->prependStylesheet(
+    './javascript/extjs/resources/css/ext-all.css');
+    $this->headScript()->prependFile('./javascript/extjs/ext-debug.js');
+    // Load medalyser js files
+    $this->headScript()->appendFile('./app.js');
 } // Initialize Extjs on production ENV
 else {
-	 $this->headLink ()->appendStylesheet ( './javascript/extjs/resources/css/ext-all.css' );
-	 $this->headScript ()->prependFile ( './javascript/extjs/ext.js' );
-	 // Load minimized build of medalyser
-	 $this->headScript ()->appendFile ( './app-all.js' );
+    $this->headLink()->appendStylesheet(
+    './javascript/extjs/resources/css/ext-all.css');
+    $this->headScript()->prependFile('./javascript/extjs/ext.js');
+    // Load minimized build of medalyser
+    $this->headScript()->appendFile('./app-all.js');
 }
-
-
-
+$this->headLink()->appendStylesheet('./icons/icons.css');
 // Output aggregated css & js files
 echo $this->headLink();
 echo $this->headScript();
 ?>
 </head>
-<body></body>
+<body scroll="no">
+<div id="x-loading-mask"
+	style="width: 100%; height: 100%; background: #000000; position: absolute; z-index: 20000; left: 0; top: 0;">&#160;</div>
+
+<div id="x-loading-panel"
+	style="position: absolute; left: 40%; top: 40%; border: 1px solid #9c9f9d; padding: 2px; background: #d1d8db; width: 300px; text-align: center; z-index: 20001;">
+<div class="x-loading-panel-mask-indicator"
+	style="border: 1px solid #c1d1d6; color: #666; background: white; padding: 10px; margin: 0; padding-left: 20px; height: 110px; text-align: left;">
+<img class="x-loading-panel-logo"
+	style="display: block; margin-bottom: 15px;" src="icons/start.png" /> <img
+	src="icons/loading.gif"
+	style="width: 16px; height: 16px; vertical-align: middle" />&#160; <span
+	id="load-status">Initializing System ...</span>
+<div style="font-size: 10px; font-weight: normal; margin-top: 15px;">Copyright
+&copy; 2011 MedAlyser Project</div>
+</div>
+<div id="x-login-panel"><img
+	src="templates/default/desktop/images/default/s.gif"
+	class="login-logo abs-position" />
+
+<div class="login-features abs-position">
+<p>The Next generation innovative open source EHR solution</p>
+<p align="justify">Equipped with modern technology AJAX and Rich
+Internet Applications (RIA) Framework ExtJS, medalyser offer significant
+usability improvements and make interacting with the web interfaces
+faster and more efficient.</p>
+</div>
+</div>
+<script type="text/javascript">
+Ext.onReady(function(){
+    function removeLoadMask() {
+      var loading = Ext.get('x-loading-panel');
+      var mask = Ext.get('x-loading-mask');
+      loading.hide();
+      mask.hide();
+    }
+    removeLoadMask(); 
+  });  
+</script>
+
+</body>
 </html>
