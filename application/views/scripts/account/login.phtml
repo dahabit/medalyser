@@ -1,0 +1,14 @@
+<h3>Login to Your Medalyser Account</h3>
+
+<p>Login to your Medalyser account to manage your patients.</p>
+
+<?php
+ $this->Errors($this->errors);
+?>
+
+<?php
+echo $this->form;
+?>
+<p><a
+	href="<?=$this->url(array('controller' => 'account', 'action' => 'lost'));?>">Forgot
+your password?</a></p>
