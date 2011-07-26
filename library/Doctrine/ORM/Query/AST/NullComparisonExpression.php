@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * NullComparisonExpression ::= (SingleValuedPathExpression | InputParameter) "IS" ["NOT"] "NULL"
  *
@@ -36,13 +34,11 @@ class NullComparisonExpression extends Node
 {
     public $not;
     public $expression;
-    
-    public function __construct($expression)
+    public function __construct ($expression)
     {
         $this->expression = $expression;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkNullComparisonExpression($this);
     }

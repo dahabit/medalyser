@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query;
-
 use Doctrine\ORM\EntityManager;
-
 /**
  * A ResultSetMappingBuilder uses the EntityManager to automatically populate entity fields
  *
@@ -33,15 +30,13 @@ class ResultSetMappingBuilder extends ResultSetMapping
      * @var EntityManager
      */
     private $em;
-
     /**
      * @param EntityManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct (EntityManager $em)
     {
         $this->em = $em;
     }
-
     /**
      * Adds a root entity and all of its fields to the result set.
      *
@@ -49,26 +44,30 @@ class ResultSetMappingBuilder extends ResultSetMapping
      * @param string $alias The unique alias to use for the root entity.
      * @param array $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName)
      */
-    public function addRootEntityFromClassMetadata($class, $alias, $renamedColumns = array())
+    public function addRootEntityFromClassMetadata ($class, $alias, 
+    $renamedColumns = array())
     {
         $this->addEntityResult($class, $alias);
         $classMetadata = $this->em->getClassMetadata($class);
-        if ($classMetadata->isInheritanceTypeSingleTable() || $classMetadata->isInheritanceTypeJoined()) {
-            throw new \InvalidArgumentException('ResultSetMapping builder does not currently support inheritance.');
+        if ($classMetadata->isInheritanceTypeSingleTable() ||
+         $classMetadata->isInheritanceTypeJoined()) {
+            throw new \InvalidArgumentException(
+            'ResultSetMapping builder does not currently support inheritance.');
         }
         $platform = $this->em->getConnection()->getDatabasePlatform();
-        foreach ($classMetadata->getColumnNames() AS $columnName) {
+        foreach ($classMetadata->getColumnNames() as $columnName) {
             $propertyName = $classMetadata->getFieldName($columnName);
             if (isset($renamedColumns[$columnName])) {
                 $columnName = $renamedColumns[$columnName];
             }
             if (isset($this->fieldMappings[$columnName])) {
-                throw new \InvalidArgumentException("The column '$columnName' conflicts with another column in the mapper.");
+                throw new \InvalidArgumentException(
+                "The column '$columnName' conflicts with another column in the mapper.");
             }
-            $this->addFieldResult($alias, $platform->getSQLResultCasing($columnName), $propertyName);
+            $this->addFieldResult($alias, 
+            $platform->getSQLResultCasing($columnName), $propertyName);
         }
     }
-
     /**
      * Adds a joined entity and all of its fields to the result set.
      *
@@ -78,23 +77,28 @@ class ResultSetMappingBuilder extends ResultSetMapping
      * @param object $relation The association field that connects the parent entity result with the joined entity result.
      * @param array $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName)
      */
-    public function addJoinedEntityFromClassMetadata($class, $alias, $parentAlias, $relation, $renamedColumns = array())
+    public function addJoinedEntityFromClassMetadata ($class, $alias, 
+    $parentAlias, $relation, $renamedColumns = array())
     {
         $this->addJoinedEntityResult($class, $alias, $parentAlias, $relation);
         $classMetadata = $this->em->getClassMetadata($class);
-        if ($classMetadata->isInheritanceTypeSingleTable() || $classMetadata->isInheritanceTypeJoined()) {
-            throw new \InvalidArgumentException('ResultSetMapping builder does not currently support inheritance.');
+        if ($classMetadata->isInheritanceTypeSingleTable() ||
+         $classMetadata->isInheritanceTypeJoined()) {
+            throw new \InvalidArgumentException(
+            'ResultSetMapping builder does not currently support inheritance.');
         }
         $platform = $this->em->getConnection()->getDatabasePlatform();
-        foreach ($classMetadata->getColumnNames() AS $columnName) {
+        foreach ($classMetadata->getColumnNames() as $columnName) {
             $propertyName = $classMetadata->getFieldName($columnName);
             if (isset($renamedColumns[$columnName])) {
                 $columnName = $renamedColumns[$columnName];
             }
             if (isset($this->fieldMappings[$columnName])) {
-                throw new \InvalidArgumentException("The column '$columnName' conflicts with another column in the mapper.");
+                throw new \InvalidArgumentException(
+                "The column '$columnName' conflicts with another column in the mapper.");
             }
-            $this->addFieldResult($alias, $platform->getSQLResultCasing($columnName), $propertyName);
+            $this->addFieldResult($alias, 
+            $platform->getSQLResultCasing($columnName), $propertyName);
         }
     }
 }

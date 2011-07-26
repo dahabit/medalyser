@@ -18,14 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Console\Command;
-
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console,
-    Doctrine\ORM\Tools\Console\MetadataFilter;
-
+use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console, Doctrine\ORM\Tools\Console\MetadataFilter;
 /**
  * Command to (re)generate the proxy classes used by doctrine.
  *
@@ -43,73 +37,67 @@ class GenerateProxiesCommand extends Console\Command\Command
     /**
      * @see Console\Command\Command
      */
-    protected function configure()
+    protected function configure ()
     {
-        $this
-        ->setName('orm:generate-proxies')
-        ->setDescription('Generates proxy classes for entity classes.')
-        ->setDefinition(array(
-            new InputOption(
-                'filter', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'A string pattern used to match entities that should be processed.'
-            ),
-            new InputArgument(
-                'dest-path', InputArgument::OPTIONAL,
-                'The path to generate your proxy classes. If none is provided, it will attempt to grab from configuration.'
-            ),
-        ))
-        ->setHelp(<<<EOT
+        $this->setName('orm:generate-proxies')
+            ->setDescription('Generates proxy classes for entity classes.')
+            ->setDefinition(
+        array(
+        new InputOption('filter', null, 
+        InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 
+        'A string pattern used to match entities that should be processed.'), 
+        new InputArgument('dest-path', InputArgument::OPTIONAL, 
+        'The path to generate your proxy classes. If none is provided, it will attempt to grab from configuration.')))
+            ->setHelp(<<<EOT
 Generates proxy classes for entity classes.
-EOT
-        );
+EOT);
     }
-
     /**
      * @see Console\Command\Command
      */
-    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    protected function execute (Console\Input\InputInterface $input, 
+    Console\Output\OutputInterface $output)
     {
         $em = $this->getHelper('em')->getEntityManager();
-        
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
-        $metadatas = MetadataFilter::filter($metadatas, $input->getOption('filter'));
-
+        $metadatas = MetadataFilter::filter($metadatas, 
+        $input->getOption('filter'));
         // Process destination directory
         if (($destPath = $input->getArgument('dest-path')) === null) {
             $destPath = $em->getConfiguration()->getProxyDir();
         }
-
-        if ( ! is_dir($destPath)) {
+        if (! is_dir($destPath)) {
             mkdir($destPath, 0777, true);
         }
-
         $destPath = realpath($destPath);
-
-        if ( ! file_exists($destPath)) {
+        if (! file_exists($destPath)) {
             throw new \InvalidArgumentException(
-                sprintf("Proxies destination directory '<info>%s</info>' does not exist.", $destPath)
-            );
-        } else if ( ! is_writable($destPath)) {
-            throw new \InvalidArgumentException(
-                sprintf("Proxies destination directory '<info>%s</info>' does not have write permissions.", $destPath)
-            );
-        }
-
-        if ( count($metadatas)) {
+            sprintf(
+            "Proxies destination directory '<info>%s</info>' does not exist.", 
+            $destPath));
+        } else 
+            if (! is_writable($destPath)) {
+                throw new \InvalidArgumentException(
+                sprintf(
+                "Proxies destination directory '<info>%s</info>' does not have write permissions.", 
+                $destPath));
+            }
+        if (count($metadatas)) {
             foreach ($metadatas as $metadata) {
                 $output->write(
-                    sprintf('Processing entity "<info>%s</info>"', $metadata->name) . PHP_EOL
-                );
+                sprintf('Processing entity "<info>%s</info>"', $metadata->name) .
+                 PHP_EOL);
             }
-
             // Generating Proxies
-            $em->getProxyFactory()->generateProxyClasses($metadatas, $destPath);
-
+            $em->getProxyFactory()->generateProxyClasses($metadatas, 
+            $destPath);
             // Outputting information message
-            $output->write(PHP_EOL . sprintf('Proxy classes generated to "<info>%s</INFO>"', $destPath) . PHP_EOL);
+            $output->write(
+            PHP_EOL .
+             sprintf('Proxy classes generated to "<info>%s</INFO>"', $destPath) .
+             PHP_EOL);
         } else {
             $output->write('No Metadata Classes to process.' . PHP_EOL);
         }
-
     }
 }

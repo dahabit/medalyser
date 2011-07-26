@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * UpdateStatement = UpdateClause [WhereClause]
  *
@@ -36,13 +34,11 @@ class UpdateStatement extends Node
 {
     public $updateClause;
     public $whereClause;
-
-    public function __construct($updateClause)
+    public function __construct ($updateClause)
     {
         $this->updateClause = $updateClause;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkUpdateStatement($this);
     }

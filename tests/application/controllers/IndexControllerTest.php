@@ -1,13 +1,9 @@
 <?php
-
 class IndexControllerTest extends ControllerTestCase
 {
-
-    public function setUp()
+    public function setUp ()
     {
         parent::setUp();
     }
-
-
 }
 

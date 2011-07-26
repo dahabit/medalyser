@@ -18,11 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver;
-
-use \PDO;
-
+use PDO;
 /**
  * PDO implementation of the Connection interface.
  * Used by all PDO-based drivers.
@@ -31,10 +28,12 @@ use \PDO;
  */
 class PDOConnection extends PDO implements Connection
 {
-    public function __construct($dsn, $user = null, $password = null, array $options = null)
+    public function __construct ($dsn, $user = null, $password = null, 
+    array $options = null)
     {
         parent::__construct($dsn, $user, $password, $options);
-        $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('Doctrine\DBAL\Driver\PDOStatement', array()));
+        $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, 
+        array('Doctrine\DBAL\Driver\PDOStatement', array()));
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }

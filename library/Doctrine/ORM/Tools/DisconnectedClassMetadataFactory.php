@@ -16,12 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools;
-
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-
 /**
  * The DisconnectedClassMetadataFactory is used to create ClassMetadataInfo objects
  * that do not require the entity class actually exist. This allows us to 
@@ -41,21 +38,21 @@ class DisconnectedClassMetadataFactory extends ClassMetadataFactory
     /**
      * @override
      */
-    protected function newClassMetadataInstance($className)
+    protected function newClassMetadataInstance ($className)
     {
         $metadata = new ClassMetadataInfo($className);
         if (strpos($className, "\\") !== false) {
-            $metadata->namespace = strrev(substr( strrev($className), strpos(strrev($className), "\\")+1 ));
+            $metadata->namespace = strrev(
+            substr(strrev($className), strpos(strrev($className), "\\") + 1));
         } else {
             $metadata->namespace = "";
         }
         return $metadata;
     }
-
     /**
      * @override
      */
-    protected function getParentClasses($name)
+    protected function getParentClasses ($name)
     {
         return array();
     }

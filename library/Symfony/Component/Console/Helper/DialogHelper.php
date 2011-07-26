@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,11 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Helper;
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * The Dialog class provides helpers to interact with the user.
  *
@@ -29,17 +25,14 @@ class DialogHelper extends Helper
      *
      * @return string The user answer
      */
-    public function ask(OutputInterface $output, $question, $default = null)
+    public function ask (OutputInterface $output, $question, $default = null)
     {
         // @codeCoverageIgnoreStart
         $output->writeln($question);
-
         $ret = trim(fgets(STDIN));
-
         return $ret ? $ret : $default;
-        // @codeCoverageIgnoreEnd
+         // @codeCoverageIgnoreEnd
     }
-
     /**
      * Asks a confirmation to the user.
      *
@@ -51,22 +44,21 @@ class DialogHelper extends Helper
      *
      * @return Boolean true if the user has confirmed, false otherwise
      */
-    public function askConfirmation(OutputInterface $output, $question, $default = true)
+    public function askConfirmation (OutputInterface $output, $question, 
+    $default = true)
     {
         // @codeCoverageIgnoreStart
         $answer = 'z';
-        while ($answer && !in_array(strtolower($answer[0]), array('y', 'n'))) {
+        while ($answer && ! in_array(strtolower($answer[0]), array('y', 'n'))) {
             $answer = $this->ask($output, $question);
         }
-
         if (false === $default) {
             return $answer && 'y' == strtolower($answer[0]);
         } else {
-            return !$answer || 'y' == strtolower($answer[0]);
+            return ! $answer || 'y' == strtolower($answer[0]);
         }
-        // @codeCoverageIgnoreEnd
+         // @codeCoverageIgnoreEnd
     }
-
     /**
      * Asks for a value and validates the response.
      *
@@ -79,31 +71,30 @@ class DialogHelper extends Helper
      *
      * @throws \Exception When any of the validator returns an error
      */
-    public function askAndValidate(OutputInterface $output, $question, \Closure $validator, $attempts = false)
+    public function askAndValidate (OutputInterface $output, $question, 
+    Closure $validator, $attempts = false)
     {
         // @codeCoverageIgnoreStart
         $error = null;
-        while (false === $attempts || $attempts--) {
+        while (false === $attempts || $attempts --) {
             if (null !== $error) {
-                $output->writeln($this->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
+                $output->writeln(
+                $this->getHelperSet()
+                    ->get('formatter')
+                    ->formatBlock($error->getMessage(), 'error'));
             }
-
             $value = $this->ask($output, $question, null);
-
             try {
                 return $validator($value);
-            } catch (\Exception $error) {
-            }
+            } catch (\Exception $error) {}
         }
-
         throw $error;
-        // @codeCoverageIgnoreEnd
+         // @codeCoverageIgnoreEnd
     }
-
     /**
      * Returns the helper's canonical name
      */
-    public function getName()
+    public function getName ()
     {
         return 'dialog';
     }

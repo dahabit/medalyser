@@ -18,18 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\ORM\Tools\Console\Command\SchemaTool;
-
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Console\Command\Command,
-    Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper,
-    Doctrine\ORM\Tools\SchemaTool,
-    Doctrine\ORM\Mapping\Driver\AbstractFileDriver;
-
+use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Output\OutputInterface, Symfony\Component\Console\Command\Command, Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper, Doctrine\ORM\Tools\SchemaTool, Doctrine\ORM\Mapping\Driver\AbstractFileDriver;
 abstract class AbstractCommand extends Command
 {
     /**
@@ -38,24 +28,20 @@ abstract class AbstractCommand extends Command
      * @param SchemaTool $schemaTool
      * @param array $metadatas
      */
-    abstract protected function executeSchemaCommand(InputInterface $input, OutputInterface $output, SchemaTool $schemaTool, array $metadatas);
-
+    abstract protected function executeSchemaCommand (InputInterface $input, 
+    OutputInterface $output, SchemaTool $schemaTool, array $metadatas);
     /**
      * @see Console\Command\Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute (InputInterface $input, OutputInterface $output)
     {
         $emHelper = $this->getHelper('em');
-
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $emHelper->getEntityManager();
-
         $metadatas = $em->getMetadataFactory()->getAllMetadata();
-
-        if ( ! empty($metadatas)) {
+        if (! empty($metadatas)) {
             // Create SchemaTool
             $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
-
             $this->executeSchemaCommand($input, $output, $tool, $metadatas);
         } else {
             $output->write('No Metadata Classes to process.' . PHP_EOL);

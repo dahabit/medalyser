@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Id;
-
 use Doctrine\ORM\EntityManager;
-
 /**
  * Id generator that obtains IDs from special "identity" columns. These are columns
  * that automatically get a database-generated, auto-incremented identifier on INSERT.
@@ -30,29 +27,26 @@ class IdentityGenerator extends AbstractIdGenerator
 {
     /** @var string The name of the sequence to pass to lastInsertId(), if any. */
     private $_seqName;
-
     /**
      * @param string $seqName The name of the sequence to pass to lastInsertId()
-     *                        to obtain the last generated identifier within the current
-     *                        database session/connection, if any.
+     * to obtain the last generated identifier within the current
+     * database session/connection, if any.
      */
-    public function __construct($seqName = null)
+    public function __construct ($seqName = null)
     {
         $this->_seqName = $seqName;
     }
-
     /**
      * {@inheritdoc}
      */
-    public function generate(EntityManager $em, $entity)
+    public function generate (EntityManager $em, $entity)
     {
         return $em->getConnection()->lastInsertId($this->_seqName);
     }
-
     /**
      * {@inheritdoc}
      */
-    public function isPostInsertGenerator()
+    public function isPostInsertGenerator ()
     {
         return true;
     }

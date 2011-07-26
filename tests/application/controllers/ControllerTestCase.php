@@ -8,13 +8,16 @@ like, which I call ControllerTestCase.php (this file should be placed in the tes
 controllers directory):*/
 require_once 'Zend/Application.php';
 require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
-
-abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase {
-	public function setUp() {
-		$this->bootstrap = new Zend_Application ( APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini' );
-		parent::setUp ();
-	}
-	public function tearDown() {
-		parent::tearDown ();
-	}
+abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
+{
+    public function setUp ()
+    {
+        $this->bootstrap = new Zend_Application(APPLICATION_ENV, 
+        APPLICATION_PATH . '/configs/application.ini');
+        parent::setUp();
+    }
+    public function tearDown ()
+    {
+        parent::tearDown();
+    }
 }

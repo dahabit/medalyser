@@ -13,7 +13,7 @@ array(realpath(APPLICATION_PATH . '/../library'), get_include_path())));
 defined('PUBLIC_PATH') ||
  define('PUBLIC_PATH', realpath(dirname(__FILE__) . '/../public'));
 // Define path to base directory
-defined('BASE_PATH') || define('BASE_PATH', realpath(dirname(__FILE__). '/..'));
+defined('BASE_PATH') || define('BASE_PATH', realpath(dirname(__FILE__) . '/..'));
 // Setup Zend Autoloader
 require_once 'Zend/Loader/Autoloader.php';
 Zend_Loader_Autoloader::getInstance();

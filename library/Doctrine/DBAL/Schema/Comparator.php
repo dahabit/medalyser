@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
-
 /**
  * Compare to Schemas and return an instance of SchemaDiff
  *
@@ -37,12 +35,11 @@ class Comparator
      * @param Schema $toSchema
      * @return SchemaDiff
      */
-    static public function compareSchemas( Schema $fromSchema, Schema $toSchema )
+    static public function compareSchemas (Schema $fromSchema, Schema $toSchema)
     {
         $c = new self();
         return $c->compare($fromSchema, $toSchema);
     }
-
     /**
      * Returns a SchemaDiff object containing the differences between the schemas $fromSchema and $toSchema.
      *
@@ -55,82 +52,74 @@ class Comparator
      *
      * @return SchemaDiff
      */
-    public function compare(Schema $fromSchema, Schema $toSchema)
+    public function compare (Schema $fromSchema, Schema $toSchema)
     {
         $diff = new SchemaDiff();
-
         $foreignKeysToTable = array();
-
-        foreach ( $toSchema->getTables() AS $tableName => $table ) {
-            if ( !$fromSchema->hasTable($tableName) ) {
+        foreach ($toSchema->getTables() as $tableName => $table) {
+            if (! $fromSchema->hasTable($tableName)) {
                 $diff->newTables[$tableName] = $table;
             } else {
-                $tableDifferences = $this->diffTable( $fromSchema->getTable($tableName), $table );
-                if ( $tableDifferences !== false ) {
+                $tableDifferences = $this->diffTable(
+                $fromSchema->getTable($tableName), $table);
+                if ($tableDifferences !== false) {
                     $diff->changedTables[$tableName] = $tableDifferences;
                 }
             }
         }
-
         /* Check if there are tables removed */
-        foreach ( $fromSchema->getTables() AS $tableName => $table ) {
-            if ( !$toSchema->hasTable($tableName) ) {
+        foreach ($fromSchema->getTables() as $tableName => $table) {
+            if (! $toSchema->hasTable($tableName)) {
                 $diff->removedTables[$tableName] = $table;
             }
-
             // also remember all foreign keys that point to a specific table
-            foreach ($table->getForeignKeys() AS $foreignKey) {
+            foreach ($table->getForeignKeys() as $foreignKey) {
                 $foreignTable = strtolower($foreignKey->getForeignTableName());
-                if (!isset($foreignKeysToTable[$foreignTable])) {
+                if (! isset($foreignKeysToTable[$foreignTable])) {
                     $foreignKeysToTable[$foreignTable] = array();
                 }
                 $foreignKeysToTable[$foreignTable][] = $foreignKey;
             }
         }
-
-        foreach ($diff->removedTables AS $tableName => $table) {
+        foreach ($diff->removedTables as $tableName => $table) {
             if (isset($foreignKeysToTable[$tableName])) {
-                $diff->orphanedForeignKeys = array_merge($diff->orphanedForeignKeys, $foreignKeysToTable[$tableName]);
+                $diff->orphanedForeignKeys = array_merge(
+                $diff->orphanedForeignKeys, $foreignKeysToTable[$tableName]);
             }
         }
-
-        foreach ( $toSchema->getSequences() AS $sequenceName => $sequence) {
-            if (!$fromSchema->hasSequence($sequenceName)) {
+        foreach ($toSchema->getSequences() as $sequenceName => $sequence) {
+            if (! $fromSchema->hasSequence($sequenceName)) {
                 $diff->newSequences[] = $sequence;
             } else {
-                if ($this->diffSequence($sequence, $fromSchema->getSequence($sequenceName))) {
-                    $diff->changedSequences[] = $fromSchema->getSequence($sequenceName);
+                if ($this->diffSequence($sequence, 
+                $fromSchema->getSequence($sequenceName))) {
+                    $diff->changedSequences[] = $fromSchema->getSequence(
+                    $sequenceName);
                 }
             }
         }
-
-        foreach ($fromSchema->getSequences() AS $sequenceName => $sequence) {
-            if (!$toSchema->hasSequence($sequenceName)) {
+        foreach ($fromSchema->getSequences() as $sequenceName => $sequence) {
+            if (! $toSchema->hasSequence($sequenceName)) {
                 $diff->removedSequences[] = $sequence;
             }
         }
-
         return $diff;
     }
-
     /**
      *
      * @param Sequence $sequence1
      * @param Sequence $sequence2
      */
-    public function diffSequence(Sequence $sequence1, Sequence $sequence2)
+    public function diffSequence (Sequence $sequence1, Sequence $sequence2)
     {
-        if($sequence1->getAllocationSize() != $sequence2->getAllocationSize()) {
+        if ($sequence1->getAllocationSize() != $sequence2->getAllocationSize()) {
             return true;
         }
-
-        if($sequence1->getInitialValue() != $sequence2->getInitialValue()) {
+        if ($sequence1->getInitialValue() != $sequence2->getInitialValue()) {
             return true;
         }
-
         return false;
     }
-
     /**
      * Returns the difference between the tables $table1 and $table2.
      *
@@ -141,48 +130,45 @@ class Comparator
      *
      * @return bool|TableDiff
      */
-    public function diffTable(Table $table1, Table $table2)
+    public function diffTable (Table $table1, Table $table2)
     {
         $changes = 0;
         $tableDifferences = new TableDiff($table1->getName());
-
         $table1Columns = $table1->getColumns();
         $table2Columns = $table2->getColumns();
-
         /* See if all the fields in table 1 exist in table 2 */
-        foreach ( $table2Columns as $columnName => $column ) {
-            if ( !$table1->hasColumn($columnName) ) {
+        foreach ($table2Columns as $columnName => $column) {
+            if (! $table1->hasColumn($columnName)) {
                 $tableDifferences->addedColumns[$columnName] = $column;
-                $changes++;
+                $changes ++;
             }
         }
         /* See if there are any removed fields in table 2 */
-        foreach ( $table1Columns as $columnName => $column ) {
-            if ( !$table2->hasColumn($columnName) ) {
+        foreach ($table1Columns as $columnName => $column) {
+            if (! $table2->hasColumn($columnName)) {
                 $tableDifferences->removedColumns[$columnName] = $column;
-                $changes++;
+                $changes ++;
             }
         }
-        
-        foreach ( $table1Columns as $columnName => $column ) {
-            if ( $table2->hasColumn($columnName) ) {
-                $changedProperties = $this->diffColumn( $column, $table2->getColumn($columnName) );
-                if (count($changedProperties) ) {
-                    $columnDiff = new ColumnDiff($column->getName(), $table2->getColumn($columnName), $changedProperties);
+        foreach ($table1Columns as $columnName => $column) {
+            if ($table2->hasColumn($columnName)) {
+                $changedProperties = $this->diffColumn($column, 
+                $table2->getColumn($columnName));
+                if (count($changedProperties)) {
+                    $columnDiff = new ColumnDiff($column->getName(), 
+                    $table2->getColumn($columnName), $changedProperties);
                     $tableDifferences->changedColumns[$column->getName()] = $columnDiff;
-                    $changes++;
+                    $changes ++;
                 }
             }
         }
-
         $this->detectColumnRenamings($tableDifferences);
-
         $table1Indexes = $table1->getIndexes();
         $table2Indexes = $table2->getIndexes();
-
-        foreach ($table2Indexes AS $index2Name => $index2Definition) {
-            foreach ($table1Indexes AS $index1Name => $index1Definition) {
-                if ($this->diffIndex($index1Definition, $index2Definition) === false) {
+        foreach ($table2Indexes as $index2Name => $index2Definition) {
+            foreach ($table1Indexes as $index1Name => $index1Definition) {
+                if ($this->diffIndex($index1Definition, $index2Definition) ===
+                 false) {
                     unset($table1Indexes[$index1Name]);
                     unset($table2Indexes[$index2Name]);
                 } else {
@@ -190,110 +176,99 @@ class Comparator
                         $tableDifferences->changedIndexes[$index2Name] = $table2Indexes[$index2Name];
                         unset($table1Indexes[$index1Name]);
                         unset($table2Indexes[$index2Name]);
-                        $changes++;
+                        $changes ++;
                     }
                 }
             }
         }
-
-        foreach ($table1Indexes AS $index1Name => $index1Definition) {
+        foreach ($table1Indexes as $index1Name => $index1Definition) {
             $tableDifferences->removedIndexes[$index1Name] = $index1Definition;
-            $changes++;
+            $changes ++;
         }
-
-        foreach ($table2Indexes AS $index2Name => $index2Definition) {
+        foreach ($table2Indexes as $index2Name => $index2Definition) {
             $tableDifferences->addedIndexes[$index2Name] = $index2Definition;
-            $changes++;
+            $changes ++;
         }
-
         $fromFkeys = $table1->getForeignKeys();
         $toFkeys = $table2->getForeignKeys();
-
-        foreach ($fromFkeys AS $key1 => $constraint1) {
-            foreach ($toFkeys AS $key2 => $constraint2) {
-                if($this->diffForeignKey($constraint1, $constraint2) === false) {
+        foreach ($fromFkeys as $key1 => $constraint1) {
+            foreach ($toFkeys as $key2 => $constraint2) {
+                if ($this->diffForeignKey($constraint1, $constraint2) === false) {
                     unset($fromFkeys[$key1]);
                     unset($toFkeys[$key2]);
                 } else {
-                    if (strtolower($constraint1->getName()) == strtolower($constraint2->getName())) {
+                    if (strtolower($constraint1->getName()) ==
+                     strtolower($constraint2->getName())) {
                         $tableDifferences->changedForeignKeys[] = $constraint2;
-                        $changes++;
+                        $changes ++;
                         unset($fromFkeys[$key1]);
                         unset($toFkeys[$key2]);
                     }
                 }
             }
         }
-
-        foreach ($fromFkeys AS $key1 => $constraint1) {
+        foreach ($fromFkeys as $key1 => $constraint1) {
             $tableDifferences->removedForeignKeys[] = $constraint1;
-            $changes++;
+            $changes ++;
         }
-
-        foreach ($toFkeys AS $key2 => $constraint2) {
+        foreach ($toFkeys as $key2 => $constraint2) {
             $tableDifferences->addedForeignKeys[] = $constraint2;
-            $changes++;
+            $changes ++;
         }
-
         return $changes ? $tableDifferences : false;
     }
-
     /**
      * Try to find columns that only changed their name, rename operations maybe cheaper than add/drop
      * however ambiguouties between different possibilites should not lead to renaming at all.
      * 
      * @param TableDiff $tableDifferences
      */
-    private function detectColumnRenamings(TableDiff $tableDifferences)
+    private function detectColumnRenamings (TableDiff $tableDifferences)
     {
         $renameCandidates = array();
-        foreach ($tableDifferences->addedColumns AS $addedColumnName => $addedColumn) {
-            foreach ($tableDifferences->removedColumns AS $removedColumnName => $removedColumn) {
+        foreach ($tableDifferences->addedColumns as $addedColumnName => $addedColumn) {
+            foreach ($tableDifferences->removedColumns as $removedColumnName => $removedColumn) {
                 if (count($this->diffColumn($addedColumn, $removedColumn)) == 0) {
-                    $renameCandidates[$addedColumn->getName()][] = array($removedColumn, $addedColumn, $addedColumnName);
+                    $renameCandidates[$addedColumn->getName()][] = array(
+                    $removedColumn, $addedColumn, $addedColumnName);
                 }
             }
         }
-
-        foreach ($renameCandidates AS $candidate => $candidateColumns) {
+        foreach ($renameCandidates as $candidate => $candidateColumns) {
             if (count($candidateColumns) == 1) {
-                list($removedColumn, $addedColumn) = $candidateColumns[0];
+                list ($removedColumn, $addedColumn) = $candidateColumns[0];
                 $removedColumnName = strtolower($removedColumn->getName());
                 $addedColumnName = strtolower($addedColumn->getName());
-
                 $tableDifferences->renamedColumns[$removedColumnName] = $addedColumn;
                 unset($tableDifferences->addedColumns[$addedColumnName]);
                 unset($tableDifferences->removedColumns[$removedColumnName]);
             }
         }
     }
-
     /**
      * @param ForeignKeyConstraint $key1
      * @param ForeignKeyConstraint $key2
      * @return bool
      */
-    public function diffForeignKey(ForeignKeyConstraint $key1, ForeignKeyConstraint $key2)
+    public function diffForeignKey (ForeignKeyConstraint $key1, 
+    ForeignKeyConstraint $key2)
     {
-        if (array_map('strtolower', $key1->getLocalColumns()) != array_map('strtolower', $key2->getLocalColumns())) {
+        if (array_map('strtolower', $key1->getLocalColumns()) !=
+         array_map('strtolower', $key2->getLocalColumns())) {
             return true;
         }
-        
-        if (array_map('strtolower', $key1->getForeignColumns()) != array_map('strtolower', $key2->getForeignColumns())) {
+        if (array_map('strtolower', $key1->getForeignColumns()) !=
+         array_map('strtolower', $key2->getForeignColumns())) {
             return true;
         }
-
         if ($key1->onUpdate() != $key2->onUpdate()) {
             return true;
         }
-
         if ($key1->onDelete() != $key2->onDelete()) {
             return true;
         }
-
         return false;
     }
-
     /**
      * Returns the difference between the fields $field1 and $field2.
      *
@@ -305,51 +280,43 @@ class Comparator
      *
      * @return array
      */
-    public function diffColumn(Column $column1, Column $column2)
+    public function diffColumn (Column $column1, Column $column2)
     {
         $changedProperties = array();
-        if ( $column1->getType() != $column2->getType() ) {
+        if ($column1->getType() != $column2->getType()) {
             $changedProperties[] = 'type';
         }
-
         if ($column1->getNotnull() != $column2->getNotnull()) {
             $changedProperties[] = 'notnull';
         }
-
         if ($column1->getDefault() != $column2->getDefault()) {
             $changedProperties[] = 'default';
         }
-
         if ($column1->getUnsigned() != $column2->getUnsigned()) {
             $changedProperties[] = 'unsigned';
         }
-
         if ($column1->getType() instanceof \Doctrine\DBAL\Types\StringType) {
             if ($column1->getLength() != $column2->getLength()) {
                 $changedProperties[] = 'length';
             }
-
             if ($column1->getFixed() != $column2->getFixed()) {
                 $changedProperties[] = 'fixed';
             }
         }
-
         if ($column1->getType() instanceof \Doctrine\DBAL\Types\DecimalType) {
-            if (($column1->getPrecision()?:10) != ($column2->getPrecision()?:10)) {
+            if (($column1->getPrecision() ?  : 10) !=
+             ($column2->getPrecision() ?  : 10)) {
                 $changedProperties[] = 'precision';
             }
             if ($column1->getScale() != $column2->getScale()) {
                 $changedProperties[] = 'scale';
             }
         }
-
         if ($column1->getAutoincrement() != $column2->getAutoincrement()) {
             $changedProperties[] = 'autoincrement';
         }
-
         return $changedProperties;
     }
-
     /**
      * Finds the difference between the indexes $index1 and $index2.
      *
@@ -360,7 +327,7 @@ class Comparator
      * @param Index $index2
      * @return bool
      */
-    public function diffIndex(Index $index1, Index $index2)
+    public function diffIndex (Index $index1, Index $index2)
     {
         if ($index1->isFullfilledBy($index2) && $index2->isFullfilledBy($index1)) {
             return false;

@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST\Functions;
-
 use Doctrine\ORM\Query\Lexer;
-
 /**
  * "MOD" "(" SimpleArithmeticExpression "," SimpleArithmeticExpression ")"
  *
@@ -36,32 +33,29 @@ class ModFunction extends FunctionNode
 {
     public $firstSimpleArithmeticExpression;
     public $secondSimpleArithmeticExpression;
-
     /**
      * @override
      */
-    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql (\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
-        return $sqlWalker->getConnection()->getDatabasePlatform()->getModExpression(
-               $sqlWalker->walkSimpleArithmeticExpression($this->firstSimpleArithmeticExpression),
-               $sqlWalker->walkSimpleArithmeticExpression($this->secondSimpleArithmeticExpression)
-        );
+        return $sqlWalker->getConnection()
+            ->getDatabasePlatform()
+            ->getModExpression(
+        $sqlWalker->walkSimpleArithmeticExpression(
+        $this->firstSimpleArithmeticExpression), 
+        $sqlWalker->walkSimpleArithmeticExpression(
+        $this->secondSimpleArithmeticExpression));
     }
-
     /**
      * @override
      */
-    public function parse(\Doctrine\ORM\Query\Parser $parser)
+    public function parse (\Doctrine\ORM\Query\Parser $parser)
     {
         $parser->match(Lexer::T_MOD);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
-        
         $this->firstSimpleArithmeticExpression = $parser->SimpleArithmeticExpression();
-        
         $parser->match(Lexer::T_COMMA);
-        
         $this->secondSimpleArithmeticExpression = $parser->SimpleArithmeticExpression();
-        
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 }

@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\Common\Persistence\Mapping;
-
 /**
  * Contract for a Doctrine persistence layer ClassMetadata class to implement.
  *
@@ -35,52 +33,46 @@ interface ClassMetadata
      *
      * @return mixed
      */
-    public function getIdentifier();
-
+    public function getIdentifier ();
     /**
      * Gets the ReflectionClass instance for this mapped class.
      *
      * @return ReflectionClass
      */
-    public function getReflectionClass();
-
+    public function getReflectionClass ();
     /**
      * Checks if the given field name is a mapped identifier for this class.
      *
      * @param string $fieldName
      * @return boolean
      */
-    public function isIdentifier($fieldName);
-
+    public function isIdentifier ($fieldName);
     /**
      * Checks if the given field is a mapped property for this class.
      *
      * @param string $fieldName 
      * @return boolean
      */
-    public function hasField($fieldName);
-
+    public function hasField ($fieldName);
     /**
      * Checks if the given field is a mapped association for this class.
      *
      * @param string $fieldName
      * @return boolean
      */
-    public function hasAssociation($fieldName);
-
+    public function hasAssociation ($fieldName);
     /**
      * Checks if the given field is a mapped single valued association for this class.
      *
      * @param string $fieldName
      * @return boolean
      */
-    public function isSingleValuedAssociation($fieldName);
-
+    public function isSingleValuedAssociation ($fieldName);
     /**
      * Checks if the given field is a mapped collection valued association for this class.
      *
      * @param string $fieldName
      * @return boolean
      */
-    public function isCollectionValuedAssociation($fieldName);
+    public function isCollectionValuedAssociation ($fieldName);
 }

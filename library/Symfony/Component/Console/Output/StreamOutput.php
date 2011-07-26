@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Output;
-
 /**
  * StreamOutput writes the output to a given stream.
  *
@@ -27,7 +24,6 @@ namespace Symfony\Component\Console\Output;
 class StreamOutput extends Output
 {
     protected $stream;
-
     /**
      * Constructor.
      *
@@ -37,31 +33,27 @@ class StreamOutput extends Output
      *
      * @throws \InvalidArgumentException When first argument is not a real stream
      */
-    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null)
+    public function __construct ($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null)
     {
-        if (!is_resource($stream) || 'stream' !== get_resource_type($stream)) {
-            throw new \InvalidArgumentException('The StreamOutput class needs a stream as its first argument.');
+        if (! is_resource($stream) || 'stream' !== get_resource_type($stream)) {
+            throw new \InvalidArgumentException(
+            'The StreamOutput class needs a stream as its first argument.');
         }
-
         $this->stream = $stream;
-
         if (null === $decorated) {
             $decorated = $this->hasColorSupport($decorated);
         }
-
         parent::__construct($verbosity, $decorated);
     }
-
     /**
      * Gets the stream attached to this StreamOutput instance.
      *
      * @return resource A stream resource
      */
-    public function getStream()
+    public function getStream ()
     {
         return $this->stream;
     }
-
     /**
      * Writes a message to the output.
      *
@@ -70,36 +62,37 @@ class StreamOutput extends Output
      *
      * @throws \RuntimeException When unable to write output (should never happen)
      */
-    public function doWrite($message, $newline)
+    public function doWrite ($message, $newline)
     {
-        if (false === @fwrite($this->stream, $message.($newline ? PHP_EOL : ''))) {
+        if (false === @fwrite($this->stream, $message .
+         ($newline ? PHP_EOL : ''))) {
             // @codeCoverageIgnoreStart
             // should never happen
-            throw new \RuntimeException('Unable to write output.');
-            // @codeCoverageIgnoreEnd
+            throw new \RuntimeException(
+            'Unable to write output.');
+             // @codeCoverageIgnoreEnd
         }
-
         fflush($this->stream);
     }
-
     /**
      * Returns true if the stream supports colorization.
      *
      * Colorization is disabled if not supported by the stream:
      *
-     *  -  windows without ansicon
-     *  -  non tty consoles
+     * -  windows without ansicon
+     * -  non tty consoles
      *
      * @return Boolean true if the stream supports colorization, false otherwise
      */
-    protected function hasColorSupport()
+    protected function hasColorSupport ()
     {
         // @codeCoverageIgnoreStart
         if (DIRECTORY_SEPARATOR == '\\') {
             return false !== getenv('ANSICON');
         } else {
-            return function_exists('posix_isatty') && @posix_isatty($this->stream);
+            return function_exists('posix_isatty') &&
+             @posix_isatty($this->stream);
         }
-        // @codeCoverageIgnoreEnd
+         // @codeCoverageIgnoreEnd
     }
 }

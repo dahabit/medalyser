@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\Expr;
-
 /**
  * Expression class for building DQL OR clauses
  *
@@ -35,9 +33,6 @@ namespace Doctrine\ORM\Query\Expr;
 class Orx extends Composite
 {
     protected $_separator = ' OR ';
-    protected $_allowedClasses = array(
-        'Doctrine\ORM\Query\Expr\Andx',
-        'Doctrine\ORM\Query\Expr\Comparison',
-        'Doctrine\ORM\Query\Expr\Func',
-    );
+    protected $_allowedClasses = array('Doctrine\ORM\Query\Expr\Andx', 
+    'Doctrine\ORM\Query\Expr\Comparison', 'Doctrine\ORM\Query\Expr\Func');
 }

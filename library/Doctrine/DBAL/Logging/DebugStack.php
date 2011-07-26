@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Logging;
-
 /**
  * Includes executed SQLs in a Debug Stack
  *
@@ -37,31 +35,28 @@ class DebugStack implements SQLLogger
 {
     /** @var array $queries Executed SQL queries. */
     public $queries = array();
-
     /** @var boolean $enabled If Debug Stack is enabled (log queries) or not. */
     public $enabled = true;
-
     public $start = null;
-
     public $currentQuery = 0;
-
     /**
      * {@inheritdoc}
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery ($sql, array $params = null, array $types = null)
     {
         if ($this->enabled) {
             $this->start = microtime(true);
-            $this->queries[++$this->currentQuery] = array('sql' => $sql, 'params' => $params, 'types' => $types, 'executionMS' => 0);
+            $this->queries[++ $this->currentQuery] = array('sql' => $sql, 
+            'params' => $params, 'types' => $types, 'executionMS' => 0);
         }
     }
-
     /**
      * {@inheritdoc}
      */
-    public function stopQuery()
+    public function stopQuery ()
     {
-        $this->queries[$this->currentQuery]['executionMS'] = microtime(true) - $this->start;
+        $this->queries[$this->currentQuery]['executionMS'] = microtime(true) -
+         $this->start;
     }
 }
 

@@ -18,12 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\DBAL\Event;
-
-use Doctrine\Common\EventArgs,
-    Doctrine\DBAL\Connection;
-
+use Doctrine\Common\EventArgs, Doctrine\DBAL\Connection;
 /**
  * Event Arguments used when a Driver connection is established inside Doctrine\DBAL\Connection.
  *
@@ -39,40 +35,35 @@ class ConnectionEventArgs extends EventArgs
      * @var Connection
      */
     private $_connection = null;
-
-    public function __construct(Connection $connection)
+    public function __construct (Connection $connection)
     {
         $this->_connection = $connection;
     }
-
     /**
      * @return Doctrine\DBAL\Connection
      */
-    public function getConnection()
+    public function getConnection ()
     {
         return $this->_connection;
     }
-
     /**
      * @return Doctrine\DBAL\Driver
      */
-    public function getDriver()
+    public function getDriver ()
     {
         return $this->_connection->getDriver();
     }
-
     /**
      * @return Doctrine\DBAL\Platforms\AbstractPlatform
      */
-    public function getDatabasePlatform()
+    public function getDatabasePlatform ()
     {
         return $this->_connection->getDatabasePlatform();
     }
-
     /**
      * @return Doctrine\DBAL\Schema\AbstractSchemaManager
      */
-    public function getSchemaManager()
+    public function getSchemaManager ()
     {
         return $this->_connection->getSchemaManager();
     }

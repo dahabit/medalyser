@@ -18,11 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\Exec;
-
 use Doctrine\DBAL\Connection;
-
 /**
  * Base class for SQL statement executors.
  *
@@ -35,17 +32,15 @@ use Doctrine\DBAL\Connection;
 abstract class AbstractSqlExecutor
 {
     protected $_sqlStatements;
-
     /**
      * Gets the SQL statements that are executed by the executor.
      *
      * @return array  All the SQL update statements.
      */
-    public function getSqlStatements()
+    public function getSqlStatements ()
     {
         return $this->_sqlStatements;
     }
-
     /**
      * Executes all sql statements.
      *
@@ -53,5 +48,6 @@ abstract class AbstractSqlExecutor
      * @param array $params  The parameters.
      * @return Doctrine\DBAL\Driver\Statement
      */
-    abstract public function execute(Connection $conn, array $params, array $types);    
+    abstract public function execute (Connection $conn, array $params, 
+    array $types);
 }

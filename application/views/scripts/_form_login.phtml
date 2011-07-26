@@ -1,20 +1,18 @@
-<form id="login" action="<?= $this->element->getAction(); ?>" method="<?= $this->element->getMethod(); ?>">
-<p>
-<b>E-mail Address</b><br />
-<?= $this->element->email; ?>
+<form id="login" action="<?=$this->element->getAction();?>"
+	method="<?=$this->element->getMethod();?>">
+<p><b>E-mail Address</b><br />
+<?=$this->element->email;?>
 </p>
-<p>
-<b>Password</b><br />
-<?= $this->element->pswd; ?>
+<p><b>Password</b><br />
+<?=$this->element->pswd;?>
+</p>
+
+<p>Keep me logged-in for two weeks<br />
+<?=$this->element->public;?>
 </p>
 
 <p>
-Keep me logged-in for two weeks<br />
-<?= $this->element->public; ?>
-</p>
-
-<p>
-<?= $this->element->submit; ?>
+<?=$this->element->submit;?>
 </p>
 
 </form>

@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * InstanceOfExpression ::= IdentificationVariable ["NOT"] "INSTANCE" ["OF"] (AbstractSchemaName | InputParameter)
  *
@@ -35,13 +33,11 @@ class InstanceOfExpression extends Node
     public $not;
     public $identificationVariable;
     public $value;
-    
-    public function __construct($identVariable)
+    public function __construct ($identVariable)
     {
         $this->identificationVariable = $identVariable;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkInstanceOfExpression($this);
     }

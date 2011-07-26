@@ -1,0 +1,38 @@
+<form id="login" action="<?= $this->element->getAction(); ?>" method="<?= $this->element->getMethod(); ?>">
+
+<p>
+<b>Your Username</b>:<br />
+<?= $this->element->username; ?><br />
+<span class="tiny">Feel free to identify yourself however you please, however only letters and numbers are allowed</span><br />
+<span id="available"></span>
+</p>
+
+<p>
+<b>Your Zip Code</b>:<br />
+<?= $this->element->zip; ?><br />
+<span class="tiny">To help you locate friends and games in your area</span>
+</p>
+
+<p>
+<b>E-mail Address</b>:<br />
+<?= $this->element->email; ?><br />
+<span class="tiny">Must be valid as you will need to confirm this address before your account is activated</span>
+</p>
+
+<p>
+<b>Password</b>:<br />
+<?= $this->element->password; ?><br />
+<span class="tiny">Must be at least six characters in length</span>
+</p>
+
+<p>
+<b>Confirm Password</b>:<br />
+<?= $this->element->confirm_pswd; ?><br />
+<span class="tiny">Must exactly match the above password</span>
+</p>
+
+<p>
+<?= $this->element->submit ?>
+</p>
+
+</form>

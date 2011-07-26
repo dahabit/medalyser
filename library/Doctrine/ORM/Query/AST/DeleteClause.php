@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * DeleteClause ::= "DELETE" ["FROM"] AbstractSchemaName [["AS"] AliasIdentificationVariable]
  *
@@ -36,13 +34,11 @@ class DeleteClause extends Node
 {
     public $abstractSchemaName;
     public $aliasIdentificationVariable;
-
-    public function __construct($abstractSchemaName)
+    public function __construct ($abstractSchemaName)
     {
         $this->abstractSchemaName = $abstractSchemaName;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkDeleteClause($this);
     }

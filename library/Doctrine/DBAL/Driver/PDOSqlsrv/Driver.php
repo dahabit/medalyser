@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOSqlsrv;
-
 /**
  * The PDO-based Sqlsrv driver.
  *
@@ -28,57 +26,44 @@ namespace Doctrine\DBAL\Driver\PDOSqlsrv;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
-    {        
-        return new Connection(
-            $this->_constructPdoDsn($params),
-            $username,
-            $password,
-            $driverOptions
-        );
+    public function connect (array $params, $username = null, $password = null, 
+    array $driverOptions = array())
+    {
+        return new Connection($this->_constructPdoDsn($params), $username, 
+        $password, $driverOptions);
     }
-
     /**
      * Constructs the Sqlsrv PDO DSN.
      *
      * @return string  The DSN.
      */
-    private function _constructPdoDsn(array $params)
+    private function _constructPdoDsn (array $params)
     {
         $dsn = 'sqlsrv:server=';
-		
         if (isset($params['host'])) {
             $dsn .= $params['host'];
         }
-                
-        if (isset($params['port']) && !empty($params['port'])) {
+        if (isset($params['port']) && ! empty($params['port'])) {
             $dsn .= ',' . $params['port'];
         }
-		
-		if (isset($params['dbname'])) {
-			$dsn .= ';Database=' .  $params['dbname'];
-		}
-		
+        if (isset($params['dbname'])) {
+            $dsn .= ';Database=' . $params['dbname'];
+        }
         return $dsn;
     }
-
-
-    public function getDatabasePlatform()
+    public function getDatabasePlatform ()
     {
         return new \Doctrine\DBAL\Platforms\MsSqlPlatform();
     }
-
-    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
+    public function getSchemaManager (\Doctrine\DBAL\Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\MsSqlSchemaManager($conn);
     }
-
-    public function getName()
+    public function getName ()
     {
         return 'pdo_sqlsrv';
     }
-
-    public function getDatabase(\Doctrine\DBAL\Connection $conn)
+    public function getDatabase (\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
         return $params['dbname'];

@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
-
 /**
  * xxx
  *
@@ -31,35 +29,28 @@ namespace Doctrine\DBAL\Schema;
  */
 class MsSqlSchemaManager extends AbstractSchemaManager
 {
-
     /**
      * @override
      */
-    protected function _getPortableTableColumnDefinition($tableColumn)
+    protected function _getPortableTableColumnDefinition ($tableColumn)
     {
         $dbType = strtolower($tableColumn['TYPE_NAME']);
-
         $autoincrement = false;
         if (stripos($dbType, 'identity')) {
             $dbType = trim(str_ireplace('identity', '', $dbType));
             $autoincrement = true;
         }
-
         $type = array();
         $unsigned = $fixed = null;
-
-        if (!isset($tableColumn['name'])) {
+        if (! isset($tableColumn['name'])) {
             $tableColumn['name'] = '';
         }
-
         $default = $tableColumn['COLUMN_DEF'];
-
-        while ($default != ($default2 = preg_replace("/^\((.*)\)$/", '$1', $default))) {
+        while ($default !=
+         ($default2 = preg_replace("/^\((.*)\)$/", '$1', $default))) {
             $default = $default2;
         }
-
         $length = (int) $tableColumn['LENGTH'];
-
         $type = $this->_platform->getDoctrineTypeMapping($dbType);
         switch ($type) {
             case 'char':
@@ -83,90 +74,79 @@ class MsSqlSchemaManager extends AbstractSchemaManager
                 $length = $length / 2;
                 break;
         }
-
         $options = array(
-            'length' => ($length == 0 || !in_array($type, array('text', 'string'))) ? null : $length,
-            'unsigned' => (bool) $unsigned,
-            'fixed' => (bool) $fixed,
-            'default' => $default !== 'NULL' ? $default : null,
-            'notnull' => (bool) ($tableColumn['IS_NULLABLE'] != 'YES'),
-            'scale' => $tableColumn['SCALE'],
-            'precision' => $tableColumn['PRECISION'],
-            'autoincrement' => $autoincrement,
-        );
-
-        return new Column($tableColumn['COLUMN_NAME'], \Doctrine\DBAL\Types\Type::getType($type), $options);
+        'length' => ($length == 0 || ! in_array($type, array('text', 'string'))) ? null : $length, 
+        'unsigned' => (bool) $unsigned, 'fixed' => (bool) $fixed, 
+        'default' => $default !== 'NULL' ? $default : null, 
+        'notnull' => (bool) ($tableColumn['IS_NULLABLE'] != 'YES'), 
+        'scale' => $tableColumn['SCALE'], 
+        'precision' => $tableColumn['PRECISION'], 
+        'autoincrement' => $autoincrement);
+        return new Column($tableColumn['COLUMN_NAME'], 
+        \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
-
     /**
      * @override
      */
-    protected function _getPortableTableIndexesList($tableIndexRows, $tableName=null)
+    protected function _getPortableTableIndexesList ($tableIndexRows, 
+    $tableName = null)
     {
         $result = array();
-        foreach ($tableIndexRows AS $tableIndex) {
+        foreach ($tableIndexRows as $tableIndex) {
             $indexName = $keyName = $tableIndex['index_name'];
             if (strpos($tableIndex['index_description'], 'primary key') !== false) {
                 $keyName = 'primary';
             }
             $keyName = strtolower($keyName);
-
-            $result[$keyName] = array(
-                'name' => $indexName,
-                'columns' => explode(', ', $tableIndex['index_keys']),
-                'unique' => strpos($tableIndex['index_description'], 'unique') !== false,
-                'primary' => strpos($tableIndex['index_description'], 'primary key') !== false,
-            );
+            $result[$keyName] = array('name' => $indexName, 
+            'columns' => explode(', ', $tableIndex['index_keys']), 
+            'unique' => strpos($tableIndex['index_description'], 'unique') !==
+             false, 
+            'primary' => strpos($tableIndex['index_description'], 'primary key') !==
+             false);
         }
-
         $indexes = array();
-        foreach ($result AS $indexKey => $data) {
-            $indexes[$indexKey] = new Index($data['name'], $data['columns'], $data['unique'], $data['primary']);
+        foreach ($result as $indexKey => $data) {
+            $indexes[$indexKey] = new Index($data['name'], $data['columns'], 
+            $data['unique'], $data['primary']);
         }
-
         return $indexes;
     }
-
     /**
      * @override
      */
-    public function _getPortableTableForeignKeyDefinition($tableForeignKey)
+    public function _getPortableTableForeignKeyDefinition ($tableForeignKey)
     {
-        return new ForeignKeyConstraint(
-                (array) $tableForeignKey['ColumnName'],
-                $tableForeignKey['ReferenceTableName'],
-                (array) $tableForeignKey['ReferenceColumnName'],
-                $tableForeignKey['ForeignKey'],
-                array(
-                    'onUpdate' => str_replace('_', ' ', $tableForeignKey['update_referential_action_desc']),
-                    'onDelete' => str_replace('_', ' ', $tableForeignKey['delete_referential_action_desc']),
-                )
-        );
+        return new ForeignKeyConstraint((array) $tableForeignKey['ColumnName'], 
+        $tableForeignKey['ReferenceTableName'], 
+        (array) $tableForeignKey['ReferenceColumnName'], 
+        $tableForeignKey['ForeignKey'], 
+        array(
+        'onUpdate' => str_replace('_', ' ', 
+        $tableForeignKey['update_referential_action_desc']), 
+        'onDelete' => str_replace('_', ' ', 
+        $tableForeignKey['delete_referential_action_desc'])));
     }
-
     /**
      * @override
      */
-    protected function _getPortableTableDefinition($table)
+    protected function _getPortableTableDefinition ($table)
     {
         return $table['name'];
     }
-
     /**
      * @override
      */
-    protected function _getPortableDatabaseDefinition($database)
+    protected function _getPortableDatabaseDefinition ($database)
     {
         return $database['name'];
     }
-
     /**
      * @override
      */
-    protected function _getPortableViewDefinition($view)
+    protected function _getPortableViewDefinition ($view)
     {
         // @todo
         return new View($view['name'], null);
     }
-
 }

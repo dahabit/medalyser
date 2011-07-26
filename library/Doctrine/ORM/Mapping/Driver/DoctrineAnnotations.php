@@ -16,32 +16,42 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Mapping;
-
 use Doctrine\Common\Annotations\Annotation;
-
 /* Annotations */
-
-final class Entity extends Annotation {
+final class Entity extends Annotation
+{
     public $repositoryClass;
     public $readOnly = false;
 }
-final class MappedSuperclass extends Annotation {}
-final class InheritanceType extends Annotation {}
-final class DiscriminatorColumn extends Annotation {
+final class MappedSuperclass extends Annotation
+{
+}
+final class InheritanceType extends Annotation
+{
+}
+final class DiscriminatorColumn extends Annotation
+{
     public $name;
     public $fieldName; // field name used in non-object hydration (array/scalar)
     public $type;
     public $length;
 }
-final class DiscriminatorMap extends Annotation {}
-final class Id extends Annotation {}
-final class GeneratedValue extends Annotation {
+final class DiscriminatorMap extends Annotation
+{
+}
+final class Id extends Annotation
+{
+}
+final class GeneratedValue extends Annotation
+{
     public $strategy = 'AUTO';
 }
-final class Version extends Annotation {}
-final class JoinColumn extends Annotation {
+final class Version extends Annotation
+{
+}
+final class JoinColumn extends Annotation
+{
     public $name;
     public $fieldName; // field name used in non-object hydration (array/scalar)
     public $referencedColumnName = 'id';
@@ -51,8 +61,11 @@ final class JoinColumn extends Annotation {
     public $onUpdate;
     public $columnDefinition;
 }
-final class JoinColumns extends Annotation {}
-final class Column extends Annotation {
+final class JoinColumns extends Annotation
+{
+}
+final class Column extends Annotation
+{
     public $type = 'string';
     public $length;
     // The precision for a decimal (exact numeric) column (Applies only for decimal column)
@@ -65,7 +78,8 @@ final class Column extends Annotation {
     public $options = array();
     public $columnDefinition;
 }
-final class OneToOne extends Annotation {
+final class OneToOne extends Annotation
+{
     public $targetEntity;
     public $mappedBy;
     public $inversedBy;
@@ -73,7 +87,8 @@ final class OneToOne extends Annotation {
     public $fetch = 'LAZY';
     public $orphanRemoval = false;
 }
-final class OneToMany extends Annotation {
+final class OneToMany extends Annotation
+{
     public $mappedBy;
     public $targetEntity;
     public $cascade;
@@ -81,13 +96,15 @@ final class OneToMany extends Annotation {
     public $orphanRemoval = false;
     public $indexBy;
 }
-final class ManyToOne extends Annotation {
+final class ManyToOne extends Annotation
+{
     public $targetEntity;
     public $cascade;
     public $fetch = 'LAZY';
     public $inversedBy;
 }
-final class ManyToMany extends Annotation {
+final class ManyToMany extends Annotation
+{
     public $targetEntity;
     public $mappedBy;
     public $inversedBy;
@@ -95,50 +112,77 @@ final class ManyToMany extends Annotation {
     public $fetch = 'LAZY';
     public $indexBy;
 }
-final class ElementCollection extends Annotation {
+final class ElementCollection extends Annotation
+{
     public $tableName;
 }
-final class Table extends Annotation {
+final class Table extends Annotation
+{
     public $name;
     public $schema;
     public $indexes;
     public $uniqueConstraints;
 }
-final class UniqueConstraint extends Annotation {
+final class UniqueConstraint extends Annotation
+{
     public $name;
     public $columns;
 }
-final class Index extends Annotation {
+final class Index extends Annotation
+{
     public $name;
     public $columns;
 }
-final class JoinTable extends Annotation {
+final class JoinTable extends Annotation
+{
     public $name;
     public $schema;
     public $joinColumns = array();
     public $inverseJoinColumns = array();
 }
-final class SequenceGenerator extends Annotation {
+final class SequenceGenerator extends Annotation
+{
     public $sequenceName;
     public $allocationSize = 1;
     public $initialValue = 1;
 }
-final class ChangeTrackingPolicy extends Annotation {}
-final class OrderBy extends Annotation {}
-
-final class NamedQueries extends Annotation {}
-final class NamedQuery extends Annotation {
+final class ChangeTrackingPolicy extends Annotation
+{
+}
+final class OrderBy extends Annotation
+{
+}
+final class NamedQueries extends Annotation
+{
+}
+final class NamedQuery extends Annotation
+{
     public $name;
     public $query;
 }
-
 /* Annotations for lifecycle callbacks */
-final class HasLifecycleCallbacks extends Annotation {}
-final class PrePersist extends Annotation {}
-final class PostPersist extends Annotation {}
-final class PreUpdate extends Annotation {}
-final class PostUpdate extends Annotation {}
-final class PreRemove extends Annotation {}
-final class PostRemove extends Annotation {}
-final class PostLoad extends Annotation {}
+final class HasLifecycleCallbacks extends Annotation
+{
+}
+final class PrePersist extends Annotation
+{
+}
+final class PostPersist extends Annotation
+{
+}
+final class PreUpdate extends Annotation
+{
+}
+final class PostUpdate extends Annotation
+{
+}
+final class PreRemove extends Annotation
+{
+}
+final class PostRemove extends Annotation
+{
+}
+final class PostLoad extends Annotation
+{
+}
 

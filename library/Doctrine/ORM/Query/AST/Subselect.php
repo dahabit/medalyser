@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * Subselect ::= SimpleSelectClause SubselectFromClause [WhereClause] [GroupByClause] [HavingClause] [OrderByClause]
  *
@@ -40,14 +38,12 @@ class Subselect extends Node
     public $groupByClause;
     public $havingClause;
     public $orderByClause;
-
-    public function __construct($simpleSelectClause, $subselectFromClause)
+    public function __construct ($simpleSelectClause, $subselectFromClause)
     {
         $this->simpleSelectClause = $simpleSelectClause;
         $this->subselectFromClause = $subselectFromClause;
-    }    
-    
-    public function dispatch($sqlWalker)
+    }
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkSubselect($this);
     }

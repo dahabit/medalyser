@@ -18,12 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Tools\Console\Helper;
-
-use Symfony\Component\Console\Helper\Helper,
-    Doctrine\DBAL\Connection;
-
+use Symfony\Component\Console\Helper\Helper, Doctrine\DBAL\Connection;
 /**
  * Doctrine CLI Connection Helper.
  *
@@ -43,31 +39,28 @@ class ConnectionHelper extends Helper
      * @var Connection
      */
     protected $_connection;
-
     /**
      * Constructor
      *
      * @param Connection $connection Doctrine Database Connection
      */
-    public function __construct(Connection $connection)
+    public function __construct (Connection $connection)
     {
         $this->_connection = $connection;
     }
-
     /**
      * Retrieves Doctrine Database Connection
      *
      * @return Connection
      */
-    public function getConnection()
+    public function getConnection ()
     {
         return $this->_connection;
     }
-
     /**
      * @see Helper
      */
-    public function getName()
+    public function getName ()
     {
         return 'connection';
     }

@@ -1,21 +1,18 @@
 <?php
-
 class NewPatientWizardControllerTest extends ControllerTestCase
 {
-
-    public function setUp()
+    public function setUp ()
     {
         parent::setUp();
     }
-
-    public function testIndexAction()
+    public function testIndexAction ()
     {
-        $params = array('action' => 'index', 'controller' => 'NewPatientWizard', 'module' => 'default');
+        $params = array('action' => 'index', 'controller' => 'NewPatientWizard', 
+        'module' => 'default');
         $url = $this->url($this->urlizeOptions($params));
         $this->dispatch($url);
-        
-        // assertions
-/*        $this->assertModule($params['module']);
+         // assertions
+    /*        $this->assertModule($params['module']);
         $this->assertController($params['controller']);
         $this->assertAction($params['action']);
         $this->assertQueryContentContains(
@@ -23,11 +20,10 @@ class NewPatientWizardControllerTest extends ControllerTestCase
             'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
             );*/
     }
- public function testsubmitformAction()
+    public function testsubmitformAction ()
     {
         // action body
     }
-
 }
 
 

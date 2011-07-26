@@ -1,14 +1,14 @@
 <?php
-
-Zend_Registry::get ( 'logger' )->warn ( 'An error occurred' );
-Zend_Registry::get ( 'logger' )->err ( $this->message );
-
-if (isset ( $this->exception )) {
-	
-	Zend_Registry::get ( 'logger' )->info ( 'Exception information:' );
-	Zend_Registry::get ( 'logger' )->crit ( 'Message:' . $this->exception->getMessage () );
-	Zend_Registry::get ( 'logger' )->crit ( 'Stack trace:' . $this->exception->getTraceAsString () );
-	Zend_Registry::get ( 'logger' )->notice ( 'Request Parameters:' . $this->escape ( var_export ( $this->request->getParams (), true ) ) );
-
+Zend_Registry::get('logger')->warn('An error occurred');
+Zend_Registry::get('logger')->err($this->message);
+if (isset($this->exception)) {
+    Zend_Registry::get('logger')->info('Exception information:');
+    Zend_Registry::get('logger')->crit(
+    'Message:' . $this->exception->getMessage());
+    Zend_Registry::get('logger')->crit(
+    'Stack trace:' . $this->exception->getTraceAsString());
+    Zend_Registry::get('logger')->notice(
+    'Request Parameters:' .
+     $this->escape(var_export($this->request->getParams(), true)));
 }
 

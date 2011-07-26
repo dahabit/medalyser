@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL;
-
 /**
  * Container for all DBAL events.
  *
@@ -31,8 +29,8 @@ namespace Doctrine\DBAL;
  */
 final class Events
 {
-    private function __construct() {}
-
+    private function __construct ()
+    {}
     const postConnect = 'postConnect';
 }
 

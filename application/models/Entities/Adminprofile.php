@@ -13,8 +13,10 @@ class Adminprofile extends MAEntityHelper
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @Column(type="string", length=255) */
+    /** @Column(type="string", length=32) */
     private $primaryemail;
+    /** @Column(type="string", length=32) */
+    private $username;
     /** @Column(type="string", length=32) */
     private $password;
     /** @Column(type="smallint") */

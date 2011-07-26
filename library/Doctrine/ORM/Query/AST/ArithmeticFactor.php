@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * ArithmeticFactor ::= [("+" | "-")] ArithmeticPrimary
  *
@@ -38,29 +36,24 @@ class ArithmeticFactor extends Node
      * @var ArithmeticPrimary
      */
     public $arithmeticPrimary;
-    
     /**
      * @var null|boolean NULL represents no sign, TRUE means positive and FALSE means negative sign
      */
     public $sign;
-
-    public function __construct($arithmeticPrimary, $sign = null)
+    public function __construct ($arithmeticPrimary, $sign = null)
     {
         $this->arithmeticPrimary = $arithmeticPrimary;
         $this->sign = $sign;
     }
-
-    public function isPositiveSigned()
+    public function isPositiveSigned ()
     {
         return $this->sign === true;
     }
-
-    public function isNegativeSigned()
+    public function isNegativeSigned ()
     {
         return $this->sign === false;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkArithmeticFactor($this);
     }

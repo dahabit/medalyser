@@ -18,28 +18,25 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOSqlsrv;
-
 /**
  * Sqlsrv Connection implementation.
  *
  * @since 2.0
  */
-class Connection extends \Doctrine\DBAL\Driver\PDOConnection implements \Doctrine\DBAL\Driver\Connection
+class Connection extends \Doctrine\DBAL\Driver\PDOConnection implements 
+\Doctrine\DBAL\Driver\Connection
 {
     /**
      * @override
      */
-    public function quote($value, $type=\PDO::PARAM_STR)
+    public function quote ($value, $type = \PDO::PARAM_STR)
     {
         $val = parent::quote($value, $type);
-		
-		// Fix for a driver version terminating all values with null byte
-		if (strpos($val, "\0") !== false) {
-			$val = substr($val, 0, -1);
-		}
-		
-		return $val;
+        // Fix for a driver version terminating all values with null byte
+        if (strpos($val, "\0") !== false) {
+            $val = substr($val, 0, - 1);
+        }
+        return $val;
     }
 }

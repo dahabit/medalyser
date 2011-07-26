@@ -18,13 +18,10 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\ORM\Tools\Event;
-
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-
 /**
  * Event Args used for the Events::postGenerateSchemaTable event.
  *
@@ -39,37 +36,37 @@ class GenerateSchemaTableEventArgs extends \Doctrine\Common\EventArgs
     private $_classMetadata = null;
     private $_schema = null;
     private $_classTable = null;
-
     /**
      * @param ClassMetadata $classMetadata
      * @param Schema $schema
      * @param Table $classTable
      */
-    public function __construct(ClassMetadata $classMetadata, Schema $schema, Table $classTable)
+    public function __construct (ClassMetadata $classMetadata, Schema $schema, 
+    Table $classTable)
     {
         $this->_classMetadata = $classMetadata;
         $this->_schema = $schema;
         $this->_classTable = $classTable;
     }
-
     /**
      * @return ClassMetadata
      */
-    public function getClassMetadata() {
+    public function getClassMetadata ()
+    {
         return $this->_classMetadata;
     }
-
     /**
      * @return Schema
      */
-    public function getSchema() {
+    public function getSchema ()
+    {
         return $this->_schema;
     }
-
     /**
      * @return Table
      */
-    public function getClassTable() {
+    public function getClassTable ()
+    {
         return $this->_classTable;
     }
 }

@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * SubselectFromClause ::= "FROM" SubselectIdentificationVariableDeclaration {"," SubselectIdentificationVariableDeclaration}*
  *
@@ -35,13 +33,11 @@ namespace Doctrine\ORM\Query\AST;
 class SubselectFromClause extends Node
 {
     public $identificationVariableDeclarations = array();
-
-    public function __construct(array $identificationVariableDeclarations)
+    public function __construct (array $identificationVariableDeclarations)
     {
         $this->identificationVariableDeclarations = $identificationVariableDeclarations;
-    }    
-    
-    public function dispatch($sqlWalker)
+    }
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkSubselectFromClause($this);
     }

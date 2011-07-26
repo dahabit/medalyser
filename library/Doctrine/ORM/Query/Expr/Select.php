@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\Expr;
-
 /**
  * Expression class for building DQL select statements
  *
@@ -36,7 +34,5 @@ class Select extends Base
 {
     protected $_preSeparator = '';
     protected $_postSeparator = '';
-    protected $_allowedClasses = array(
-        'Doctrine\ORM\Query\Expr\Func'
-    );
+    protected $_allowedClasses = array('Doctrine\ORM\Query\Expr\Func');
 }

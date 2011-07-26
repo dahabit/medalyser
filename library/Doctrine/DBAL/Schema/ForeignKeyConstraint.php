@@ -18,43 +18,34 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
-
 use Doctrine\DBAL\Schema\Visitor\Visitor;
-
 class ForeignKeyConstraint extends AbstractAsset implements Constraint
 {
     /**
      * @var Table
      */
     protected $_localTable;
-
     /**
      * @var array
      */
     protected $_localColumnNames;
-
     /**
      * @var string
      */
     protected $_foreignTableName;
-
     /**
      * @var array
      */
     protected $_foreignColumnNames;
-
     /**
      * @var string
      */
     protected $_cascade = '';
-
     /**
      * @var array
      */
     protected $_options;
-
     /**
      *
      * @param array $localColumnNames
@@ -63,7 +54,8 @@ class ForeignKeyConstraint extends AbstractAsset implements Constraint
      * @param string $cascade
      * @param string|null $name
      */
-    public function __construct(array $localColumnNames, $foreignTableName, array $foreignColumnNames, $name=null, array $options=array())
+    public function __construct (array $localColumnNames, $foreignTableName, 
+    array $foreignColumnNames, $name = null, array $options = array())
     {
         $this->_setName($name);
         $this->_localColumnNames = $localColumnNames;
@@ -71,91 +63,80 @@ class ForeignKeyConstraint extends AbstractAsset implements Constraint
         $this->_foreignColumnNames = $foreignColumnNames;
         $this->_options = $options;
     }
-
     /**
      * @return string
      */
-    public function getLocalTableName()
+    public function getLocalTableName ()
     {
         return $this->_localTable->getName();
     }
-
     /**
      * @param Table $table
      */
-    public function setLocalTable(Table $table)
+    public function setLocalTable (Table $table)
     {
         $this->_localTable = $table;
     }
-
     /**
      * @return array
      */
-    public function getLocalColumns()
+    public function getLocalColumns ()
     {
         return $this->_localColumnNames;
     }
-
-    public function getColumns()
+    public function getColumns ()
     {
         return $this->_localColumnNames;
     }
-
     /**
      * @return string
      */
-    public function getForeignTableName()
+    public function getForeignTableName ()
     {
         return $this->_foreignTableName;
     }
-
     /**
      * @return array
      */
-    public function getForeignColumns()
+    public function getForeignColumns ()
     {
         return $this->_foreignColumnNames;
     }
-
-    public function hasOption($name)
+    public function hasOption ($name)
     {
         return isset($this->_options[$name]);
     }
-
-    public function getOption($name)
+    public function getOption ($name)
     {
         return $this->_options[$name];
     }
-
     /**
      * Foreign Key onUpdate status
      *
      * @return string|null
      */
-    public function onUpdate()
+    public function onUpdate ()
     {
         return $this->_onEvent('onUpdate');
     }
-
     /**
      * Foreign Key onDelete status
      *
      * @return string|null
      */
-    public function onDelete()
+    public function onDelete ()
     {
         return $this->_onEvent('onDelete');
     }
-
     /**
      * @param  string $event
      * @return string|null
      */
-    private function _onEvent($event)
+    private function _onEvent ($event)
     {
         if (isset($this->_options[$event])) {
             $onEvent = strtoupper($this->_options[$event]);
-            if (!in_array($onEvent, array('NO ACTION', 'RESTRICT'))) {
+            if (! in_array($onEvent, array('NO ACTION', 'RESTRICT'))) {
                 return $onEvent;
             }
         }

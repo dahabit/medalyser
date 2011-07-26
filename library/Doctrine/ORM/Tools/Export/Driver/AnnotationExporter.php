@@ -1,5 +1,4 @@
 <?php
-
 /*
  *  $Id$
  *
@@ -19,13 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Export\Driver;
-
-use Doctrine\ORM\Mapping\ClassMetadataInfo,
-    Doctrine\ORM\Mapping\AssociationMapping,
-    Doctrine\ORM\Tools\EntityGenerator;
-
+use Doctrine\ORM\Mapping\ClassMetadataInfo, Doctrine\ORM\Mapping\AssociationMapping, Doctrine\ORM\Tools\EntityGenerator;
 /**
  * ClassMetadata exporter for PHP classes with annotations
  *
@@ -39,7 +33,6 @@ class AnnotationExporter extends AbstractExporter
 {
     protected $_extension = '.php';
     private $_entityGenerator;
-
     /**
      * Converts a single ClassMetadata instance to the exported format
      * and returns it
@@ -47,25 +40,24 @@ class AnnotationExporter extends AbstractExporter
      * @param ClassMetadataInfo $metadata 
      * @return string $exported
      */
-    public function exportClassMetadata(ClassMetadataInfo $metadata)
+    public function exportClassMetadata (ClassMetadataInfo $metadata)
     {
-        if ( ! $this->_entityGenerator) {
-            throw new \RuntimeException('For the AnnotationExporter you must set an EntityGenerator instance with the setEntityGenerator() method.');
+        if (! $this->_entityGenerator) {
+            throw new \RuntimeException(
+            'For the AnnotationExporter you must set an EntityGenerator instance with the setEntityGenerator() method.');
         }
         $this->_entityGenerator->setGenerateAnnotations(true);
         $this->_entityGenerator->setGenerateStubMethods(false);
         $this->_entityGenerator->setRegenerateEntityIfExists(false);
         $this->_entityGenerator->setUpdateEntityIfExists(false);
-
         return $this->_entityGenerator->generateEntityClass($metadata);
     }
-
-    protected function _generateOutputPath(ClassMetadataInfo $metadata)
+    protected function _generateOutputPath (ClassMetadataInfo $metadata)
     {
-        return $this->_outputDir . '/' . str_replace('\\', '/', $metadata->name) . $this->_extension;
+        return $this->_outputDir . '/' . str_replace('\\', '/', $metadata->name) .
+         $this->_extension;
     }
-
-    public function setEntityGenerator(EntityGenerator $entityGenerator)
+    public function setEntityGenerator (EntityGenerator $entityGenerator)
     {
         $this->_entityGenerator = $entityGenerator;
     }

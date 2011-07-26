@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * DeleteStatement = DeleteClause [WhereClause]
  *
@@ -36,13 +34,11 @@ class DeleteStatement extends Node
 {
     public $deleteClause;
     public $whereClause;
-
-    public function __construct($deleteClause)
+    public function __construct ($deleteClause)
     {
         $this->deleteClause = $deleteClause;
     }
-    
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkDeleteStatement($this);
     }

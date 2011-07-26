@@ -18,13 +18,10 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\DBAL\Event\Listeners;
-
 use Doctrine\DBAL\Event\ConnectionEventArgs;
 use Doctrine\DBAL\Events;
 use Doctrine\Common\EventSubscriber;
-
 /**
  * Should be used when Oracle Server default enviroment does not match the Doctrine requirements.
  *
@@ -43,39 +40,35 @@ use Doctrine\Common\EventSubscriber;
  */
 class OracleSessionInit implements EventSubscriber
 {
-    protected $_defaultSessionVars = array(
-        'NLS_TIME_FORMAT' => "HH24:MI:SS",
-        'NLS_DATE_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
-        'NLS_TIMESTAMP_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
-        'NLS_TIMESTAMP_TZ_FORMAT' => "YYYY-MM-DD HH24:MI:SS TZH:TZM",
-    );
-
+    protected $_defaultSessionVars = array('NLS_TIME_FORMAT' => "HH24:MI:SS", 
+    'NLS_DATE_FORMAT' => "YYYY-MM-DD HH24:MI:SS", 
+    'NLS_TIMESTAMP_FORMAT' => "YYYY-MM-DD HH24:MI:SS", 
+    'NLS_TIMESTAMP_TZ_FORMAT' => "YYYY-MM-DD HH24:MI:SS TZH:TZM");
     /**
      * @param array $oracleSessionVars
      */
-    public function __construct(array $oracleSessionVars = array())
+    public function __construct (array $oracleSessionVars = array())
     {
-        $this->_defaultSessionVars = array_merge($this->_defaultSessionVars, $oracleSessionVars);
+        $this->_defaultSessionVars = array_merge($this->_defaultSessionVars, 
+        $oracleSessionVars);
     }
-
     /**
      * @param ConnectionEventArgs $args
      * @return void
      */
-    public function postConnect(ConnectionEventArgs $args)
+    public function postConnect (ConnectionEventArgs $args)
     {
         if (count($this->_defaultSessionVars)) {
             array_change_key_case($this->_defaultSessionVars, \CASE_UPPER);
             $vars = array();
-            foreach ($this->_defaultSessionVars AS $option => $value) {
-                $vars[] = $option." = '".$value."'";
+            foreach ($this->_defaultSessionVars as $option => $value) {
+                $vars[] = $option . " = '" . $value . "'";
             }
-            $sql = "ALTER SESSION SET ".implode(" ", $vars);
+            $sql = "ALTER SESSION SET " . implode(" ", $vars);
             $args->getConnection()->executeUpdate($sql);
         }
     }
-
-    public function getSubscribedEvents()
+    public function getSubscribedEvents ()
     {
         return array(Events::postConnect);
     }

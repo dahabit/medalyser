@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * ConditionalTerm ::= ConditionalFactor {"AND" ConditionalFactor}*
  *
@@ -35,13 +33,11 @@ namespace Doctrine\ORM\Query\AST;
 class ConditionalTerm extends Node
 {
     public $conditionalFactors = array();
-
-    public function __construct(array $conditionalFactors)
+    public function __construct (array $conditionalFactors)
     {
         $this->conditionalFactors = $conditionalFactors;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkConditionalTerm($this);
     }
