@@ -1,0 +1,20 @@
+<h3>Confirm Your Account</h3>
+
+<?php
+if ($this->success == TRUE) {
+    ?>
+
+<p>Your account e-mail address has been confirmed! <a
+	href="<?=$this->url(array('controller' => 'account', 'action' => 'login'));?>">Login
+to begin accessing your exclusive MedAlyser features!</a></p>
+
+<?php
+} else {
+    ?>
+
+<p>A problem has occurred while attempting to confirm your account
+e-mail address. Please contact support@MedAlyser.com.</p>
+
+<?php
+}
+?>

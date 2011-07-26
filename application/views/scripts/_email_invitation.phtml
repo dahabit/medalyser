@@ -1,0 +1,15 @@
+<?php 
+//TODO: Implement a good solution for getting baseurl
+//TODO: implement config options for global support,sell,tec email addresses site name site description and site logo.
+$email = <<< email
+Dear {$this->_request->getPost('name')},
+
+{$this->_request->getPost('username')} would like you to consider joining MedAlyser.com
+Thank you!
+The MedAlyser Team
+
+Questions? Contact us at support@MedAlyser.com
+
+email;
+
+?>

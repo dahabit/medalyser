@@ -1,0 +1,21 @@
+<?php 
+$baseurl=Zend_Controller_Front::getInstance()->getBaseUrl();
+$email = <<< email
+Dear {$account->getUsername()},
+
+Your Free MedAlser account has been created! To complete registration, click on the below link to 
+confirm your e-mail address.
+
+$baseurl/account/confirm/key/{$account->getRecovery()}
+
+Once confirmed, you'll be able to access exclusive MedAlser features!
+
+Thank you!
+The MedAlser Team
+
+Questions? Contact us at support@MedAlser.com
+$baseurl
+
+email;
+
+?>
