@@ -14,7 +14,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $config = new Zend_Config($this->getOptions());
         Zend_Registry::set('config', $config);
+        $globalSettings = new Zend_Config_Ini(
+        APPLICATION_PATH . '/configs/globalsettings.ini', 'staging');
+        Zend_Registry::set('globalsettings', $globalSettings);
         return $config;
+        return $globalSettings;
     }
     protected function _initDoctrine ()
     {

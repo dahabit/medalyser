@@ -2,6 +2,16 @@
 <html>
 <head>
 <?php
+$this->headMeta()
+    ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+    ->appendHttpEquiv('Content-Language', Zend_Registry::get('globalsettings')->site->language);
+$this->headMeta()->appendName('keywords', 
+Zend_Registry::get('globalsettings')->site->keywords);
+$this->headMeta()->appendName('description',Zend_Registry::get('globalsettings')->site->description );
+$this->headMeta()->appendName('generator', 
+'MedAlyser - Next generation EHR and clinical decision support system.');
+// setting the site in the title
+$this->headTitle(Zend_Registry::get('globalsettings')->site->name);
 // Initialize Extjs on development ENV
 if (APPLICATION_ENV == 'development') {
     $this->headLink()->prependStylesheet(
@@ -17,8 +27,13 @@ else {
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
 }
+$this->headLink(array('rel' => 'favicon',
+                                  'href' => './icons/favicon.ico'),
+                                  'PREPEND');
 $this->headLink()->appendStylesheet('./icons/icons.css');
-// Output aggregated css & js files
+// Output aggregated headMeta css & js files
+echo $this->headMeta();
+echo $this->headTitle();
 echo $this->headLink();
 echo $this->headScript();
 ?>
@@ -39,9 +54,6 @@ echo $this->headScript();
 <div style="font-size: 10px; font-weight: normal; margin-top: 15px;">Copyright
 &copy; 2011 MedAlyser Project</div>
 </div>
-<div id="x-login-panel"><img
-	src="templates/default/desktop/images/default/s.gif"
-	class="login-logo abs-position" /></div>
 <script type="text/javascript">
 Ext.onReady(function(){
     function removeLoadMask() {
@@ -54,8 +66,8 @@ Ext.onReady(function(){
   });  
 </script>
 <noscript>
-<p>You need to enable javascript to use <a href="http://www.medalyser.com/"
-	title="Medicine Analyser">MedAlyser</a></p>
+<p>You need to enable javascript to use <a
+	href="http://www.medalyser.com/" title="Medicine Analyser">MedAlyser</a></p>
 </noscript>
 
 </body>
