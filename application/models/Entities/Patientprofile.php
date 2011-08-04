@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity 
  * @Table(name="ma_patient_profile") 
  */
-class Patientprofile extends MAEntityHelper
+class Patientprofile
 {
     /**
      * @Id @Column(type="integer")
@@ -87,6 +87,24 @@ class Patientprofile extends MAEntityHelper
     {
         if (property_exists($this, $name)) {
             return $this->$name;
+        }
+    }
+    public function getAddresses ()
+    {
+        return $this->addresses;
+    }
+    /**
+     * Set all submitted form values at the same time.
+     * @param field_type $nonNestedFormElements
+     */
+    public function setNonNestedFormElements ($nonNestedFormElements)
+    {
+        foreach ($nonNestedFormElements as $name => $value1) {
+            if (! is_array($value1)) {
+                if (property_exists($this, $name)) {
+                    $this->$name = $value1;
+                }
+            }
         }
     }
 }

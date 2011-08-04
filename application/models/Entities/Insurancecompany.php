@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity 
  * @Table(name="ma_insurance_company") 
  */
-class Insurancecompany extends MAEntityHelper
+class Insurancecompany
 {
     /**
      * @Id @Column(type="integer")

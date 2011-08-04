@@ -75,60 +75,25 @@ class NewPatientWizardController extends Zend_Controller_Action
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
                     // Addresses
-                    $addressType = $this->_request->getParam(
-                    'addresstype');
-                    $address1 = $this->_request->getParam('address1');
-                    $address2 = $this->_request->getParam('address2');
-                    $city = $address1 = $this->_request->getParam('city');
-                    $state = $this->_request->getParam('state');
-                    $country = $this->_request->getParam('country');
-                    $city = $this->_request->getParam('city');
-                    $zip = $this->_request->getParam('zip');
-                    $i = 0;
+                    $MAEntityHelper = new \Entities\MAEntityHelper();
+                    $MAEntityHelper->setAllFormElements($allFormElements);
                     $addressObject = array();
-                    // addresstype always has a value so we use it to define how many address forms are created on extjs
-                    if (isset($addressType)) {
-                        foreach ($addressType as $value) {
-                            $addressObject[$i] = new \Entities\Patientaddress();
-                            $addressObject[$i]->setAddressType($value);
-                            $i ++;
+                    $i = '1';
+                    foreach ($MAEntityHelper->sortedArray as $key => $value) {
+                        foreach ($value as $key2 => $value2) {
+                            // create array of objects here
+                            $addressObject[$key2] = new \Entities\Patientaddress();
+                            foreach ($value2 as $key3 => $value3) {
+                                $addressObject[$key2]->$key3 = $value3;
+                                $i = $i + '1';
+                            }
                         }
                     }
-                    $i = 0;
-                    // addresstype always has a value so we use it to define how many address forms are created on extjs
-                    if (isset($address1)) {
-                        foreach ($address1 as $value) {
-                            $addressObject[$i]->setAddress1($value);
-                            $i ++;
-                        }
-                    }
-                    $i = 0;
-                    if (isset($address2)) {
-                        foreach ($address2 as $value) {
-                            $addressObject[$i]->setAddress2($value);
-                            $i ++;
-                        }
-                    }
-                    $i = 0;
-                    if (isset($country)) {
-                        foreach ($country as $value) {
-                            $addressObject[$i]->setCountry($value);
-                            $i ++;
-                        }
-                    }
-                    $i = 0;
-                    if (isset($city)) {
-                        foreach ($city as $value) {
-                            $addressObject[$i]->setCity($value);
-                            $i ++;
-                        }
-                    }
-                    $i = 0;
-                    if (isset($zip)) {
-                        foreach ($zip as $value) {
-                            $addressObject[$i]->setZip($value);
-                            $i ++;
-                        }
+                    foreach ($addressObject as $key4 => $value4) {
+                        Zend_Registry::get('logger')->crit(
+                        $addressObject[$key4]);
+                        $account->getAddresses()->add($addressObject[$key4]);
+                        $this->em->persist($addressObject[$key4]);
                     }
                     /*					$address = new \Entities\Patientaddress ();
 					$address->setAddress1 ( $this->_request->getParam ( 'address11' ) );
@@ -137,12 +102,6 @@ class NewPatientWizardController extends Zend_Controller_Action
 					$address->setState ( $this->_request->getParam ( 'state1' ) );
 					$address->setCountry ( $this->_request->getParam ( 'country1' ) );
 					$address->setZip ( $this->_request->getParam ( 'zip1' ) );*/
-                    if (! empty($addressObject)) {
-                        for ($i = 0; $i < count($addressObject); $i ++) {
-                            $account->getAddresses()->add($addressObject[$i]);
-                            $this->em->persist($addressObject[$i]);
-                        }
-                    }
                     //$account->getAddresses ()->add ( $address );
                     /////////////////////end of PAGE 2/////////////////////
                     /////////////////////PAGE 3/////////////////////

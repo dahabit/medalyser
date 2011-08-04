@@ -5,7 +5,7 @@ class IndexController extends Zend_Controller_Action
     {}
     public function indexAction ()
     { // Make sure the user is logged-in
-        $this->_helper->LoginRequired();
+    // $this->_helper->LoginRequired();
     }
 }
 

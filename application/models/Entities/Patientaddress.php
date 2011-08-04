@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity 
  * @Table(name="ma_patient_address") 
  */
-class Patientaddress extends MAEntityHelper
+class Patientaddress
 {
     /**
      * @Id @Column(type="integer")
@@ -17,7 +17,7 @@ class Patientaddress extends MAEntityHelper
      */
     private $patients;
     /** @Column(type="integer", length=1) */
-    private $addressType;
+    private $addresstype;
     /** @Column(type="string", length=255, nullable=true) */
     private $address1;
     /** @Column(type="string", length=255, nullable=true) */

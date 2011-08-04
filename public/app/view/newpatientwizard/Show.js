@@ -52,7 +52,7 @@ Ext
 													method : 'POST',
 													fileUpload : true,
 													submitEmptyText : false,
-													waitMsg : 'Saving data',
+													//waitMsg : 'Saving data',
 													success : function(form,
 															action) {
 														// Ext.getCmp('card-wizard-panel').el.unmask();
@@ -455,7 +455,7 @@ Ext
 																						fieldLabel : 'Address Type',
 																						id : 'addresstype'
 																								+ counter.no,
-																						name : 'addresstype[]',
+																						name : "address[addresstype][]",
 																						value : 'Home'
 																					},
 																					{
@@ -466,25 +466,25 @@ Ext
 																						maskRe : /[\d\-]/,
 																						regex : /^\d{5}(\-\d{4})?$/,
 																						regexText : 'Must be in the format xxxxx or xxxxx-xxxx',
-																						name : 'zip[]',
+																						name : "address[zip][]",
 																						id : 'zip'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'Address 1',
-																						name : 'address1[]',
+																						name : "address[address1][]",
 																						id : 'address1'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'Address 2',
-																						name : 'address2[]',
+																						name : "address[address2][]",
 																						id : 'address2'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'City',
-																						name : 'city[]',
+																						name : "address[city][]",
 																						id : 'city'
 																								+ counter.no
 																					// TODO:add
@@ -508,7 +508,7 @@ Ext
 																					},
 																					{
 																						fieldLabel : 'State',
-																						name : 'state[]',
+																						name : "address[state][]",
 																						id : 'state'
 																								+ counter.no
 																					},
@@ -521,7 +521,7 @@ Ext
 																						fieldLabel : 'Country',
 																						typeAhead : true,
 																						queryMode : 'local',
-																						name : 'country[]',
+																						name : "address[country][]",
 																						id : 'country'
 																								+ counter.no
 																					} // eof
@@ -649,7 +649,8 @@ Ext
 										items : {
 											xtype : 'htmleditor',
 											id : 'bio2',
-											fieldLabel : 'Biography'
+											fieldLabel : 'Biography',
+											name:'bio2'
 										}
 									} ]
 						};

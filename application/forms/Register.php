@@ -7,7 +7,7 @@ class Application_Form_Register extends Zend_Form
         parent::__construct($options);
         $this->setName('login');
         $this->setMethod('post');
-        $this->setAction('/account/register');
+        //$this->setAction('/account/register');
         $username = new Zend_Form_Element_Text('username');
         $username->setLabel('Your Username:');
         $username->setAttrib('size', 35);
@@ -53,12 +53,12 @@ class Application_Form_Register extends Zend_Form
         array('token' => 'password'));
         $confirmPswd->removeDecorator('Errors');
         $confirmPswd->addErrorMessage('The passwords do not match');
-        $profilephoto = new Zend_Form_Element_File('photo');
+/*        $profilephoto = new Zend_Form_Element_File('photo');
         $profilephoto->setLabel('Upload your photo.')
             ->setRequired(false)
             ->addValidator('Size', false, 102400)
             ->addValidator('Extension', false, 'jpg,png,gif,bmp')
-            ->addValidator('Count', false, 1);
+            ->addValidator('Count', false, 1);*/
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Create Your Account');
         $submit->removeDecorator('DtDdWrapper');

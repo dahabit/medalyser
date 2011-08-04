@@ -2,11 +2,10 @@
 namespace Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 /** 
- * @Entity (repositoryClass="Repositories\Account") 
+ * @Entity
  * @Table(name="ma_admin_profile") 
- * @HasLifecycleCallbacks
  */
-class Adminprofile extends MAEntityHelper
+class Adminprofile 
 {
     /**
      * @Id @Column(type="integer")
