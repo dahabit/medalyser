@@ -12,7 +12,7 @@
     	public function Errors($errors) 
     	{
     		
-        if (!is_array($errors))
+        if (!is_array($errors)and $errors)
         {
             echo "<ul id='errors'>";
             echo "<li>$errors</li>";
