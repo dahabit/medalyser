@@ -77,25 +77,28 @@ class NewPatientWizardController extends Zend_Controller_Action
                     // Addresses
                     $MAEntityHelper = new \Entities\MAEntityHelper();
                     $MAEntityHelper->setAllFormElements($allFormElements);
-                    $addressObject = array();
-                    $i = '1';
+                    $entityObject = array();
+                    $i = 1;
                     foreach ($MAEntityHelper->sortedArray as $key => $value) {
+                        if ($i = 1) {
+                            $xx = "\Entities\\" . $key;
+                            $newEntityObject = new $xx();
+                        }
                         foreach ($value as $key2 => $value2) {
                             // create array of objects here
-                            $addressObject[$key2] = new \Entities\Patientaddress();
+                            $entityObject[$key2] = clone $newEntityObject;
                             foreach ($value2 as $key3 => $value3) {
-                                $addressObject[$key2]->$key3 = $value3;
-                                $i = $i + '1';
+                                $entityObject[$key2]->$key3 = $value3;
+                                $i ++;
                             }
                         }
                     }
-                    foreach ($addressObject as $key4 => $value4) {
-                        Zend_Registry::get('logger')->crit(
-                        $addressObject[$key4]);
-                        $account->getAddresses()->add($addressObject[$key4]);
-                        $this->em->persist($addressObject[$key4]);
+                    foreach ($entityObject as $key4 => $value4) {
+                        Zend_Registry::get('logger')->crit($entityObject[$key4]);
+                        $account->getAddresses()->add($entityObject[$key4]);
+                        $this->em->persist($entityObject[$key4]);
                     }
-                    /*					$address = new \Entities\Patientaddress ();
+                    /*					$address = new \Entities\Patientaddress ;
 					$address->setAddress1 ( $this->_request->getParam ( 'address11' ) );
 					$address->setAddress2 ( $this->_request->getParam ( 'address21' ) );
 					$address->setCity ( $this->_request->getParam ( 'city1' ) );
