@@ -1,8 +1,15 @@
 <?php
 class AccountController extends Zend_Controller_Action
 {
+    /**
+     * FlashMessenger
+     *
+     * @var Zend_Controller_Action_Helper_FlashMessenger
+     */
+    protected $_flashMessenger = null;
     public function init ()
     {
+        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->em = $this->_helper->EntityManager();
     }
     public function indexAction ()
@@ -14,25 +21,29 @@ class AccountController extends Zend_Controller_Action
     {
         $this->view->pageTitle = 'Medalyser: Login to Your Account';
         $form = new Application_Form_Login();
+        //intialize zend auth
+        $adapter = new MFAN_Auth_Adapter(
+        $this->_getParam('primaryemail'), $this->_getParam('pswd'));
+        $result = Zend_Auth::getInstance()->authenticate($adapter);
         // Has the login form been posted?
         if ($this->getRequest()->isPost()) {
             // If the submitted data is valid, attempt to authenticate the user
             if ($form->isValid($this->_request->getPost())) {
                 // Did the user successfully login?
-                if ($this->_authenticate(
-                $this->_request->getPost())) {
-                    $account = $this->em->getRepository('Entities\Adminprofile')->findOneByPrimaryemail(
-                    $form->getValue('email'));
-                    // Save the account to the database
-                    $this->em->persist($account);
-                    $this->em->flush();
+                if (Zend_Auth::getInstance()->hasIdentity()) {
+                    //generate cookie on user browser for two weeks
+                    if ($this->_getParam('public') == "1") {
+                        Zend_Session::rememberMe(1209600);
+                    } else {
+                        Zend_Session::forgetMe();
+                    }
                     // Generate the flash message and redirect the user
                     $this->_helper->flashMessenger->addMessage(
                     Zend_Registry::get('config')->messages->login->successful);
                     return $this->_helper->redirector('index', 'index');
                 } else {
-                    $this->view->errors["form"] = array(
-                    Zend_Registry::get('config')->messages->login->failed);
+                    $this->view->authError = implode(' ', 
+                    $result->getMessages());
                 }
             } else {
                 $this->view->errors = $form->getErrors();
@@ -151,6 +162,27 @@ class AccountController extends Zend_Controller_Action
             }
         }
         $this->view->form = $form;
+    }
+    public function logoutAction ()
+    {
+        Zend_Auth::getInstance()->clearIdentity();
+        $this->_helper->redirector('login', 'account');
+    }
+    protected function _authenticate ($data)
+    {
+        $adapter = new MFAN_Auth_Adapter($this->_getParam('username'), 
+        $this->_getParam('password'));
+        $result = Zend_Auth::getInstance()->authenticate($adapter);
+        if ($result->isValid()) {
+            if ($data['public'] == "1") {
+                Zend_Session::rememberMe(1209600);
+            } else {
+                Zend_Session::forgetMe();
+            }
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }
 

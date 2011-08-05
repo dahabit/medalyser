@@ -5,15 +5,14 @@ class Application_Form_Login extends Zend_Form
     {
         $this->setName('login');
         $this->setMethod('post');
-        $this->setAction('/account/login');
-        $email = new Zend_Form_Element_Text('email');
-        $email->setAttrib('size', 35);
-        $email->setRequired(true);
-        $email->addErrorMessage('Please provide a valid e-mail address');
-        $email->addValidator('EmailAddress');
-        $email->removeDecorator('label');
-        $email->removeDecorator('htmlTag');
-        $email->removeDecorator('Errors');
+        $primaryEmail = new Zend_Form_Element_Text('primaryemail');
+        $primaryEmail->setAttrib('size', 35);
+        $primaryEmail->setRequired(true);
+        $primaryEmail->addErrorMessage('Please provide a valid e-mail address');
+        $primaryEmail->addValidator('EmailAddress');
+        $primaryEmail->removeDecorator('label');
+        $primaryEmail->removeDecorator('htmlTag');
+        $primaryEmail->removeDecorator('Errors');
         $pswd = new Zend_Form_Element_Password('pswd');
         $pswd->setAttrib('size', 35);
         $pswd->setRequired(true);
@@ -31,7 +30,7 @@ class Application_Form_Login extends Zend_Form
         $submit->removeDecorator('DtDdWrapper');
         $this->setDecorators(
         array(array('ViewScript', array('viewScript' => '_form_login.phtml'))));
-        $this->addElements(array($email, $pswd, $public, $submit));
+        $this->addElements(array($primaryEmail, $pswd, $public, $submit));
     }
 }
 

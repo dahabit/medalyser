@@ -455,7 +455,7 @@ Ext
 																						fieldLabel : 'Address Type',
 																						id : 'addresstype'
 																								+ counter.no,
-																						name : "address[addresstype][]",
+																						name : "Patientaddress[addresstype][]",
 																						value : 'Home'
 																					},
 																					{
@@ -466,25 +466,25 @@ Ext
 																						maskRe : /[\d\-]/,
 																						regex : /^\d{5}(\-\d{4})?$/,
 																						regexText : 'Must be in the format xxxxx or xxxxx-xxxx',
-																						name : "address[zip][]",
+																						name : "Patientaddress[zip][]",
 																						id : 'zip'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'Address 1',
-																						name : "address[address1][]",
+																						name : "Patientaddress[address1][]",
 																						id : 'address1'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'Address 2',
-																						name : "address[address2][]",
+																						name : "Patientaddress[address2][]",
 																						id : 'address2'
 																								+ counter.no
 																					},
 																					{
 																						fieldLabel : 'City',
-																						name : "address[city][]",
+																						name : "Patientaddress[city][]",
 																						id : 'city'
 																								+ counter.no
 																					// TODO:add
@@ -508,7 +508,7 @@ Ext
 																					},
 																					{
 																						fieldLabel : 'State',
-																						name : "address[state][]",
+																						name : "Patientaddress[state][]",
 																						id : 'state'
 																								+ counter.no
 																					},
@@ -521,7 +521,7 @@ Ext
 																						fieldLabel : 'Country',
 																						typeAhead : true,
 																						queryMode : 'local',
-																						name : "address[country][]",
+																						name : "Patientaddress[country][]",
 																						id : 'country'
 																								+ counter.no
 																					} // eof

@@ -21,16 +21,31 @@ Ext
 										height : 64,
 										menu : {
 											xtype : 'menu',
-											items : [ {
-												xtype : 'menuitem',
-												text : 'Settings',
-												handler : function() {
-													userSettingsWindow.show();
-												}
-											}, {
-												xtype : 'menuitem',
-												text : 'Logout'
-											} ]
+											items : [
+													{
+														xtype : 'menuitem',
+														text : 'Settings',
+														handler : function() {
+															userSettingsWindow
+																	.show();
+														}
+													},
+													{
+														xtype : 'menuitem',
+														text : 'Logout',
+														handler : function() {
+															Ext.Ajax
+																	.request({
+																		url : './account/logout',
+																		success : function() {
+																			window.location = './account/login';
+																		},
+																		failure : function() {
+																			window.location = './account/login';
+																		}
+																	});
+														}
+													} ]
 										}
 									} ]
 								},

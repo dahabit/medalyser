@@ -11,9 +11,11 @@ class MFAN_Controller_Action_Helper_LoginRequired extends Zend_Controller_Action
             Zend_Registry::get('config')->messages->login->required);
             $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper(
             'redirector');
-            $redirector->gotoUrl('/account/login');
+            Zend_Debug::dump($redirector);
+            //The Redirector helper on zend documentation
+            $redirector->setGotoSimple("login", "account");
             return 1;
         }
     }
 }
-?>
+?>S
