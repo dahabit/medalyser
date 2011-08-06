@@ -4,10 +4,12 @@
 <?php
 $this->headMeta()
     ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
-    ->appendHttpEquiv('Content-Language', Zend_Registry::get('globalsettings')->site->language);
+    ->appendHttpEquiv('Content-Language', 
+Zend_Registry::get('globalsettings')->site->language);
 $this->headMeta()->appendName('keywords', 
 Zend_Registry::get('globalsettings')->site->keywords);
-$this->headMeta()->appendName('description',Zend_Registry::get('globalsettings')->site->description );
+$this->headMeta()->appendName('description', 
+Zend_Registry::get('globalsettings')->site->description);
 $this->headMeta()->appendName('generator', 
 'MedAlyser - Next generation EHR and clinical decision support system.');
 // setting the site in the title
@@ -27,9 +29,8 @@ else {
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
 }
-$this->headLink(array('rel' => 'favicon',
-                                  'href' => './icons/favicon.ico'),
-                                  'PREPEND');
+$this->headLink(
+array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 'PREPEND');
 $this->headLink()->appendStylesheet('./icons/icons.css');
 // Output aggregated headMeta css & js files
 echo $this->headMeta();

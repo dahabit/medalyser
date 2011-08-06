@@ -13,7 +13,8 @@ class MAEntityHelper
             if (is_array($submittedGroupValue)) {
                 foreach ($submittedGroupValue as $key => $value) {
                     foreach ($value as $index => $name) {
-                        $this->sortedArray[$submittedGroupName][$submittedGroupName.$index][$key] = $name;
+                        $this->sortedArray[$submittedGroupName][$submittedGroupName .
+                         $index][$key] = $name;
                     }
                 }
             } else {
@@ -22,7 +23,6 @@ class MAEntityHelper
                 }
             }
         }
-        
     }
     /**
      * Set all submitted form values at the same time.

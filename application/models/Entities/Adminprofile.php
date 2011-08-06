@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @Table(name="ma_admin_profile") 
  */
-class Adminprofile 
+class Adminprofile
 {
     /**
      * @Id @Column(type="integer")

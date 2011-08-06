@@ -1,22 +1,20 @@
-<form id="login" action="<?= $this->element->getAction(); ?>" method="<?= $this->element->getMethod(); ?>">
+<form id="login" action="<?=$this->element->getAction();?>"
+	method="<?=$this->element->getMethod();?>">
 
-<p>
-<b>Your Name</b>:<br />
-<?= $this->element->username; ?>
+<p><b>Your Name</b>:<br />
+<?=$this->element->username;?>
+</p>
+
+<p><b>Your Friend's Name</b>:<br />
+<?=$this->element->name;?>
+</p>
+
+<p><b>Your Friend's E-mail Address</b>:<br />
+<?=$this->element->email;?>
 </p>
 
 <p>
-<b>Your Friend's Name</b>:<br />
-<?= $this->element->name; ?>
-</p>
-
-<p>
-<b>Your Friend's E-mail Address</b>:<br />
-<?= $this->element->email; ?>
-</p>
-
-<p>
-<?= $this->element->submit ?>
+<?=$this->element->submit?>
 </p>
 
 </form>
