@@ -88,10 +88,16 @@ Ext
 																			'Failure',
 																			'Ajax communication failed');
 															break;
+														case Ext.form.action.Action.LOAD_FAILURE:
+															Ext.Msg
+															.alert(
+																	'Failure',
+																	'Load Failure');
+													break;
 														case Ext.form.Action.SERVER_INVALID:
 															Ext.Msg
 																	.alert(
-																			'Failure',
+																			'Server Failure',
 																			action.result.msg);
 														} // eof
 														// switch
