@@ -31,15 +31,6 @@ class Application_Form_Login extends Zend_Form
         $this->setDecorators(
         array(array('ViewScript', array('viewScript' => '_form_login.phtml'))));
         $this->addElements(array($primaryEmail, $pswd, $public, $submit));
-        //CSRF Prpotection
-        $amoodyhacker= new Zend_Form_Element_Hash('amoodyhacker');
-        $this->addElement('hash', 'amoodyhacker', 
-        array('salt' => 'Too much pain to see hackers all around@@..!'));
-        $this->getElement('amoodyhacker')
-            ->removeDecorator('amoodyhacker-label')
-            ->removeDecorator('label')
-            ->removeDecorator('htmlTag')
-            ->removeDecorator('Errors')->setAttrib('id', 'protection');
     }
 }
 

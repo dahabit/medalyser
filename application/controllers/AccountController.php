@@ -21,6 +21,13 @@ class AccountController extends Zend_Controller_Action
     {
         $this->view->pageTitle = 'Medalyser: Login to Your Account';
         $form = new Application_Form_Login();
+           //CSRF Prpotection
+        $form->addElement('hash', 'amoodyhacker', 
+        array('salt' => 'Too much pain to see hackers all around'));
+        $form->getElement('amoodyhacker')
+            ->removeDecorator('amoodyhacker-label')
+            ->removeDecorator('label')
+            ->removeDecorator('htmlTag');
         //intialize zend auth
         $adapter = new MFAN_Auth_Adapter(
         $this->_getParam('primaryemail'), $this->_getParam('pswd'));
