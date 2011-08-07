@@ -20,6 +20,16 @@ class Application_Form_Lost extends Zend_Form
         $this->setDecorators(
         array(array('ViewScript', array('viewScript' => '_form_lost.phtml'))));
         $this->addElements(array($email, $submit));
+        //CSRF Prpotection
+        $amoodyhacker = new Zend_Form_Element_Hash('amoodyhacker');
+        $this->addElement('hash', 'amoodyhacker', 
+        array('salt' => 'Too much pain to see hackers all around@@..!'));
+        $this->getElement('amoodyhacker')
+            ->removeDecorator('amoodyhacker-label')
+            ->removeDecorator('label')
+            ->removeDecorator('htmlTag')
+            ->removeDecorator('Errors')
+            ->setAttrib('id', 'protection');
     }
 }
 

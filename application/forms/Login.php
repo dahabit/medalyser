@@ -6,7 +6,7 @@ class Application_Form_Login extends Zend_Form
         $this->setName('login');
         $this->setMethod('post');
         $primaryEmail = new Zend_Form_Element_Text('primaryemail');
-        $primaryEmail->setAttrib('size', 35);
+        $primaryEmail->setAttrib('size', 35)->setAttrib('class', 'another_row');
         $primaryEmail->setRequired(true);
         $primaryEmail->addErrorMessage('Please provide a valid e-mail address');
         $primaryEmail->addValidator('EmailAddress');
@@ -14,7 +14,7 @@ class Application_Form_Login extends Zend_Form
         $primaryEmail->removeDecorator('htmlTag');
         $primaryEmail->removeDecorator('Errors');
         $pswd = new Zend_Form_Element_Password('pswd');
-        $pswd->setAttrib('size', 35);
+        $pswd->setAttrib('size', 35)->setAttrib('class', 'one_more_row');
         $pswd->setRequired(true);
         $pswd->addValidator('StringLength', false, array(4, 15));
         $pswd->addErrorMessage('Please provide your password');
@@ -26,11 +26,20 @@ class Application_Form_Login extends Zend_Form
         $public->removeDecorator('htmlTag');
         $public->removeDecorator('Errors');
         $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Login');
+        $submit->setLabel('Sign In');
         $submit->removeDecorator('DtDdWrapper');
         $this->setDecorators(
         array(array('ViewScript', array('viewScript' => '_form_login.phtml'))));
         $this->addElements(array($primaryEmail, $pswd, $public, $submit));
+        //CSRF Prpotection
+        $amoodyhacker= new Zend_Form_Element_Hash('amoodyhacker');
+        $this->addElement('hash', 'amoodyhacker', 
+        array('salt' => 'Too much pain to see hackers all around@@..!'));
+        $this->getElement('amoodyhacker')
+            ->removeDecorator('amoodyhacker-label')
+            ->removeDecorator('label')
+            ->removeDecorator('htmlTag')
+            ->removeDecorator('Errors')->setAttrib('id', 'protection');
     }
 }
 
