@@ -66,6 +66,13 @@ class AccountController extends Zend_Controller_Action
         // Instantiate the registration form model
         $form = new Application_Form_Register();
         // Has the form been submitted?
+        //CSRF Prpotection
+        $form->addElement('hash', 'amoodyhacker', 
+        array('salt' => 'Too much pain to see hackers all around'));
+        $form->getElement('amoodyhacker')
+            ->removeDecorator('amoodyhacker-label')
+            ->removeDecorator('label')
+            ->removeDecorator('htmlTag');
         if ($this->getRequest()->isPost()) {
             // If the form data is valid, process it
             if ($form->isValid($this->_request->getPost())) {
@@ -131,6 +138,13 @@ class AccountController extends Zend_Controller_Action
             return $this->_helper->redirector('index', 'index');
         }
         $form = new Application_Form_Lost();
+        //CSRF Prpotection
+        $form->addElement('hash', 'amoodyhacker', 
+        array('salt' => 'Too much pain to see hackers all around'));
+        $form->getElement('amoodyhacker')
+            ->removeDecorator('amoodyhacker-label')
+            ->removeDecorator('label')
+            ->removeDecorator('htmlTag');
         if ($this->getRequest()->isPost()) {
             // If form is valid, make sure the e-mail address is associated
             // with an account
