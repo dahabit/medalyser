@@ -2,6 +2,7 @@
 namespace Entities;
 class MAEntityHelper
 {
+    public $sortedArray = null;
     /**
      * Set all submitted form values at the same time.
      * @param field_type $allFormElements
