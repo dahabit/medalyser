@@ -18,4 +18,4 @@ class MFAN_Controller_Action_Helper_LoginRequired extends Zend_Controller_Action
         }
     }
 }
-?>S
+?>
