@@ -13,15 +13,14 @@ class AccountController extends Zend_Controller_Action
         $this->em = $this->_helper->EntityManager();
     }
     public function indexAction ()
-    {
-        // Make sure the user is logged-in
-        $this->_helper->LoginRequired();
-    }
+    {}
     public function loginAction ()
-    {
-        $this->view->pageTitle = 'Medalyser: Login to Your Account';
+    { //check if the user is logged in.if so,redirect the user to index
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            return $this->_helper->redirector('index', 'index');
+        }
         $form = new Application_Form_Login();
-           //CSRF Prpotection
+        //CSRF Prpotection
         $form->addElement('hash', 'amoodyhacker', 
         array('salt' => 'Too much pain to see hackers all around'));
         $form->getElement('amoodyhacker')
@@ -60,7 +59,10 @@ class AccountController extends Zend_Controller_Action
     }
     //TODO: Create different doctrine processes for patient/admin
     public function registerAction ()
-    {
+    { //check if the user is logged in.if so,redirect the user to index
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            return $this->_helper->redirector('index', 'index');
+        }
         // Instantiate the registration form model
         $form = new Application_Form_Register();
         // Has the form been submitted?
@@ -124,7 +126,10 @@ class AccountController extends Zend_Controller_Action
     }
     //TODO: Create different doctrine processes for patient/admin
     public function lostAction ()
-    {
+    { //check if the user is logged in.if so,redirect the user to index
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            return $this->_helper->redirector('index', 'index');
+        }
         $form = new Application_Form_Lost();
         if ($this->getRequest()->isPost()) {
             // If form is valid, make sure the e-mail address is associated
@@ -174,22 +179,6 @@ class AccountController extends Zend_Controller_Action
     {
         Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->redirector('login', 'account');
-    }
-    protected function _authenticate ($data)
-    {
-        $adapter = new MFAN_Auth_Adapter($this->_getParam('username'), 
-        $this->_getParam('password'));
-        $result = Zend_Auth::getInstance()->authenticate($adapter);
-        if ($result->isValid()) {
-            if ($data['public'] == "1") {
-                Zend_Session::rememberMe(1209600);
-            } else {
-                Zend_Session::forgetMe();
-            }
-            return TRUE;
-        } else {
-            return FALSE;
-        }
     }
 }
 

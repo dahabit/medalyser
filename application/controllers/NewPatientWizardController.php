@@ -77,26 +77,29 @@ class NewPatientWizardController extends Zend_Controller_Action
                     // Addresses
                     $MAEntityHelper = new \Entities\MAEntityHelper();
                     $MAEntityHelper->setAllFormElements($allFormElements);
-                    $entityObject = array();
-                    $i = 1;
-                    foreach ($MAEntityHelper->sortedArray as $key => $value) {
-                        if ($i = 1) {
-                            $xx = "\Entities\\" . $key;
-                            $newEntityObject = new $xx();
-                        }
-                        foreach ($value as $key2 => $value2) {
-                            // create array of objects here
-                            $entityObject[$key2] = clone $newEntityObject;
-                            foreach ($value2 as $key3 => $value3) {
-                                $entityObject[$key2]->$key3 = $value3;
-                                $i ++;
+                    if ($MAEntityHelper->sortedArray) {
+                        $entityObject = array();
+                        $i = 1;
+                        foreach ($MAEntityHelper->sortedArray as $key => $value) {
+                            if ($i = 1) {
+                                $xx = "\Entities\\" . $key;
+                                $newEntityObject = new $xx();
+                            }
+                            foreach ($value as $key2 => $value2) {
+                                // create array of objects here
+                                $entityObject[$key2] = clone $newEntityObject;
+                                foreach ($value2 as $key3 => $value3) {
+                                    $entityObject[$key2]->$key3 = $value3;
+                                    $i ++;
+                                }
                             }
                         }
-                    }
-                    foreach ($entityObject as $key4 => $value4) {
-                        Zend_Registry::get('logger')->crit($entityObject[$key4]);
-                        $account->getAddresses()->add($entityObject[$key4]);
-                        $this->em->persist($entityObject[$key4]);
+                        foreach ($entityObject as $key4 => $value4) {
+                            Zend_Registry::get('logger')->crit(
+                            $entityObject[$key4]);
+                            $account->getAddresses()->add($entityObject[$key4]);
+                            $this->em->persist($entityObject[$key4]);
+                        }
                     }
                     /*					$address = new \Entities\Patientaddress ;
 					$address->setAddress1 ( $this->_request->getParam ( 'address11' ) );
