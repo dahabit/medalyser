@@ -2,6 +2,10 @@
 <html>
 <head>
 <?php
+/**
+ * $this->view->serverUrl; #BaseURL (eg http://www.mydomain.com)
+ *$this->view->url(); #Current path (eg. /browse/page/1 )
+ */
 $this->headMeta()
     ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
     ->appendHttpEquiv('Content-Language', 
@@ -29,8 +33,8 @@ else {
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
 }
-$this->headLink(
-array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 'PREPEND');
+$this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
+'PREPEND');
 $this->headLink()->appendStylesheet('./icons/icons.css');
 // Output aggregated headMeta css & js files
 echo $this->headMeta();
@@ -41,12 +45,12 @@ echo $this->headScript();
 </head>
 <body scroll="no">
 <div id="x-loading-mask"
-	style="width: 100%; height: 100%; background: #000000; position: absolute; z-index: 20000; left: 0; top: 0;">&#160;</div>
+	style="width: 100%; height: 100%; background: #dfeff9; position: absolute; z-index: 20000; left: 0; top: 0;">&#160;</div>
 
 <div id="x-loading-panel"
-	style="position: absolute; left: 40%; top: 40%; border: 1px solid #9c9f9d; padding: 2px; background: #d1d8db; width: 300px; text-align: center; z-index: 20001;">
+	style="position: absolute; left: 35%; top: 30%; border: 1px solid #9c9f9d; padding: 2px; background: #d1d8db; width: 340px; text-align: center; z-index: 20001;">
 <div class="x-loading-panel-mask-indicator"
-	style="border: 1px solid #c1d1d6; color: #666; background: white; padding: 10px; margin: 0; padding-left: 20px; height: 110px; text-align: left;">
+	style="border: 1px solid #c1d1d6; color: #666; background: white; padding: 10px; margin: 0; padding-left: 20px; height: 200px; text-align: left;">
 <img class="x-loading-panel-logo"
 	style="display: block; margin-bottom: 15px;" src="icons/start.png" /> <img
 	src="icons/loading.gif"

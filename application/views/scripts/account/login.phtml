@@ -1,7 +1,43 @@
-<h3>Login to Your Medalyser Account</h3>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
 
-<p>Login to your Medalyser account to manage your patients.</p>
+<?php
+$this->headLink()->appendStylesheet('../css/login.css');
+$this->headMeta()
+    ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+    ->appendHttpEquiv('Content-Language', 
+Zend_Registry::get('globalsettings')->site->language);
+$this->headMeta()->appendName('keywords', 
+Zend_Registry::get('globalsettings')->site->keywords);
+$this->headMeta()->appendName('description', 
+Zend_Registry::get('globalsettings')->site->description);
+$this->headMeta()->appendName('generator', 
+'MedAlyser - Next generation EHR and clinical decision support system.');
+// setting the site in the title
+$this->headTitle(Zend_Registry::get('globalsettings')->site->name . " - Sign in");
+//display data
+echo $this->headMeta();
+echo $this->headTitle();
+echo $this->headLink();
+echo $this->headScript();
+?>
 
+</head>
+<body style='min-height: 380px'>
+<div class='layout' id='page'>
+<div class='centered'>
+<div class='column' style='margin-top: -174px'>
+<div class='logo'></div>
+<div class='login_page preserve_links'>
+<div class='title_graphic'></div>
+<div class='login_frame flexible'>
+<div class='top'></div>
+<div class='middle'>
+<div class='flash_message'>
+<div class='flash_boxes'></div>
+
+</div>
 <?php
 $this->Errors($this->errors);
 $this->Errors($this->authError);
@@ -10,6 +46,9 @@ $this->Errors($this->authError);
 <?php
 echo $this->form;
 ?>
-<p><a
-	href="<?=$this->url(array('controller' => 'account', 'action' => 'lost'));?>">Forgot
-your password?</a></p>
+<noscript>
+<p>You need to enable javascript to use <a
+	href="http://www.medalyser.com/" title="Medicine Analyser">MedAlyser</a></p>
+</noscript>
+
+</body>

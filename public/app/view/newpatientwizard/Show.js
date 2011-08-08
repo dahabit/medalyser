@@ -52,7 +52,7 @@ Ext
 													method : 'POST',
 													fileUpload : true,
 													submitEmptyText : false,
-													//waitMsg : 'Saving data',
+													// waitMsg : 'Saving data',
 													success : function(form,
 															action) {
 														// Ext.getCmp('card-wizard-panel').el.unmask();
@@ -90,10 +90,10 @@ Ext
 															break;
 														case Ext.form.action.Action.LOAD_FAILURE:
 															Ext.Msg
-															.alert(
-																	'Failure',
-																	'Load Failure');
-													break;
+																	.alert(
+																			'Failure',
+																			'Load Failure');
+															break;
 														case Ext.form.Action.SERVER_INVALID:
 															Ext.Msg
 																	.alert(
@@ -151,7 +151,7 @@ Ext
 						 * ================ CardLayout config (Wizard)
 						 * =======================
 						 */
-
+						// ////////////////CARD0////////////////
 						var card_0_userpass_username = {
 							xtype : 'textfield',
 							fieldLabel : 'User name',
@@ -174,7 +174,7 @@ Ext
 							vtype : 'email',
 							name : 'primaryemail',
 							msgTarget : 'under',
-							allowBlank:true
+							allowBlank : true
 						};
 						var card_0_userpass_name = {
 							xtype : 'fieldcontainer',
@@ -351,8 +351,7 @@ Ext
 									} ]
 						};// eof CARD 0
 
-						// ///////////////////////////////////////CARD
-						// 1//////////////////////////////////
+						// ////////////////CARD1////////////////
 
 						function addressCounter(incr) {
 							if (!this.no) {
@@ -656,10 +655,13 @@ Ext
 											xtype : 'htmleditor',
 											id : 'bio2',
 											fieldLabel : 'Biography',
-											name:'bio2'
+											name : 'bio2'
 										}
 									} ]
 						};
+						// ////////////////CARD2////////////////
+
+						// ////////////////CARD3////////////////
 						var card_1 = {
 							id : 'card-1',
 							html : '<p>Step 2 of 4</p><p>Almost there.  Please click the "Next" button to continue...</p>',
