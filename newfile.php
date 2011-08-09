@@ -1,3 +1,4 @@
+<?php
 /**
 *THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -10,26 +11,11 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * @version $Id: newfile.php  Aug 9, 2011  4:43:27 PM 
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-Ext.define('MA.controller.MainToolbar', {
-    extend: 'Ext.app.Controller',
 
-    //stores: ['Users'],
-
-    models: ['MainToolbar'],
-
-    views: ['maintoolbar.List']
-
- /*   ,refs: [
-        {
-            ref: 'usersPanel',
-            selector: 'panel'
-        }
-    ],*/
-
-});
+?>
