@@ -23,8 +23,9 @@ Ext
 
 			appFolder : 'app',
 
-			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History' ],
+			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History','Settings'],
 			launch : function() {
+				var adminResource=Ext.create('MA.store.AdminResources');
 				Ext
 						.create(
 								'Ext.container.Viewport',

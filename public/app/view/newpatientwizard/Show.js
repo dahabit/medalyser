@@ -1,16 +1,17 @@
 /**
-*THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * @version
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -59,69 +60,70 @@ Ext
 								Ext.getCmp('card-prev').hide();
 							}
 							var onClickSubmit = function() {
-								// Ext.getCmp('card-wizard-panel').el.mask('Please
-								// wait','x-mask-loading');
-								Ext
-										.getCmp('card-wizard-panel')
-										.getForm()
-										.submit(
-												{
-													url : 'index.php/newpatientwizard/submitform',
-													method : 'POST',
-													fileUpload : true,
-													submitEmptyText : false,
-													// waitMsg : 'Saving data',
-													success : function(form,
-															action) {
-														// Ext.getCmp('card-wizard-panel').el.unmask();
-														Ext.Msg
-																.alert({
-																	title : 'Success',
-																	icon : Ext.window.MessageBox.INFO,
-																	msg : "Patient data saved successfully"
-																});
-														Ext
-																.getCmp(
-																		'newpatientwizardshow')
-																.destroy();
+								function validateFileExtension(fileName) {
+									var exp = /^.*\.(jpg|JPG|png|PNG|gif|GIF)$/;
+									return exp.test(fileName);
+								}
+								var wizardPanel = Ext.getCmp(
+										'card-wizard-panel').getForm();
+								// TODO:validation is not working
+								// correctly.rejects valid file types.
+								if (!validateFileExtension(Ext.getDom('newPic').value)) {
+									Ext.MessageBox
+											.alert('Change Picture',
+													'Only Photos with JPG GIF or PNG extension are supported.');
+									return;
+								}
+								wizardPanel
+										.submit({
+											url : 'index.php/newpatientwizard/submitform',
+											method : 'POST',
+											fileUpload : true,
+											submitEmptyText : false,
+											// waitMsg : 'Saving data',
+											success : function(form, action) {
+												// Ext.getCmp('card-wizard-panel').el.unmask();
+												Ext.Msg
+														.alert({
+															title : 'Success',
+															icon : Ext.window.MessageBox.INFO,
+															msg : "Patient data saved successfully"
+														});
+												Ext.getCmp(
+														'newpatientwizardshow')
+														.destroy();
 
-														// TODO:addautoclosefunctionality
-														// so when success,close
-														// the window and
-														// destroyit.//Ext.getCmp('MA.view.newpatientwizard.Show').destroy();
-													},
-													failure : function(form,
-															action) {
-														// Ext.getCmp('card-wizard-panel').el.unmask();
-														switch (action.failureType) {
-														case Ext.form.Action.CLIENT_INVALID:
-															Ext.Msg
-																	.alert(
-																			'Failure',
-																			'Form fields may not be submitted with invalid values');
-															break;
-														case Ext.form.Action.CONNECT_FAILURE:
-															Ext.Msg
-																	.alert(
-																			'Failure',
-																			'Ajax communication failed');
-															break;
-														case Ext.form.action.Action.LOAD_FAILURE:
-															Ext.Msg
-																	.alert(
-																			'Failure',
-																			'Load Failure');
-															break;
-														case Ext.form.Action.SERVER_INVALID:
-															Ext.Msg
-																	.alert(
-																			'Server Failure',
-																			action.result.msg);
-														} // eof
-														// switch
-													} // eof
-												// failure
-												}); // eof
+												// TODO:addautoclosefunctionality
+												// so when success,close
+												// the window and
+												// destroyit.//Ext.getCmp('MA.view.newpatientwizard.Show').destroy();
+											},
+											failure : function(form, action) {
+												// Ext.getCmp('card-wizard-panel').el.unmask();
+												switch (action.failureType) {
+												case Ext.form.Action.CLIENT_INVALID:
+													Ext.Msg
+															.alert('Failure',
+																	'Form fields may not be submitted with invalid values');
+													break;
+												case Ext.form.Action.CONNECT_FAILURE:
+													Ext.Msg
+															.alert('Failure',
+																	'Ajax communication failed');
+													break;
+												case Ext.form.action.Action.LOAD_FAILURE:
+													Ext.Msg.alert('Failure',
+															'Load Failure');
+													break;
+												case Ext.form.Action.SERVER_INVALID:
+													Ext.Msg.alert(
+															'Server Failure',
+															action.result.msg);
+												} // eof
+												// switch
+											} // eof
+										// failure
+										}); // eof
 								// submit
 								// url
 							}
@@ -266,6 +268,7 @@ Ext
 						var card_0_photo = {
 							xtype : 'textfield',
 							fieldLabel : 'profile photo',
+							id : 'newPic',
 							name : 'profilephoto',
 							inputType : 'file'
 						};
@@ -300,7 +303,7 @@ Ext
 							xtype : 'combo',
 							name : 'language',
 							fieldLabel : 'Language',
-							store : Ext.create('MA.store.Language'),
+							store : 'Language',
 							queryMode : 'local',
 							displayField : 'name',
 							valueField : 'id',
@@ -678,7 +681,98 @@ Ext
 									} ]
 						};
 						// ////////////////CARD2////////////////
+						var card_2_billing = {
+							layout : 'fit',
+							items : [ {
+								xtype : 'fieldset',
+								items : [ {
+									xtype : 'combo',
+									name : 'insurancecompany',
+									fieldLabel : 'Insurance Company',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Insured Code',
+									name : 'insuredcode'
+								}, {
+									xtype : 'combo',
+									name : 'insuredrel',
+									fieldLabel : 'Insured relationship',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Program Name',
+									name : 'programname'
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Id Number',
+									name : 'idno'
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Group Number',
+									name : 'groupno'
+								}, {
+									xtype : 'combo',
+									name : 'insurancetype',
+									fieldLabel : 'Insurance Type',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'combo',
+									name : 'contracttype',
+									fieldLabel : 'Contract type',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								} ]
+							}, {
+								xtype : 'fieldset',
+								items : [ {
+									xtype : 'textfield',
+									fieldLabel : 'Annual Deductible',
+									name : 'annualdedtuctible'
+								}, {
+									xtype : 'datefield',
+									fieldLabel : 'Effective Date',
+									name : 'effectivedate',
+									maxValue : new Date(), // limited to the
+															// current
+									// date or prior
+									format : 'Y-m-d'
 
+								} , {
+									xtype : 'datefield',
+									fieldLabel : 'Expire Date',
+									name : 'expiredate',
+									maxValue : new Date(), // limited to the
+															// current
+									// date or prior
+									format : 'Y-m-d'
+
+								},{
+									xtype : 'textfield',
+									fieldLabel : 'Co-pay per visit',
+									name : 'copay'
+								} ]
+							}, ]
+						};
 						// ////////////////CARD3////////////////
 						var card_1 = {
 							id : 'card-1',
@@ -688,7 +782,8 @@ Ext
 
 						var card_2 = {
 							id : 'card-2',
-							html : '<p>Step 3 of 4</p><p> Please enter patient insurance data and the click the "Next" button to continue...</p>'
+							html : '<p>Step 3 of 4</p><p> Please enter patient insurance data and the click the "Next" button to continue...</p>',
+							items : [ card_2_billing ]
 						};
 
 						var card_3 = {

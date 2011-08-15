@@ -44,8 +44,9 @@ Ext
 														xtype : 'menuitem',
 														text : 'Settings',
 														handler : function() {
-															userSettingsWindow
-																	.show();
+															Ext
+																	.create(
+																			'MA.view.settings.Edit').show();
 														}
 													},
 													{
