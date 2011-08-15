@@ -32,7 +32,7 @@ class Zend_View_Helper_Errors extends Zend_View_Helper_Abstract
             echo "<li>$errors</li>";
             echo "</ul>";
         } else {
-            if (count($errors) > 0) {
+            if (count($errors) > 0 and $errors) {
                 echo "<ul id='errors'>";
                 foreach ($errors as $error) {
                     if (isset($error[0])) {
