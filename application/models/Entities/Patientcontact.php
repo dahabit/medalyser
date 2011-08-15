@@ -11,7 +11,7 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * @version $Id: Patientcontact.php  Aug 9, 2011  4:56:25 PM 
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -20,51 +20,24 @@
 namespace Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 /** 
- * @Entity
- * @Table(name="ma_admin_profile") 
+ * @Entity 
+ * @Table(name="ma_patient_contact") 
  */
-class Adminprofile
+class Patientcontact
 {
     /**
      * @Id @Column(type="integer")
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @Column(type="integer", length=10) */
-    private $userid;
-    /** @Column(type="string", length=32) */
-    private $primaryemail;
-    /** @Column(type="string", length=32) */
-    private $password;
-    /** @Column(type="smallint") */
-    private $confirmed;
-    /** @Column(type="string", length=32) */
-    private $recovery;
-    /** @Column(type="datetime") */
-    private $created;
-    /** @Column(type="datetime") */
-    private $updated;
-    /** @Column(type="smallint", nullable=true) */
-    private $extjstemplate;
-    /** @Column(type="string", length=255) */
-    private $firstname;
-    /** @Column(type="string", length=255, nullable=true) */
-    private $middlename;
-    /** @Column(type="string", length=255) */
-    private $lastname;
-    /** @Column(type="date", nullable=true) */
-    private $birthdate;
     /** @Column(type="string", length=30, nullable=true) */
-    private $socialsecurity;
+    private $homephone;
     /** @Column(type="string", length=30, nullable=true) */
-    private $profilephoto;
-    /** @Column(type="smallint", nullable=true) */
-    private $sex;
-    /**
-     * @ManyToMany(targetEntity="Adminaddress", inversedBy="admins")
-     * @JoinTable(name="ma_admins_addresses")
-     */
-    private $addresses;
+    private $businessphone;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $mobilephone;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $faxphone;
     public function __construct ()
     {}
     public function __set ($key, $val)
@@ -80,3 +53,4 @@ class Adminprofile
         }
     }
 }
+?>

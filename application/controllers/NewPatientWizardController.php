@@ -1,4 +1,22 @@
 <?php
+/**
+ *THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * @version 
+ * @author Mehdi Fanai
+ * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
+ * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link http://www.MedAlyser.com
+ */
 class NewPatientWizardController extends Zend_Controller_Action
 {
     public function init ()
@@ -43,16 +61,7 @@ class NewPatientWizardController extends Zend_Controller_Action
             if ($form->isValid($this->_request->getPost())) {
                 Zend_Registry::get('logger')->debug('validation was a success');
                 //process $profilephoto
-                $profilephoto = new Zend_File_Transfer_Adapter_Http();
-                $profilephoto->setDestination(
-                PUBLIC_PATH . '\images\patient\profile');
-                if ($profilephoto->receive()) {
-                    $profilephotoname = $profilephoto->getFileName(null, FALSE);
-                } else {
-                    $profilephotoname = null;
-                    Zend_Registry::get('logger')->crit(
-                    $profilephoto->getMessages());
-                }
+                $this->_helper->ProfilePhotoUploader('patient');
                 // Does an account associated with this email already exist?
                 $primaryemail = $this->_request->getParam(
                 'primaryemail');
@@ -75,6 +84,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
                     // Addresses
+                    //TODO:code below must probably moved to the doctrine service layer??
                     $MAEntityHelper = new \Entities\MAEntityHelper();
                     $MAEntityHelper->setAllFormElements($allFormElements);
                     if ($MAEntityHelper->sortedArray) {
@@ -101,6 +111,11 @@ class NewPatientWizardController extends Zend_Controller_Action
                             $this->em->persist($entityObject[$key4]);
                         }
                     }
+                    // contacts
+                    $contact = new \Entities\Patientcontact();
+                    $contact->homephone = $this->_request->getParam('homephone');
+                    $account->getContacts()->add($contact);
+                    $this->em->persist($contact);
                     /*					$address = new \Entities\Patientaddress ;
 					$address->setAddress1 ( $this->_request->getParam ( 'address11' ) );
 					$address->setAddress2 ( $this->_request->getParam ( 'address21' ) );
@@ -122,15 +137,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                         'msg' => 'New patient successfully created');
                         $this->_response->appendBody(Zend_Json::encode($form));
                     } catch (Exception $e) {
-                        $error = array('success' => false, 
-                        'msg' => 'Error saving data to the database.Please contact administrator.');
-                        $this->_response->appendBody(Zend_Json::encode($error));
-                        //log exception to firebug
-                        $this->_response->appendBody(
-                        Zend_Json::encode($error));
-                        Zend_Registry::get('logger')->crit(
-                        'Caught exception: ' . $e->getMessage());
-                        var_dump($e->getMessage());
+                        $this->_helper->FlushLogger($e);
                     }
                 } else {
                     $this->_response->appendBody(

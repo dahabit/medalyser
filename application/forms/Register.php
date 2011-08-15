@@ -26,16 +26,12 @@ class Application_Form_Register extends Zend_Form
         $this->setName('login');
         $this->setMethod('post');
         //$this->setAction('/account/register');
-        $username = new Zend_Form_Element_Text('username');
-        $username->setLabel('Your Username:');
-        $username->setAttrib('size', 35);
+        $username = new Zend_Form_Element_Text('userid');
         $username->setRequired(true);
         $username->removeDecorator('label');
         $username->removeDecorator('htmlTag');
         $username->addValidator('Alnum');
         $username->removeDecorator('Errors');
-        $username->addErrorMessage(
-        'Your username can consist solely of letters and numbers');
         $zipCode = new Zend_Form_Element_Text('zip');
         $zipCode->setLabel('Your Zip Code:');
         $zipCode->setAttrib('size', 15);

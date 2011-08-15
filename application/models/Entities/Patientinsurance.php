@@ -50,6 +50,8 @@ class Patientinsurance
     /** @Column(type="integer", length=30) */
     private $groupno;
     /** @Column(type="integer", length=1) */
+    private $insurancetype;
+    /** @Column(type="integer", length=1) */
     private $contracttype;
     //(in an insurance policy) A specified amount of money that the insured must pay before an insurance company will pay a claim 
     //The annual deductible is the fixed dollar amount you pay each calendar year before certain services are covered.

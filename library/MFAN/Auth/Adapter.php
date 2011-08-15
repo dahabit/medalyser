@@ -1,6 +1,6 @@
 <?php
 /**
-*THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
@@ -61,6 +61,8 @@ class MFAN_Auth_Adapter implements Zend_Auth_Adapter_Interface
             $this->user = $this->authenticateModel($this->primaryemail, 
             $this->password);
         } catch (Exception $e) {
+            //Zend_Controller_Action_HelperBroker::getStaticHelper('AjaxResponse')->logFlushErrors(
+            //$e->getMessage());
             if ($e->getMessage() == self::WRONG_PW)
                 return $this->result(
                 Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID, 

@@ -11,21 +11,37 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * @version $Id: AjaxResponce.php  Aug 11, 2011  11:15:52 AM 
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-class IndexController extends Zend_Controller_Action
+class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_Helper_Abstract
 {
-    public function init ()
-    {}
-    public function indexAction ()
-    { // Make sure the user is logged-in
-        $this->_helper->LoginRequired();
-        $this->view->extjstemplate=Zend_Auth::getInstance()->getIdentity()->extjstemplate;
-        echo Zend_Auth::getInstance()->getIdentity()->extjstemplate;
+    public function direct ($success = TRUE, $message, $errors = array())
+    {
+        if ($success == TRUE) {
+            if (! $message) {
+                $message = 'Action was a Success.';
+            }
+        } elseif ($success == FALSE) {
+            if (! $message) {
+                $message = 'Action was a Failure';
+            }
+        }
+        $form = array('success' => $success, 'msg' => $message, 
+        'errors' => $errors);
+        $this->getFrontController()
+            ->getResponse()
+            ->appendBody(Zend_Json::encode($form));
+        //log exception to firebug
+        Zend_Registry::get('logger')->crit('Caught exception: ' . $errors);
+    }
+    public function logFlushErrors ($e)
+    {
+        $this->direct(FALSE, 
+        'Error saving data to the database.Please contact administrator.', $e);
     }
 }
-
+?>

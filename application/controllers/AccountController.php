@@ -31,7 +31,9 @@ class AccountController extends Zend_Controller_Action
         $this->em = $this->_helper->EntityManager();
     }
     public function indexAction ()
-    {}
+    {
+        $this->_helper->redirector('login', 'account');
+    }
     public function loginAction ()
     { //check if the user is logged in.if so,redirect the user to index
         if (Zend_Auth::getInstance()->hasIdentity()) {
@@ -98,7 +100,7 @@ class AccountController extends Zend_Controller_Action
                 $account = $this->em->getRepository(
                 'Entities\Adminprofile')->findOneBy(
                 array('primaryemail' => $form->getValue('email'), 
-                'username' => $form->getValue('username')));
+                'userid' => $form->getValue('userid')));
                 if (! is_object($account)) {
                     $account = new \Entities\Adminprofile();
                     // Assign the account attributes
@@ -114,8 +116,8 @@ class AccountController extends Zend_Controller_Action
                         $this->em->persist($account);
                         $this->em->flush();
                     } catch (Exception $e) {
-                        $this->view->errors = array(
-                        array("There was a problem creating your account."));
+                        $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
+                        $e->getMessage());
                     }
                     // Create a new mail object
                     $mail = new Zend_Mail();
@@ -180,9 +182,8 @@ class AccountController extends Zend_Controller_Action
                         $this->em->persist($account);
                         $this->em->flush();
                     } catch (Exception $e) {
-                        Zend_Registry::get('logger')->crit(
-                        'Caught exception: ' . $e->getMessage());
-                        var_dump($e->getMessage());
+                        $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
+                        $e->getMessage());
                     }
                     // Create a new mail object
                     $mail = new Zend_Mail();
@@ -211,6 +212,61 @@ class AccountController extends Zend_Controller_Action
     {
         Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->redirector('login', 'account');
+    }
+    //admin settings edit page
+    public function adminsettingseditAction ()
+    {
+        $this->_helper->viewRenderer->setNoRender(true);
+        //check if the user is logged in.if so,go on with form processing
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            if ($this->getRequest()->isPost()) {
+                // If the form data is valid, process it
+                if (1 == 1) //$form->isValid($this->_request->getPost())
+{ //process $profilephoto
+                    $this->_helper->ProfilePhotoUploader(
+                    'admin');
+                    $allFormElements = $this->getRequest()->getParams();
+                    Zend_Registry::get('logger')->crit($allFormElements);
+                    // Does an account associated with this username already exist?
+                    $account = $this->em->getRepository(
+                    'Entities\Adminprofile')->findOneBy(
+                    array(
+                    'userid' => $this->getRequest()
+                        ->getParam('userid')));
+                    if (! is_object($account)) {
+                        $account = new \Entities\Adminprofile();
+                        //convert date and time to object so doctrine doesn't echo errors
+                        $account->updated = new DateTime(
+                        "now");
+                        try {
+                            // Save the account to the database
+                            $this->em->persist(
+                            $account);
+                            $this->em->flush();
+                            $this->_helper->AjaxResponse(TRUE, 
+                            'Settings updated successfully.');
+                        } catch (Exception $e) {
+                            $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
+                            $e->getMessage());
+                        }
+                    } else {
+                        $this->_helper->AjaxResponse(FALSE, 
+                        "The desired username {$form->getValue('username')} has already been taken, or
+              the provided e-mail address is already associated with a registered user.");
+                    }
+                } else {
+                    $this->_helper->AjaxResponse(FALSE, $form->getErrors());
+                    $this->view->errors = $form->getErrors();
+                }
+            }
+        }
+    }
+    /**
+     * Generate JSON type for AdminResources javascript store
+     */
+    public function adminresourcesAction ()
+    {
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 }
 

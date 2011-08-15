@@ -38,18 +38,29 @@ $this->headMeta()->appendName('generator',
 $this->headTitle(Zend_Registry::get('globalsettings')->site->name);
 // Initialize Extjs on development ENV
 if (APPLICATION_ENV == 'development') {
-    $this->headLink()->prependStylesheet(
-    './javascript/extjs/resources/css/ext-all.css');
     $this->headScript()->prependFile('./javascript/extjs/ext-debug.js');
     // Load medalyser js files
     $this->headScript()->appendFile('./app.js');
 } // Initialize Extjs on production ENV
 else {
-    $this->headLink()->appendStylesheet(
-    './javascript/extjs/resources/css/ext-all.css');
     $this->headScript()->prependFile('./javascript/extjs/ext.js');
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
+}
+//add notification plugin
+$this->headScript()-> appendFile('./app/plugins/notification.js');
+//add user set extjs theme css file
+if ($this->extjstemplate == 0 or !$this->extjstemplate ) {
+    $this->headLink()->prependStylesheet(
+    './javascript/extjs/resources/css/ext-all.css');
+}
+if ($this->extjstemplate == 1) {
+    $this->headLink()->prependStylesheet(
+    './javascript/extjs/resources/css/ext-all-gray.css');
+}
+if ($this->extjstemplate == 2) {
+    $this->headLink()->prependStylesheet(
+    './javascript/extjs/resources/css/ext-all-access.css');
 }
 $this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
 'PREPEND');
@@ -85,7 +96,18 @@ Ext.onReady(function(){
       loading.hide();
       mask.hide();
     }
-    removeLoadMask(); 
+    removeLoadMask();
+    var win = new Ext.ux.Notification(Ext.apply({
+        autoDestroy: true,
+        hideDelay: 10000,
+        html: '',
+        iconCls: 'icon-waiting',
+        title: ''
+     }, {
+         html: 'Loading wallpaper...',
+         title: 'Please wait'
+      }));
+     win.show();
   });  
 </script>
 <noscript>

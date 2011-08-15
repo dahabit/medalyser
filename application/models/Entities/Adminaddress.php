@@ -11,7 +11,7 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * @version $Id: Adminaddress.php  Aug 13, 2011  6:53:17 PM 
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -20,53 +20,38 @@
 namespace Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 /** 
- * @Entity
- * @Table(name="ma_admin_profile") 
+ * @Entity 
+ * @Table(name="ma_admin_address") 
  */
-class Adminprofile
+class Adminaddress
 {
     /**
      * @Id @Column(type="integer")
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @Column(type="integer", length=10) */
-    private $userid;
-    /** @Column(type="string", length=32) */
-    private $primaryemail;
-    /** @Column(type="string", length=32) */
-    private $password;
-    /** @Column(type="smallint") */
-    private $confirmed;
-    /** @Column(type="string", length=32) */
-    private $recovery;
-    /** @Column(type="datetime") */
-    private $created;
-    /** @Column(type="datetime") */
-    private $updated;
-    /** @Column(type="smallint", nullable=true) */
-    private $extjstemplate;
-    /** @Column(type="string", length=255) */
-    private $firstname;
-    /** @Column(type="string", length=255, nullable=true) */
-    private $middlename;
-    /** @Column(type="string", length=255) */
-    private $lastname;
-    /** @Column(type="date", nullable=true) */
-    private $birthdate;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $socialsecurity;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $profilephoto;
-    /** @Column(type="smallint", nullable=true) */
-    private $sex;
     /**
-     * @ManyToMany(targetEntity="Adminaddress", inversedBy="admins")
-     * @JoinTable(name="ma_admins_addresses")
+     * @ManyToMany(targetEntity="Adminprofile", mappedBy="addresses")
      */
-    private $addresses;
+    private $admins;
+    /** @Column(type="integer", length=1) */
+    private $addresstype;
+    /** @Column(type="string", length=255, nullable=true) */
+    private $address1;
+    /** @Column(type="string", length=255, nullable=true) */
+    private $address2;
+    /** @Column(type="string", length=20, nullable=true) */
+    private $city;
+    /** @Column(type="string", length=20, nullable=true) */
+    private $state;
+    /** @Column(type="string", length=2, nullable=true) */
+    private $country;
+    /** @Column(type="integer", length=10, nullable=true) */
+    private $zip;
     public function __construct ()
-    {}
+    {
+        $this->patients = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     public function __set ($key, $val)
     {
         if (property_exists($this, $key)) {
@@ -80,3 +65,4 @@ class Adminprofile
         }
     }
 }
+?>
