@@ -50,11 +50,16 @@ class Patientprofile
     private $sex;
     /** @Column(type="smallint", nullable=true) */
     private $maritalstatus;
-    /**
-     * @ManyToOne(targetEntity="Patientcontact")
-     * @JoinColumn(name="contact_id", referencedColumnName="id")
-     */
-    private $contacts;
+    /** @Column(type="smallint", nullable=true) */
+    private $prefcontactmethod;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $homephone;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $businessphone;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $mobilephone;
+    /** @Column(type="string", length=30, nullable=true) */
+    private $faxphone;
     /** @Column(type="smallint", nullable=true) */
     private $confirmed;
     /** @Column(type="string", length=32, nullable=true) */
@@ -91,6 +96,7 @@ class Patientprofile
     {
         $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
         $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->insurances = new \Doctrine\Common\Collections\ArrayCollection();
     }
     public function __set ($key, $val)
     {
@@ -108,9 +114,9 @@ class Patientprofile
     {
         return $this->addresses;
     }
-    public function getContacts ()
+    public function getInsurances ()
     {
-        return $this->contacts;
+        return $this->insurances;
     }
     /**
      * Set all submitted form values at the same time.

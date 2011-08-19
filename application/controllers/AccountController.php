@@ -118,6 +118,7 @@ class AccountController extends Zend_Controller_Action
                     } catch (Exception $e) {
                         $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
                         $e->getMessage());
+                        var_dump($e->getMessage());
                     }
                     // Create a new mail object
                     $mail = new Zend_Mail();

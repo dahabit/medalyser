@@ -111,11 +111,6 @@ class NewPatientWizardController extends Zend_Controller_Action
                             $this->em->persist($entityObject[$key4]);
                         }
                     }
-                    // contacts
-                    $contact = new \Entities\Patientcontact();
-                    $contact->homephone = $this->_request->getParam('homephone');
-                    $account->getContacts()->add($contact);
-                    $this->em->persist($contact);
                     /*					$address = new \Entities\Patientaddress ;
 					$address->setAddress1 ( $this->_request->getParam ( 'address11' ) );
 					$address->setAddress2 ( $this->_request->getParam ( 'address21' ) );
@@ -137,7 +132,8 @@ class NewPatientWizardController extends Zend_Controller_Action
                         'msg' => 'New patient successfully created');
                         $this->_response->appendBody(Zend_Json::encode($form));
                     } catch (Exception $e) {
-                        $this->_helper->FlushLogger($e);
+                        $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
+                        $e->getMessage());
                     }
                 } else {
                     $this->_response->appendBody(

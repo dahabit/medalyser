@@ -30,14 +30,7 @@ class Patientcontact
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $homephone;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $businessphone;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $mobilephone;
-    /** @Column(type="string", length=30, nullable=true) */
-    private $faxphone;
+
     public function __construct ()
     {}
     public function __set ($key, $val)

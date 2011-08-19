@@ -68,12 +68,12 @@ Ext
 										'card-wizard-panel').getForm();
 								// TODO:validation is not working
 								// correctly.rejects valid file types.
-								if (!validateFileExtension(Ext.getDom('newPic').value)) {
+/*								if (!validateFileExtension(Ext.getDom('newPic').value)) {
 									Ext.MessageBox
 											.alert('Change Picture',
 													'Only Photos with JPG GIF or PNG extension are supported.');
 									return;
-								}
+								}*/
 								wizardPanel
 										.submit({
 											url : 'index.php/newpatientwizard/submitform',
@@ -681,70 +681,81 @@ Ext
 									} ]
 						};
 						// ////////////////CARD2////////////////
-						var card_2_billing = {
-							layout : 'fit',
-							items : [ {
-								xtype : 'fieldset',
-								items : [ {
-									xtype : 'combo',
-									name : 'insurancecompany',
-									fieldLabel : 'Insurance Company',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Insured Code',
-									name : 'insuredcode'
-								}, {
-									xtype : 'combo',
-									name : 'insuredrel',
-									fieldLabel : 'Insured relationship',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Program Name',
-									name : 'programname'
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Id Number',
-									name : 'idno'
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Group Number',
-									name : 'groupno'
-								}, {
-									xtype : 'combo',
-									name : 'insurancetype',
-									fieldLabel : 'Insurance Type',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'combo',
-									name : 'contracttype',
-									fieldLabel : 'Contract type',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								} ]
-							}, {
-								xtype : 'fieldset',
-								items : [ {
+						var card_2_billing={
+							    xtype: 'container',
+							    height:290,
+							    layout: {
+							        align: 'stretch',
+							        type: 'hbox'
+							    },
+							    items: [
+							        {
+							            xtype: 'fieldset',
+							            flex: 1,
+							            items: [{
+											xtype : 'combo',
+											name : 'insurancecompany',
+											fieldLabel : 'Insurance Company',
+											store : 'MarriageStatus',
+											queryMode : 'local',
+											displayField : 'name',
+											valueField : 'id',
+											typeAhead : true,
+											forceSelection : true
+										}, {
+											xtype : 'textfield',
+											fieldLabel : 'Insured Code',
+											name : 'insuredcode'
+										}, {
+											xtype : 'combo',
+											name : 'insuredrel',
+											fieldLabel : 'Insured relationship',
+											store : 'MarriageStatus',
+											queryMode : 'local',
+											displayField : 'name',
+											valueField : 'id',
+											typeAhead : true,
+											forceSelection : true
+										}, {
+											xtype : 'textfield',
+											fieldLabel : 'Program Name',
+											name : 'programname'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : 'Id Number',
+											name : 'idno'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : 'Group Number',
+											name : 'groupno'
+										}, {
+											xtype : 'combo',
+											name : 'insurancetype',
+											fieldLabel : 'Insurance Type',
+											store : 'MarriageStatus',
+											queryMode : 'local',
+											displayField : 'name',
+											valueField : 'id',
+											typeAhead : true,
+											forceSelection : true
+										}, {
+											xtype : 'combo',
+											name : 'contracttype',
+											fieldLabel : 'Contract type',
+											store : 'MarriageStatus',
+											queryMode : 'local',
+											displayField : 'name',
+											valueField : 'id',
+											typeAhead : true,
+											forceSelection : true
+										}
+							            ]
+							        },
+							        {
+							            xtype: 'fieldset',
+							            flex: 1,
+							            items: [
+							                {
 									xtype : 'textfield',
 									fieldLabel : 'Annual Deductible',
 									name : 'annualdedtuctible'
@@ -770,7 +781,19 @@ Ext
 									xtype : 'textfield',
 									fieldLabel : 'Co-pay per visit',
 									name : 'copay'
-								} ]
+								}
+							            ]
+							        }
+							    ]
+							};
+						var card_2_billing0 = {
+							layout : 'fit',
+							items : [ {
+								xtype : 'fieldset',
+								items : [  ]
+							}, {
+								xtype : 'fieldset',
+								items : [  ]
 							}, ]
 						};
 						// ////////////////CARD3////////////////
