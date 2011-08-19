@@ -24,7 +24,7 @@ Ext
 					requires : [ 'Ext.container.ButtonGroup',
 							'Ext.layout.container.Table', 'Ext.button.Split' ],
 					alias : 'widget.maintoolbarlist',
-
+					id:'maintoolbarlist',
 					initComponent : function() {
 						this.items = [
 								{
@@ -125,7 +125,8 @@ Ext
 																items : [
 																		{
 																			xtype : 'button',
-																			text : 'Button 1'
+																			text : 'Button 1',
+																			handler:function(){}
 																		},
 																		{
 																			xtype : 'button',
@@ -158,7 +159,8 @@ Ext
 																		},
 																		{
 																			xtype : 'button',
-																			text : 'View all patients'
+																			text : 'View all patients',
+																			handler: function(){Ext.getCmp('centertabpanel').setActiveTab('ViewAllPatients');}
 																		} ]
 															},
 															{

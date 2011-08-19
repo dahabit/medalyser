@@ -23,7 +23,7 @@ Ext
 
 			appFolder : 'app',
 
-			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History','Settings'],
+			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History','Settings','Patient'],
 			launch : function() {
 				var adminResource=Ext.create('MA.store.AdminResources');
 				Ext
@@ -52,17 +52,13 @@ Ext
 											},
 											{
 												region : 'center',
-												xtype : 'tabpanel', // TabPanel
-												// itself
-												// has no
-												// title
-												activeTab : 0, // First tab
-												// active by
-												// default
-												items : {
+												xtype : 'tabpanel', 
+												activeTab : 1,
+												id:'centertabpanel',
+												items : [{
 													title : 'Overview',
 													html : 'The first tab\'s content. Others may be added dynamically'
-												}
+												},{xtype:'ViewAllPatients'}]
 											} ]
 								});
 			}
