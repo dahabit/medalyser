@@ -46,6 +46,7 @@ else {
     $this->headScript()->prependFile('./javascript/extjs/ext.js');
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
+    
 }
 //add notification plugin
 $this->headScript()-> appendFile('./app/plugins/notification.js');
@@ -61,6 +62,14 @@ if ($this->extjstemplate == 1) {
 if ($this->extjstemplate == 2) {
     $this->headLink()->prependStylesheet(
     './javascript/extjs/resources/css/ext-all-access.css');
+}
+//add localization support to extjs
+//get current set local.
+//TODO:add local support to a method in a view helper.
+$xx=Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
+$xx=str_split($xx,2);
+if ($xx[0]!=='en') {
+$this->headScript()->appendFile('./javascript/extjs/locale/ext-lang-'.$xx[0].'.js');
 }
 $this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
 'PREPEND');

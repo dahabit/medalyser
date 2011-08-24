@@ -19,11 +19,6 @@
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-    
-    /**
-     * Default locale when no locale is set by user or user is not logged in.
-     */
-    const DEFAULT_LOCALE = 'en_us';
     /*
 	 * Access Configuration Parameters Globally Using Zend_Registry
 	 *Desc:With the configuration object now residing in a registry variable, you'll be able to retrieve it within
@@ -88,15 +83,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initTranslate ()
     {
+        $defaultLocale = Zend_Registry::get('globalsettings')->site->language;
         //In the case that no locale can be detected, automatically the locale de will be used. Otherwise, the detected locale will be used.
-        Zend_Locale::setDefault(self::DEFAULT_LOCALE);
+        Zend_Locale::setDefault($defaultLocale);
         if (Zend_Auth::getInstance()->hasIdentity()) {
             $userLocale = Zend_Auth::getInstance()->getIdentity()->language;
         }
         if (isset($userLocale)) {
             $locale = new Zend_Locale($userLocale);
         } else {
-            $locale = new Zend_Locale(self::DEFAULT_LOCALE);
+            $locale = new Zend_Locale($defaultLocale);
         }
         /**
          * Set up and load the translations (all of them!)
@@ -105,7 +101,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
          */
         $translate = new Zend_Translate('gettext', 
         APPLICATION_PATH . DIRECTORY_SEPARATOR . 'languages', $locale, 
-        array('scan' => Zend_Translate::LOCALE_FILENAME,
+        array('scan' => Zend_Translate::LOCALE_FILENAME, 
         'disableNotices' => Zend_Registry::get('config')->resources->translate->options->disableNotices, 
         'logUntranslated' => Zend_Registry::get('config')->resources->translate->options->logUntranslated));
         Zend_Registry::set('Zend_Locale', $locale);

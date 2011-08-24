@@ -21,30 +21,36 @@ class MFAN_Controller_Plugin_LocaleSelector extends Zend_Controller_Plugin_Abstr
 {
     public function preDispatch (Zend_Controller_Request_Abstract $request)
     {
-        $registry = Zend_Registry::getInstance();
-        // Get our translate object from registry.
-        $translate = $registry->get('Zend_Translate');
-        $currLocale = $translate->getLocale();
-        // Create Session block and save the locale
-        $session = new Zend_Session_Namespace('session');
-        $lang = $request->getParam('lang', '');
-        $newLocale = new Zend_Locale();
-        //get rid of getlocallist`s associative array and convert it to simple array so in_array() function could work.
-        foreach ($newLocale->getLocaleList() as $key => $value) {
-            $localeList[] = $key;
+        $lang = $request->getParam('lang');
+        if ($lang) {
+            $registry = Zend_Registry::getInstance();
+            // Get our translate object from registry.
+            $translate = $registry->get('Zend_Translate');
+            $currLocale = $translate->getLocale();
+            // Create Session block and save the locale
+            $session = new Zend_Session_Namespace('session');
+            $newLocale = new Zend_Locale();
+            // Get rid of getlocallist`s associative array and convert it to simple array so in_array() function could work.
+            foreach ($newLocale->getLocaleList() as $key => $value) {
+                $localeList[] = $key;
+            }
+            // Only assign user selected language if it exists in zend locales.
+            if (in_array($lang, $localeList)) {
+                $langLocale = $lang;
+                 // Do not through exceptions if url is like this and lang is empty:http://localhost/medalyser/public/account/login?
+            } elseif (! $lang) {
+                $langLocale = 'en_US';
+                 // Through an exception if wrong lang=xx_xx is submitted.
+            } else {
+                throw new Exception(_('Submitted locale code is invalid'));
+            }
+            $newLocale->setLocale($langLocale);
+            $registry->set('Zend_Locale', $newLocale);
+            $translate->setLocale($langLocale);
+            $session->lang = $langLocale;
+            // Save the modified translate back to registry
+            $registry->set('Zend_Translate', $translate);
         }
-        //Only assign user selected language if it exists in zend locales.
-        if (in_array($lang, $localeList)) {
-            $langLocale = $lang;
-        } else {
-            $langLocale = 'en_US';
-        }
-        $newLocale->setLocale($langLocale);
-        $registry->set('Zend_Locale', $newLocale);
-        $translate->setLocale($langLocale);
-        $session->lang = $langLocale;
-        // Save the modified translate back to registry
-        $registry->set('Zend_Translate', $translate);
     }
 }
 ?>
