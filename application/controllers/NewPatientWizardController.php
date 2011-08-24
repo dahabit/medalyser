@@ -21,7 +21,6 @@ class NewPatientWizardController extends Zend_Controller_Action
 {
     public function init ()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
         $this->em = $this->_helper->EntityManager();
          //$this->getRequest ()->setParam ( 'format', 'json' );
     }

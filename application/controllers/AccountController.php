@@ -217,7 +217,6 @@ class AccountController extends Zend_Controller_Action
     //admin settings edit page
     public function adminsettingseditAction ()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
         //check if the user is logged in.if so,go on with form processing
         if (Zend_Auth::getInstance()->hasIdentity()) {
             if ($this->getRequest()->isPost()) {
@@ -267,7 +266,6 @@ class AccountController extends Zend_Controller_Action
      */
     public function adminresourcesAction ()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
     }
 }
 

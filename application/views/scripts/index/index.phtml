@@ -66,10 +66,10 @@ if ($this->extjstemplate == 2) {
 //add localization support to extjs
 //get current set local.
 //TODO:add local support to a method in a view helper.
-$xx=Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
-$xx=str_split($xx,2);
-if ($xx[0]!=='en') {
-$this->headScript()->appendFile('./javascript/extjs/locale/ext-lang-'.$xx[0].'.js');
+$locale=Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
+$locale=str_split($locale,2);
+if ($locale[0]!=='en') {
+$this->headScript()->appendFile('./javascript/extjs/locale/ext-lang-'.$locale[0].'.js');
 }
 $this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
 'PREPEND');

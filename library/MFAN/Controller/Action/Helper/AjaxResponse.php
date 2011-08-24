@@ -21,6 +21,9 @@ class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_
 {
     public function direct ($success = TRUE, $message, $errors = array())
     {
+        require_once 'Zend/Controller/Action/HelperBroker.php';
+        Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->setNoRender(
+        true);
         if ($success == TRUE) {
             if (! $message) {
                 $message = 'Action was a Success.';
@@ -36,7 +39,8 @@ class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_
             ->getResponse()
             ->appendBody(Zend_Json::encode($form));
         //log exception to firebug
-        Zend_Registry::get('logger')->crit('Caught exception: ' . $errors);
+        Zend_Registry::get('logger')->crit(
+        'Caught exception: ' . $errors);
     }
     public function logFlushErrors ($e)
     {
