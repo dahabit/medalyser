@@ -25,7 +25,6 @@ class IndexController extends Zend_Controller_Action
     { // Make sure the user is logged-in
         $this->_helper->LoginRequired();
         $this->view->extjstemplate=Zend_Auth::getInstance()->getIdentity()->extjstemplate;
-        echo Zend_Auth::getInstance()->getIdentity()->extjstemplate;
     }
 }
 
