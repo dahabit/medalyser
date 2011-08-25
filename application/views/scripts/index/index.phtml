@@ -24,6 +24,13 @@
  * $this->view->serverUrl; #BaseURL (eg http://www.mydomain.com)
  *$this->view->url(); #Current path (eg. /browse/page/1 )
  */
+?>
+<!--<?php
+$figlet = new Zend_Text_Figlet(array('outputWidth'=>95));
+echo $figlet->render('MedAlyser');
+?>
+-->
+<?php
 $this->headMeta()
     ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
     ->appendHttpEquiv('Content-Language', 
@@ -46,12 +53,11 @@ else {
     $this->headScript()->prependFile('./javascript/extjs/ext.js');
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
-    
 }
 //add notification plugin
-$this->headScript()-> appendFile('./app/plugins/notification.js');
+$this->headScript()->appendFile('./app/plugins/notification.js');
 //add user set extjs theme css file
-if ($this->extjstemplate == 0 or !$this->extjstemplate ) {
+if ($this->extjstemplate == 0 or ! $this->extjstemplate) {
     $this->headLink()->prependStylesheet(
     './javascript/extjs/resources/css/ext-all.css');
 }
@@ -66,10 +72,11 @@ if ($this->extjstemplate == 2) {
 //add localization support to extjs
 //get current set local.
 //TODO:add local support to a method in a view helper.
-$locale=Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
-$locale=str_split($locale,2);
-if ($locale[0]!=='en') {
-$this->headScript()->appendFile('./javascript/extjs/locale/ext-lang-'.$locale[0].'.js');
+$locale = Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
+$locale = str_split($locale, 2);
+if ($locale[0] !== 'en') {
+    $this->headScript()->appendFile(
+    './javascript/extjs/locale/ext-lang-' . $locale[0] . '.js');
 }
 $this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
 'PREPEND');
@@ -112,6 +119,5 @@ Ext.onReady(function(){
 <p>You need to enable javascript to use <a
 	href="http://www.medalyser.com/" title="Medicine Analyser">MedAlyser</a></p>
 </noscript>
-
 </body>
 </html>
