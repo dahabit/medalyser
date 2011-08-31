@@ -19,18 +19,56 @@
  */
 class MFAN_Controller_Action_Helper_ProfilePhotoUploader extends Zend_Controller_Action_Helper_Abstract
 {
-    public function direct ($profileType = 'patient')
-    { //TODO:create a profile like this:images/patient/id/randomprofilename.jpg
+    private $fileName;
+    public function upload ($profileType = 'patient', $patientName)
+    {
+        //create folder stracture for the new patient
+        $structure = PUBLIC_PATH . '/documents/patients/' . $patientName .
+         '/images/profile/';
+        //only create folder structure if didnt exist
+        if (! file_exists($structure)) {
+            if (! mkdir($structure, 0755, true)) {
+                die('Failed to create folders...');
+            }
+        }
+        //FIXME:create a profile like this:images/patient/id/randomprofilename.jpg
+        //FIXME:data are not checked if are valid or not.
         //TODO: add validations and filtering and photo cropping
         $profilephoto = new Zend_File_Transfer_Adapter_Http();
-        $profilephoto->setDestination(
-        PUBLIC_PATH . '\images\\' . $profileType . '\profile');
+        // Set a file size with max 2mb and min 10kb
+        $profilephoto->addValidator('Size', false, 
+        array('min' => 10000, 'max' => 2100000)) //only allow one file to be uploaded
+            ->addValidator('Count', false, 1)
+            ->// Limit the extensions to graphics
+        addValidator('Extension', false, 'jpg,png,gif,jpeg,bmp');
         if ($profilephoto->receive()) {
-            $profilephotoname = $profilephoto->getFileName(null, FALSE);
+            if (!$profilephoto-> isValid($profilephoto->getFileName(null))) {
+                die($profilephoto-> getMessages());
+            }
+            $profilePhotoName = $profilephoto->getFileName(null);
+            $ext = $this->_findexts($profilephoto->getFileName(null));
+            $this->fileName = $profileType . time() . mt_rand(1000, 9999) . "." .
+             $ext;
+            // Rename uploaded file using Zend Framework
+            $filterFileRename = new Zend_Filter_File_Rename(
+            array('target' => $structure . $this->fileName));
+            $filterFileRename->filter($profilePhotoName);
         } else {
-            $profilephotoname = null;
+            $profilePhotoName = null;
             Zend_Registry::get('logger')->crit($profilephoto->getMessages());
         }
+    }
+    public function getFileName ()
+    {
+        return $this->fileName;
+    }
+    /**Find extension of a file 
+     */
+    protected function _findexts ($name)
+    {
+        $path_info = pathinfo($name);
+        $exts = $path_info['extension'];
+        return $exts;
     }
 }
 ?>
