@@ -28,20 +28,6 @@ class NewPatientWizardController extends Zend_Controller_Action
     }
     public function indexAction ()
     {}
-    public function getcountriesAction ()
-    {
-        $zendcountries = Zend_Locale::getTranslationList('Territory', null, 2);
-        $countrytest = array(array('iso' => 'us', 'name' => 'united states'));
-        $countries = array(array());
-        for ($i = 0, $size = count($zendcountries); $i < $size; $i ++) {
-            $iso = key($zendcountries);
-            $country = $zendcountries[$iso];
-            $countries[$i]['iso'] = $iso;
-            $countries[$i]['name'] = $country;
-            next($zendcountries);
-        }
-        $this->_response->appendBody(Zend_Json::encode($countries));
-    }
     public function getlanguagesAction ()
     {
         $languages = Zend_Locale::getLanguageTranslationList();
