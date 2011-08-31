@@ -26,7 +26,7 @@
  */
 ?>
 <!--<?php
-$figlet = new Zend_Text_Figlet(array('outputWidth'=>95));
+$figlet = new Zend_Text_Figlet(array('outputWidth' => 95));
 echo $figlet->render('MedAlyser');
 ?>
 -->
@@ -45,29 +45,31 @@ $this->headMeta()->appendName('generator',
 $this->headTitle(Zend_Registry::get('globalsettings')->site->name);
 // Initialize Extjs on development ENV
 if (APPLICATION_ENV == 'development') {
-    $this->headScript()->prependFile('./javascript/extjs/ext-debug.js');
+    $this->headScript()->prependFile('./assets/javascript/extjs/ext-debug.js');
     // Load medalyser js files
     $this->headScript()->appendFile('./app.js');
 } // Initialize Extjs on production ENV
 else {
-    $this->headScript()->prependFile('./javascript/extjs/ext.js');
+    $this->headScript()->prependFile('./assets/javascript/extjs/ext.js');
     // Load minimized build of medalyser
     $this->headScript()->appendFile('./app-all.js');
 }
 //add notification plugin
-$this->headScript()->appendFile('./app/plugins/notification.js');
+$this->headScript()->appendFile('./app/plugins/Notification.js');
+//add clock plugin
+$this->headScript()->appendFile('./app/plugins/Clock.js');
 //add user set extjs theme css file
 if ($this->extjstemplate == 0 or ! $this->extjstemplate) {
     $this->headLink()->prependStylesheet(
-    './javascript/extjs/resources/css/ext-all.css');
+    './assets/javascript/extjs/resources/css/ext-all.css');
 }
 if ($this->extjstemplate == 1) {
     $this->headLink()->prependStylesheet(
-    './javascript/extjs/resources/css/ext-all-gray.css');
+    './assets/javascript/extjs/resources/css/ext-all-gray.css');
 }
 if ($this->extjstemplate == 2) {
     $this->headLink()->prependStylesheet(
-    './javascript/extjs/resources/css/ext-all-access.css');
+    './assets/javascript/extjs/resources/css/ext-all-access.css');
 }
 //add localization support to extjs
 //get current set local.
@@ -76,11 +78,11 @@ $locale = Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
 $locale = str_split($locale, 2);
 if ($locale[0] !== 'en') {
     $this->headScript()->appendFile(
-    './javascript/extjs/locale/ext-lang-' . $locale[0] . '.js');
+    './assets/javascript/extjs/locale/ext-lang-' . $locale[0] . '.js');
 }
-$this->headLink(array('rel' => 'favicon', 'href' => './icons/favicon.ico'), 
-'PREPEND');
-$this->headLink()->appendStylesheet('./icons/icons.css');
+$this->headLink(
+array('rel' => 'favicon', 'href' => './assets/icons/favicon.ico'), 'PREPEND');
+$this->headLink()->appendStylesheet('./assets/icons/icons.css');
 // Output aggregated headMeta css & js files
 echo $this->headMeta();
 echo $this->headTitle();
@@ -97,8 +99,8 @@ echo $this->headScript();
 <div class="x-loading-panel-mask-indicator"
 	style="border: 1px solid #c1d1d6; color: #666; background: white; padding: 10px; margin: 0; padding-left: 20px; height: 200px; text-align: left;">
 <img class="x-loading-panel-logo"
-	style="display: block; margin-bottom: 15px;" src="icons/start.png" /> <img
-	src="icons/loading.gif"
+	style="display: block; margin-bottom: 15px;" src="assets/icons/start.png" /> <img
+	src="assets/icons/loading.gif"
 	style="width: 16px; height: 16px; vertical-align: middle" />&#160; <span
 	id="load-status">Initializing System ...</span>
 <div style="font-size: 10px; font-weight: normal; margin-top: 15px;">Copyright
@@ -119,5 +121,6 @@ Ext.onReady(function(){
 <p>You need to enable javascript to use <a
 	href="http://www.medalyser.com/" title="Medicine Analyser">MedAlyser</a></p>
 </noscript>
+
 </body>
 </html>
