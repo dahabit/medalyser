@@ -22,7 +22,9 @@ class NewPatientWizardController extends Zend_Controller_Action
     public function init ()
     {
         $this->em = $this->_helper->EntityManager();
-         //$this->getRequest ()->setParam ( 'format', 'json' );
+        // Make sure the user is logged-in
+        $this->_helper->LoginRequired();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
     public function indexAction ()
     {}
@@ -60,7 +62,10 @@ class NewPatientWizardController extends Zend_Controller_Action
             if ($form->isValid($this->_request->getPost())) {
                 Zend_Registry::get('logger')->debug('validation was a success');
                 //process $profilephoto
-                $this->_helper->ProfilePhotoUploader('patient');
+                $ProfilePhotoUploader = new MFAN_Controller_Action_Helper_ProfilePhotoUploader();
+                $ProfilePhotoUploader->upload('patient', 
+                $this->_request->getParam('firstname') . $this->_request->getParam(
+                'middlename') . $this->_request->getParam('lastname'));
                 // Does an account associated with this email already exist?
                 $primaryemail = $this->_request->getParam(
                 'primaryemail');
@@ -80,6 +85,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $account->birthdate = new DateTime(
                     $this->_request->getParam('birthdate'));
                     $account->created = new DateTime("now");
+                    $account->profilephoto = $ProfilePhotoUploader->getFileName();
                     /////////////////////end of PAGE 1/////////////////////
                     /////////////////////PAGE 2/////////////////////
                     // Addresses
@@ -129,7 +135,8 @@ class NewPatientWizardController extends Zend_Controller_Action
                         $this->em->flush();
                         $form = array('success' => true, 
                         'msg' => 'New patient successfully created');
-                        $this->_response->appendBody(Zend_Json::encode($form));
+                        $this->em = $this->_helper->AjaxResponse('success', 
+                        'New patient successfully created');
                     } catch (Exception $e) {
                         $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
                         $e->getMessage());

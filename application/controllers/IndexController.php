@@ -20,7 +20,7 @@
 class IndexController extends Zend_Controller_Action
 {
     public function init ()
-    {}
+    {$this->_helper->viewRenderer->setNoRender(true);}
     public function indexAction ()
     { // Make sure the user is logged-in
         $this->_helper->LoginRequired();

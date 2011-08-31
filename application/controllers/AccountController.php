@@ -29,6 +29,11 @@ class AccountController extends Zend_Controller_Action
     {
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->em = $this->_helper->EntityManager();
+        //check if the user is logged in.if not so,redirect the user to login
+        if (! Zend_Auth::getInstance()->hasIdentity() and
+         $this->getRequest()->getActionName() !== 'login') {
+            return $this->_helper->redirector('login', 'account');
+        }
     }
     public function indexAction ()
     {
@@ -265,7 +270,28 @@ class AccountController extends Zend_Controller_Action
      * Generate JSON type for AdminResources javascript store
      */
     public function adminresourcesAction ()
-    {
+    { //disable view
+        $this->_helper->viewRenderer->setNoRender(true);
+        //query currently logged in admin`s table
+        $qb = $this->em->createQueryBuilder();
+        $qb->add('select', 'a')
+            ->add('from', 'Entities\Adminprofile a')
+            ->add('where', 'a.userid = :userid')
+            ->setParameter('userid', 
+        Zend_Auth::getInstance()->getIdentity()->userid);
+        $adminSettings = $qb->getQuery()->getResult(2);
+        //unset unnecessary and secret admin table columns.
+        unset($adminSettings[0]['password']);
+        unset($adminSettings[0]['recovery']);
+        unset($adminSettings[0]['confirmed']);
+        unset($adminSettings[0]['created']);
+        unset($adminSettings[0]['updated']);
+        unset($adminSettings[0]['id']);
+        //push $adminSettings into $account array
+        foreach ($adminSettings as $key => $value) {
+            $account['adminsettings'] = $value;
+        }
+        $this->getResponse()->appendBody(Zend_Json::encode($account));
     }
 }
 
