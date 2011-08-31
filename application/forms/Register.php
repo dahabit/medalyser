@@ -84,4 +84,4 @@ class Application_Form_Register extends Zend_Form
         array($username, $zipCode, $email, $password, $confirmPswd, 
         $profilephoto, $submit));
 }
-    
+}

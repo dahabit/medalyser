@@ -1,16 +1,17 @@
 /**
-*THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * @version
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
@@ -24,7 +25,25 @@ Ext
 					requires : [ 'Ext.container.ButtonGroup',
 							'Ext.layout.container.Table', 'Ext.button.Split' ],
 					alias : 'widget.maintoolbarlist',
-					id:'maintoolbarlist',
+					id : 'maintoolbarlist',
+					currTime : function() {
+						var date=new Date();
+						var date=Ext.Date.format(date, 'l, F j, Y h:i:s');
+						return date;
+					},
+					realTime:function(){
+						var task = {
+							    run: function(){
+							    	var date=new Date();
+									var date=Ext.Date.format(date, 'l, F j, Y h:i:s');
+							    	Ext.fly('clock').update(date);
+							    	
+							    },
+							    interval: 1000 //1 second
+							};
+							Ext.TaskManager.start(task);
+						
+					},
 					initComponent : function() {
 						this.items = [
 								{
@@ -46,7 +65,8 @@ Ext
 														handler : function() {
 															Ext
 																	.create(
-																			'MA.view.settings.Edit').show();
+																			'MA.view.settings.Edit')
+																	.show();
 														}
 													},
 													{
@@ -126,7 +146,8 @@ Ext
 																		{
 																			xtype : 'button',
 																			text : 'Button 1',
-																			handler:function(){}
+																			handler : function() {
+																			}
 																		},
 																		{
 																			xtype : 'button',
@@ -160,7 +181,13 @@ Ext
 																		{
 																			xtype : 'button',
 																			text : 'View all patients',
-																			handler: function(){Ext.getCmp('centertabpanel').setActiveTab('ViewAllPatients');}
+																			handler : function() {
+																				Ext
+																						.getCmp(
+																								'centertabpanel')
+																						.setActiveTab(
+																								'ViewAllPatients');
+																			}
 																		} ]
 															},
 															{
@@ -212,10 +239,42 @@ Ext
 																		} ]
 															} ]
 												}
+											} ]
+								},
+								{
+									xtype : 'container',
+									height : 100,
+									width : 500,
+									layout : {
+										align : 'stretch',
+										type : 'vbox'
+									},
+									items : [
+											{
+												xtype : 'container',
+												height : 100,
+												width : 500,
+												layout : {
+													align : 'stretch',
+													type : 'hbox'
+												},
+												flex : 1,
+												items : [
+														{
+															xtype : 'container',
+															width : 250
+														},
+														{
+															xtype : 'container',
+															html : '<div style="float:left;margin-right:10px"><img  id="pic" src="./images/admin/profile/6939.jpg" width="30" height="40" /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome Dr.Kate smith</h5></div><div  style="color:#333" id="clock">'+this.realTime()+'</div>',
+															width : 250
+														} ]
 											}, {
-												xtype : 'panel',
-												title : 'Tab 3',
-												headerAsText : false
+												xtype : 'container',
+												height : 120,
+												html : '',
+												width : 400,
+												flex : 1
 											} ]
 								} ];
 						this.callParent(arguments);

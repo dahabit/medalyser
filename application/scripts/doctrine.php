@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is responsible for making both the application Entity Manager 
- * (/library/WJG/Resource/Entitymanager.php) and the application configuration
+ * (/library/MFAN/Resource/Entitymanager.php) and the application configuration
  * file (/application/configs/application.ini) available to the Doctrine
  * CLI. It also adds several useful Doctrine CL commands to the menu. I've opted to
  * omit several of them. See the Doctrine documentation for a complete list.
