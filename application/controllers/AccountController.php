@@ -272,14 +272,9 @@ class AccountController extends Zend_Controller_Action
     public function adminresourcesAction ()
     { //disable view
         $this->_helper->viewRenderer->setNoRender(true);
-        //query currently logged in admin`s table
-        $qb = $this->em->createQueryBuilder();
-        $qb->add('select', 'a')
-            ->add('from', 'Entities\Adminprofile a')
-            ->add('where', 'a.userid = :userid')
-            ->setParameter('userid', 
+        //select currently logged in admin`s table data
+        $adminSettings = $this->em->getRepository('Entities\Adminprofile')->findByUserid(
         Zend_Auth::getInstance()->getIdentity()->userid);
-        $adminSettings = $qb->getQuery()->getResult(2);
         //unset unnecessary and secret admin table columns.
         unset($adminSettings[0]['password']);
         unset($adminSettings[0]['recovery']);

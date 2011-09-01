@@ -1,9 +1,6 @@
 <?php
-
 namespace Repositories;
-
 use Doctrine\ORM\EntityRepository;
-
 /**
  * AdminprofileRepository
  *
@@ -12,4 +9,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class AdminprofileRepository extends EntityRepository
 {
+    //find a user by id and return as array
+    public function findByUserid ($param)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->add('select', 'a')
+            ->add('from', 'Entities\Adminprofile a')
+            ->add('where', 'a.userid = :userid')
+            ->setParameter('userid', $param);
+        return $qb->getQuery()->getResult(2);
+    }
 }
