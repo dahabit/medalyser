@@ -20,7 +20,7 @@
 namespace Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 /** 
- * @Entity 
+ * @Entity (repositoryClass="Repositories\PatientaddressRepository")
  * @Table(name="ma_patient_address") 
  */
 class Patientaddress
