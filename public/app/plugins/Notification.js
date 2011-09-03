@@ -1,111 +1,341 @@
-/**
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * @author Mehdi Fanai
- * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
- * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link http://www.MedAlyser.com
+/* 
+ *    Notification / Toastwindow extension for Ext JS 4.x
+ *
+ *    Copyright (c) 2011 Eirik Lorentsen (http://www.eirik.net/)
+ *
+ *    Examples and documentation at: http://www.eirik.net/Ext/ux/window/Notification.html
+ *
+ *    Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
+ *    and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *
+ *    Version: 1.1
+ *    Last changed date: 2011-09-01
  */
-// TODO: add correct licensing fromextjs forum
-Ext.define('Ext.ux.Notification', {
-	extend : 'Ext.window.Window',
-	initComponent : function() {
-		NotificationMgr = {
-			positions : []
-		};
-		Ext.apply(this, {
-			iconCls : this.iconCls || 'icon-information',
-			width : 200,
-			autoHeight : true,
-			closable : true,
-			plain : false,
-			draggable : false,
-			bodyStyle : 'text-align:left;padding:10px;',
-			resizable : false,
-			shadow : false
-		});
-		if (this.autoDestroy) {
-			this.task = new Ext.util.DelayedTask(this.close, this);
-		} else {
-			this.closable = true;
-		}
-		Ext.ux.Notification.superclass.initComponent.call(this);
-	}
 
-	,
-	setMessage : function(msg) {
-		this.body.update(msg);
-	}
+Ext.define('Ext.ux.window.Notification', {
+    extend: 'Ext.window.Window',
+    alias: 'widget.uxNotification',
 
-	,
-	setTitle : function(title, iconCls) {
-		Ext.ux.Notification.superclass.setTitle.call(this, title, iconCls
-				|| this.iconCls);
-	}
+    title: 'Notification',
 
-	,
-	onRender : function(ct, position) {
-		Ext.ux.Notification.superclass.onRender.call(this, ct, position);
-	}
+    cls: 'notification-window',
+    autoDestroy: true,
+    autoHeight: true,
+    plain: false,
+    draggable: false,
+    shadow: false,
+    focus: Ext.emptyFn,
 
-	,
-	onDestroy : function() {
-		NotificationMgr.positions.remove(this.pos);
-		Notification.superclass.onDestroy.call(this);
-	}
+    // For alignment and to store array of rendered notifications. Defaults to document if not set.
+    manager: null,
 
-	,
-	afterShow : function() {
-		Ext.ux.Notification.superclass.afterShow.call(this);
-		this.on('move', function() {
-			NotificationMgr.positions.remove(this.pos);
-			if (this.autoDestroy) {
-				this.task.cancel();
-			}
-		}, this);
-		if (this.autoDestroy) {
-			this.task.delay(this.hideDelay || 5000);
-		}
-	}
+    useXAxis: false,
 
-	,
-	animShow : function() {
-		this.pos = 0;
-		while (NotificationMgr.positions.indexOf(this.pos) > -1) {
-			if (this.animateFrom === 'top') {
-				this.pos--;
-			} else {
-				this.pos++;
-			}
-		}
-		NotificationMgr.positions.push(this.pos);
-		this.setSize(200, 100);
-		this.el.alignTo(this.animateTarget || document,
-				(this.animateFrom === 'top' ? 'tr-br' : 'br-tr'), [ -1,
-						-1 - ((this.getSize().height + 10) * this.pos) ]);
-		this.el.slideIn((this.animateFrom === 'top' ? 't' : 'b'), {
-			duration : .7,
-			callback : this.afterShow,
-			scope : this
-		});
-	}
+    // Options: br, bl, tr, tl
+    corner: 'br',
 
-	,
-	animHide : function() {
-		NotificationMgr.positions.remove(this.pos);
-		this.el.ghost((this.animateFrom === 'top' ? 't' : 'b'), {
-			duration : 1,
-			remove : true
-		});
-	}
+    // Pixels between each notification
+    spacing: 6,
+
+    // Pixels from the managers borders to start the first notification
+    paddingX: 30,
+    paddingY: 10,
+
+    slideInAnimation: 'easeIn',
+    slideDownAnimation: 'bounceOut',
+    autoDestroyDelay: 7000,
+    slideInDelay: 1500,
+    slideDownDelay: 1000,
+    fadeDelay: 500,
+
+    // Private. Do not override!
+    underDestruction: false,
+    readyToDestroy: false,
+    // Caching position coordinate to avoid windows overlapping when fading in simultaneously
+    xPos: 0,
+    yPos: 0,
+
+    statics: {
+        defaultManager: {
+            notifications: [],
+            el: null
+        }
+    },
+
+    initComponent: function() {
+        var me = this;
+
+        me.callParent(arguments);
+
+        switch (me.corner) {
+            case 'br':
+                me.paddingFactorX = -1;
+                me.paddingFactorY = -1;
+                me.siblingAlignment = "br-br";
+                if (me.useXAxis) {
+                    me.managerAlignment = "bl-br";
+                } else {
+                    me.managerAlignment = "tr-br";
+                }
+                break;
+            case 'bl':
+                me.paddingFactorX = 1;
+                me.paddingFactorY = -1;
+                me.siblingAlignment = "bl-bl";
+                if (me.useXAxis) {
+                    me.managerAlignment = "br-bl";
+                } else {
+                    me.managerAlignment = "tl-bl";
+                }
+                break;
+            case 'tr':
+                me.paddingFactorX = -1;
+                me.paddingFactorY = 1;
+                me.siblingAlignment = "tr-tr";
+                if (me.useXAxis) {
+                    me.managerAlignment = "tl-tr";
+                } else {
+                    me.managerAlignment = "br-tr";
+                }
+                break;
+            case 'tl':
+                me.paddingFactorX = 1;
+                me.paddingFactorY = 1;
+                me.siblingAlignment = "tl-tl";
+                if (me.useXAxis) {
+                    me.managerAlignment = "tr-tl";
+                } else {
+                    me.managerAlignment = "bl-tl";
+                }
+                break;
+        }
+
+        if (typeof me.manager == 'string') {
+            me.manager = Ext.getCmp(me.manager);
+        }
+
+        // If no manager is provided or found then the static object is used.
+        // With the el property pointing to the body document.
+        if (!me.manager) {
+            me.manager = me.statics().defaultManager;
+
+            if (!me.manager.el) {
+                me.manager.el = Ext.getBody();
+            }
+        }
+        
+        if (typeof me.manager.notifications == 'undefined') {
+            me.manager.notifications = [];
+        }
+
+        if (me.autoDestroy) {
+            me.task = new Ext.util.DelayedTask(me.doDestroy, me);
+        } else {
+            me.closable = true;
+        }
+    },
+
+    onRender: function() {
+        var me = this;
+
+            me.callParent(arguments);
+
+        if (me.body && me.body.dom) {
+            Ext.fly(me.body.dom).on('click', me.cancelAutoDestroy, me);
+        }
+
+        if (me.autoDestroy) {
+             me.task.delay(me.autoDestroyDelay);
+        }
+    },
+
+    cancelAutoDestroy: function() {
+        var me = this;
+
+        me.addClass('notification-fixed');
+        if (me.autoDestroy) {
+            me.task.cancel();
+            me.autoDestroy = false;
+        }
+    },
+
+    getXposAlignedToManager: function () {
+        var me = this;
+
+        var xPos = 0;
+
+        if (me.corner == 'br' || me.corner == 'tr') {
+            xPos += me.manager.el.getRight();
+            xPos -= (me.el.getWidth() + me.paddingX);
+        } else {
+            xPos += me.manager.el.getLeft();
+            xPos += me.paddingX;
+        }
+
+        return xPos;
+    },
+
+    getYposAlignedToManager: function () {
+        var me = this;
+
+        var yPos = 0;
+
+        if (me.corner == 'br' || me.corner == 'bl') {
+            yPos += me.manager.el.getBottom();
+            yPos -= (me.el.getHeight() + me.paddingY);
+        } else {
+            yPos += me.manager.el.getTop();
+            yPos += me.paddingY;
+        }
+
+        return yPos;
+    },
+
+    getXposAlignedToSibling: function (sibling) {
+        var me = this;
+
+        if (me.useXAxis) {
+            if (me.corner == 'tl' || me.corner == 'bl') {
+                // Using sibling's width when adding
+                return (sibling.xPos + sibling.el.getWidth() + sibling.spacing);
+            } else {
+                // Using own width when subtracting
+                return (sibling.xPos - me.el.getWidth() - me.spacing);
+            }
+        } else {
+            return me.el.getLeft();
+        }
+
+    },
+
+    getYposAlignedToSibling: function (sibling) {
+        var me = this;
+
+        if (me.useXAxis) {
+            return me.el.getTop();
+        } else {
+            if (me.corner == 'tr' || me.corner == 'tl') {
+                // Using sibling's width when adding
+                return (sibling.yPos + sibling.el.getHeight() + sibling.spacing);                
+            } else {
+                // Using own width when subtracting
+                return (sibling.yPos - me.el.getHeight() - sibling.spacing);
+            }
+        }
+    },
+
+    beforeShow: function () {
+        var me = this;
+
+        if (me.manager.notifications.length) {
+            me.el.alignTo(me.manager.notifications[me.manager.notifications.length - 1].el, me.siblingAlignment, [0, 0]);
+            me.xPos = me.getXposAlignedToSibling(me.manager.notifications[me.manager.notifications.length - 1]);
+            me.yPos = me.getYposAlignedToSibling(me.manager.notifications[me.manager.notifications.length - 1]);
+        } else {
+            me.el.alignTo(me.manager.el, me.managerAlignment, [(me.paddingX * me.paddingFactorX), (me.paddingY * me.paddingFactorY)]);
+            me.xPos = me.getXposAlignedToManager();
+            me.yPos = me.getYposAlignedToManager();
+        }
+
+        Ext.Array.include(me.manager.notifications, me);
+
+        me.el.animate({
+            to: {
+                x: me.xPos,
+                y: me.yPos
+            },
+            easing: me.slideInAnimation,
+            duration: me.slideInDelay,
+            dynamic: true
+        });
+
+    },
+
+    /* Not allowing notifications to be destroyed without passing through doDestroy() first.
+       This avoids notifications being destroyed while animating, which would cause framework errors. */
+    listeners: {
+        'beforedestroy': function (me, eOpts) {
+            if (!me.readyToDestroy) {
+                return false;
+            }
+        },
+        'beforehide': function (me, eOpts) {
+            if (!me.readyToDestroy) {
+                if (!me.underDestruction) {
+                    me.doDestroy();
+                }
+                return false;
+            }
+        }
+    },
+
+    doDestroy: function () {
+        var me = this;
+
+        me.underDestruction = true;
+
+        me.cancelAutoDestroy();
+        me.stopAnimation();
+
+        me.el.animate({
+            to: {
+                opacity: 0
+            },
+            easing: 'easeIn',
+            duration: me.fadeDelay,
+            dynamic: true,
+            listeners: {
+                afteranimate: function () {
+
+                    var index = Ext.Array.indexOf(me.manager.notifications, me);
+                    if (index != -1) {
+                        Ext.Array.erase(me.manager.notifications, index, 1);
+
+                        // Slide "down" all notifications "above" the destroyed one
+                        for (;index < me.manager.notifications.length; index++) {
+                            me.manager.notifications[index].slideDown();
+                        }
+                    }
+                    me.readyToDestroy = true;
+                    me.destroy();
+                }
+            }
+        });
+
+    },
+
+    slideDown: function () {
+        var me = this;
+
+        var index = Ext.Array.indexOf(me.manager.notifications, me)
+
+        // Not animating the element if it already started to destroy itself
+        if (!me.underDestruction && me.el) {
+
+            if (index) {
+                me.xPos = me.getXposAlignedToSibling(me.manager.notifications[index - 1]);
+                me.yPos = me.getYposAlignedToSibling(me.manager.notifications[index - 1]);
+            } else {
+                me.xPos = me.getXposAlignedToManager();
+                me.yPos = me.getYposAlignedToManager();
+            }
+
+            me.el.animate({
+                to: {
+                    x: me.xPos,
+                    y: me.yPos
+                },
+                easing: me.slideDownAnimation,
+                duration: me.slideDownDelay,
+                dynamic: true
+            });
+        }
+    }
+
 });
+
+/*    Changelog:
+ *
+ *    2011-09-01 - 1.1: Bugfix. Array.indexOf not universally implemented, causing errors in IE<=8. Replaced with Ext.Array.indexOf.
+ *
+ */ 
