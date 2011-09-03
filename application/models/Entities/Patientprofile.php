@@ -30,6 +30,8 @@ class Patientprofile
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
+    /** @Column(type="integer", length=10) */
+    private $userid;
     /** @Column(type="string", length=255) */
     private $firstname;
     /** @Column(type="string", length=255, nullable=true) */

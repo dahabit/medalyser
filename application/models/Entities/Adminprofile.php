@@ -30,7 +30,7 @@ class Adminprofile
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @Column(type="integer", length=10) */
+    /** @Column(type="integer", length=9) */
     private $userid;
     /** @Column(type="string", length=32) */
     private $primaryemail;

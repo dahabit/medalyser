@@ -70,6 +70,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                     //convert date and time to object so doctrine doesn't echo errors
                     $account->birthdate = new DateTime(
                     $this->_request->getParam('birthdate'));
+                    $account->userid = $this->userId;
                     $account->created = new DateTime("now");
                     $account->profilephoto = $ProfilePhotoUploader->getFileName();
                     /////////////////////end of PAGE 1/////////////////////
@@ -150,6 +151,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                 if (! $this->em->getRepository(
                 'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
                     $finished = true;
+                
                 
                     // ...we are finished
    endif;

@@ -35,12 +35,14 @@ class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_
         }
         $form = array('success' => $success, 'msg' => $message, 
         'errors' => $errors);
-        $this->getFrontController()
-            ->getResponse()
-            ->appendBody(Zend_Json::encode($form));
         //log exception to firebug
         Zend_Registry::get('logger')->crit(
         'Caught exception: ' . $errors);
+        $this->getFrontController()
+            ->getResponse()
+            ->appendBody(Zend_Json::encode($form));
+            //FIXME: send response to the client and stop executing the rest of the code without using die command
+            die();
     }
     public function logFlushErrors ($e)
     {
