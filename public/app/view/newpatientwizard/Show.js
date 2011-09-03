@@ -68,12 +68,13 @@ Ext
 										'card-wizard-panel').getForm();
 								// TODO:validation is not working
 								// correctly.rejects valid file types.
-/*								if (!validateFileExtension(Ext.getDom('newPic').value)) {
-									Ext.MessageBox
-											.alert('Change Picture',
-													'Only Photos with JPG GIF or PNG extension are supported.');
-									return;
-								}*/
+								/*
+								 * if
+								 * (!validateFileExtension(Ext.getDom('newPic').value)) {
+								 * Ext.MessageBox .alert('Change Picture', 'Only
+								 * Photos with JPG GIF or PNG extension are
+								 * supported.'); return; }
+								 */
 								wizardPanel
 										.submit({
 											url : 'index.php/newpatientwizard/submitform',
@@ -83,17 +84,21 @@ Ext
 											// waitMsg : 'Saving data',
 											success : function(form, action) {
 												// Ext.getCmp('card-wizard-panel').el.unmask();
-												var win = new Ext.ux.Notification(Ext.apply({
-											         //animateTarget: 'maintoolbarlist',
-											        // animateFrom: this.getTaskbarPosition(),
-											         autoDestroy: true,
-											         hideDelay: 2000,
-											         html: 'Patient data saved to the database successfully.',
-											         title: 'Success'
-											      }
-												//, config
-											      ));
-											      win.show();
+												var win = new Ext.ux.Notification(
+														Ext
+																.apply({
+																	// animateTarget:
+																	// 'maintoolbarlist',
+																	// animateFrom:
+																	// this.getTaskbarPosition(),
+																	autoDestroy : true,
+																	hideDelay : 2000,
+																	html : 'Patient data saved to the database successfully.',
+																	title : 'Success'
+																}
+																// , config
+																));
+												win.show();
 												Ext.getCmp(
 														'newpatientwizardshow')
 														.destroy();
@@ -201,16 +206,27 @@ Ext
 							msgTarget : 'under',
 							allowBlank : true
 						};
+						var card_0_userpass_userid = {
+							xtype : 'numberfield',
+							fieldLabel : 'Patient Code',
+							// Remove spinner buttons, and arrow key and mouse
+							// wheel listeners
+							hideTrigger : true,
+							keyNavEnabled : false,
+							mouseWheelEnabled : false,
+							allowBlank : true,
+							maxValue : 999999999,
+							minValue : 100000000,
+							emptyText : 'Leave empty'
+						};
 						var card_0_userpass_name = {
 							xtype : 'fieldcontainer',
 							layout : {
-								type : 'hbox',
-								defaultMargins : {
-									top : 0,
-									right : 5,
-									bottom : 0,
-									left : 0
-								}
+								type : 'hbox'
+							/*
+							 * ,defaultMargins : { top : 0, right : 5, bottom :
+							 * 0, left : 0 }
+							 */
 							},
 							fieldLabel : 'Name',
 							items : [ {
@@ -218,7 +234,7 @@ Ext
 								flex : 1,
 								name : 'firstname',
 								emptyText : 'First',
-								msgTarget : 'under',
+								msgTarget : 'side',
 								allowBlank : false
 							}, {
 								xtype : 'textfield',
@@ -229,7 +245,7 @@ Ext
 								xtype : 'textfield',
 								flex : 1,
 								name : 'lastname',
-								msgTarget : 'under',
+								msgTarget : 'side',
 								emptyText : 'Last',
 								allowBlank : false
 							} ]
@@ -240,8 +256,24 @@ Ext
 							defaults : {
 								allowBlank : false
 							},
-							items : [ card_0_userpass_name,
-									card_0_userpass_email ]
+							items : [ card_0_userpass_name, {
+								xtype : 'container',
+								layout : {
+									align : 'spaced',
+									type : 'hbox'
+								},
+								items : [ {
+									xtype : 'container',
+									flex : 1,
+									items : [ card_0_userpass_email ]
+								}, {
+									xtype : 'container',
+									flex : 1,
+									items : [ card_0_userpass_userid ]
+								} ]
+							},
+
+							]
 						};
 						var card_0_sex = {
 							xtype : 'radiogroup',
@@ -324,51 +356,32 @@ Ext
 							id : 'card-0',
 							html : '<h1>Welcome to the New Patient Wizard!</h1><p>Step 1 of 4</p><p>Please click the "Next" button to continue...</p>',
 							title : 'Step 1',
+							layout : 'auto',
 							items : [
 									{
 										xtype : 'fieldset',
-										defaults : {
-											anchor : '100%',
-											labelStyle : 'padding-left:4px;'
-										},
 										title : 'Primary Information',
 										items : [ {
-											layout : 'column',
-											border : false,
+											xtype : 'container',
+											layout : 'hbox',
 											items : [
 													{
-														columnWidth : '.5',
-														border : false,
-														items : [ {
-															layout : 'anchor',
-															border : false,
-															defaults : {
-																anchor : '65%',
-																labelStyle : 'padding-left:4px;'
-															},
-															items : [
-																	card_0_birthdate,
-																	card_0_sex,
-																	card_0_marital_status,
-																	card_0_language,
-																	card_0_race ]
-														} ]
+														xtype : 'container',
+														flex : 1,
+														items : [
+																card_0_birthdate,
+																card_0_sex,
+																card_0_marital_status,
+																card_0_language,
+																card_0_race ]
 													},
 													{
-														columnWidth : '.5',
-														border : false,
-														items : [ {
-															layout : 'anchor',
-															border : false,
-															defaults : {
-																anchor : '65%',
-																labelStyle : 'padding-left:4px;'
-															},
-															items : [
-																	card_0_photo,
-																	card_0_socialsecnumber,
-																	card_0_primary_care_doctor ]
-														} ]
+														xtype : 'container',
+														flex : 1,
+														items : [
+																card_0_photo,
+																card_0_socialsecnumber,
+																card_0_primary_care_doctor ]
 													} ]
 										} ]
 									}, {
@@ -686,81 +699,77 @@ Ext
 									} ]
 						};
 						// ////////////////CARD2////////////////
-						var card_2_billing={
-							    xtype: 'container',
-							    height:290,
-							    layout: {
-							        align: 'stretch',
-							        type: 'hbox'
-							    },
-							    items: [
-							        {
-							            xtype: 'fieldset',
-							            flex: 1,
-							            items: [{
-											xtype : 'combo',
-											name : 'insurancecompany',
-											fieldLabel : 'Insurance Company',
-											store : 'MarriageStatus',
-											queryMode : 'local',
-											displayField : 'name',
-											valueField : 'id',
-											typeAhead : true,
-											forceSelection : true
-										}, {
-											xtype : 'textfield',
-											fieldLabel : 'Insured Code',
-											name : 'insuredcode'
-										}, {
-											xtype : 'combo',
-											name : 'insuredrel',
-											fieldLabel : 'Insured relationship',
-											store : 'MarriageStatus',
-											queryMode : 'local',
-											displayField : 'name',
-											valueField : 'id',
-											typeAhead : true,
-											forceSelection : true
-										}, {
-											xtype : 'textfield',
-											fieldLabel : 'Program Name',
-											name : 'programname'
-										}, {
-											xtype : 'textfield',
-											fieldLabel : 'Id Number',
-											name : 'idno'
-										}, {
-											xtype : 'textfield',
-											fieldLabel : 'Group Number',
-											name : 'groupno'
-										}, {
-											xtype : 'combo',
-											name : 'insurancetype',
-											fieldLabel : 'Insurance Type',
-											store : 'MarriageStatus',
-											queryMode : 'local',
-											displayField : 'name',
-											valueField : 'id',
-											typeAhead : true,
-											forceSelection : true
-										}, {
-											xtype : 'combo',
-											name : 'contracttype',
-											fieldLabel : 'Contract type',
-											store : 'MarriageStatus',
-											queryMode : 'local',
-											displayField : 'name',
-											valueField : 'id',
-											typeAhead : true,
-											forceSelection : true
-										}
-							            ]
-							        },
-							        {
-							            xtype: 'fieldset',
-							            flex: 1,
-							            items: [
-							                {
+						var card_2_billing = {
+							xtype : 'container',
+							height : 290,
+							layout : {
+								align : 'stretch',
+								type : 'hbox'
+							},
+							items : [ {
+								xtype : 'fieldset',
+								flex : 1,
+								items : [ {
+									xtype : 'combo',
+									name : 'insurancecompany',
+									fieldLabel : 'Insurance Company',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Insured Code',
+									name : 'insuredcode'
+								}, {
+									xtype : 'combo',
+									name : 'insuredrel',
+									fieldLabel : 'Insured relationship',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Program Name',
+									name : 'programname'
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Id Number',
+									name : 'idno'
+								}, {
+									xtype : 'textfield',
+									fieldLabel : 'Group Number',
+									name : 'groupno'
+								}, {
+									xtype : 'combo',
+									name : 'insurancetype',
+									fieldLabel : 'Insurance Type',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								}, {
+									xtype : 'combo',
+									name : 'contracttype',
+									fieldLabel : 'Contract type',
+									store : 'MarriageStatus',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									typeAhead : true,
+									forceSelection : true
+								} ]
+							}, {
+								xtype : 'fieldset',
+								flex : 1,
+								items : [ {
 									xtype : 'textfield',
 									fieldLabel : 'Annual Deductible',
 									name : 'annualdedtuctible'
@@ -769,36 +778,34 @@ Ext
 									fieldLabel : 'Effective Date',
 									name : 'effectivedate',
 									maxValue : new Date(), // limited to the
-															// current
+									// current
 									// date or prior
 									format : 'Y-m-d'
 
-								} , {
+								}, {
 									xtype : 'datefield',
 									fieldLabel : 'Expire Date',
 									name : 'expiredate',
 									maxValue : new Date(), // limited to the
-															// current
+									// current
 									// date or prior
 									format : 'Y-m-d'
 
-								},{
+								}, {
 									xtype : 'textfield',
 									fieldLabel : 'Co-pay per visit',
 									name : 'copay'
-								}
-							            ]
-							        }
-							    ]
-							};
+								} ]
+							} ]
+						};
 						var card_2_billing0 = {
 							layout : 'fit',
 							items : [ {
 								xtype : 'fieldset',
-								items : [  ]
+								items : []
 							}, {
 								xtype : 'fieldset',
-								items : [  ]
+								items : []
 							}, ]
 						};
 						// ////////////////CARD3////////////////

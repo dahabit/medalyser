@@ -269,24 +269,30 @@ class AccountController extends Zend_Controller_Action
     /**
      * Generate JSON type for AdminResources javascript store
      */
-    public function adminresourcesAction ()
+    public function getadminstoresAction ()
     { //disable view
         $this->_helper->viewRenderer->setNoRender(true);
+        //add adminsettings store to the final store
         //select currently logged in admin`s table data
-        $adminSettings = $this->em->getRepository('Entities\Adminprofile')->findByUserid(
+        $adminSettings = $this->em->getRepository(
+        'Entities\Adminprofile')->findByUserid(
         Zend_Auth::getInstance()->getIdentity()->userid);
         //unset unnecessary and secret admin table columns.
-        unset($adminSettings[0]['password']);
-        unset($adminSettings[0]['recovery']);
-        unset($adminSettings[0]['confirmed']);
-        unset($adminSettings[0]['created']);
-        unset($adminSettings[0]['updated']);
-        unset($adminSettings[0]['id']);
-        //push $adminSettings into $account array
+        unset($adminSettings[0]['password'], 
+        $adminSettings[0]['recovery'], $adminSettings[0]['confirmed'], 
+        $adminSettings[0]['created'], $adminSettings[0]['updated'], 
+        $adminSettings[0]['id']);
+        //push $adminSettings into $stores array
         foreach ($adminSettings as $key => $value) {
-            $account['adminsettings'] = $value;
+            $stores['adminsettings'] = $value;
         }
-        $this->getResponse()->appendBody(Zend_Json::encode($account));
+        //add countries store to the final store
+        $stores['countries'] = Zend_Locale::getTranslationList(
+        'Territory', null, 2);
+        //add countries store to the final store
+        $stores['languages'] = Zend_Locale::getTranslationList(
+        'language');
+        $this->getResponse()->appendBody(Zend_Json::encode($stores));
     }
 }
 

@@ -47,11 +47,20 @@ class NewPatientWizardController extends Zend_Controller_Action
             // If the form data is valid, process it
             if ($form->isValid($this->_request->getPost())) {
                 Zend_Registry::get('logger')->debug('validation was a success');
+                //generate random userid
+                $finished = false; // we're not finished yet (we just started)
+                while (! $finished) : // while not finished
+                    $userId = mt_rand(100000000, 999999999); // random number
+                    if (! $this->em->getRepository(
+                    'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
+                        $finished = true;
+                    // ...we are finished
+   endif;
+                endwhile
+                ;
                 //process $profilephoto
                 $ProfilePhotoUploader = new MFAN_Controller_Action_Helper_ProfilePhotoUploader();
-                $ProfilePhotoUploader->upload('patient', 
-                $this->_request->getParam('firstname') . $this->_request->getParam(
-                'middlename') . $this->_request->getParam('lastname'));
+                $ProfilePhotoUploader->upload('patient', $userId);
                 // Does an account associated with this email already exist?
                 $primaryemail = $this->_request->getParam(
                 'primaryemail');
