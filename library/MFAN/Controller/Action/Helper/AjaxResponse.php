@@ -47,5 +47,12 @@ class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_
         $this->direct(FALSE, 
         'Error saving data to the database.Please contact administrator.', $e);
     }
+    public function logValidationErrors ($e)
+    {
+        $this->direct(FALSE, 
+        'Some entered data are not acceptable. Please check back, correct them and try submitting the form again.', 
+        $e);
+        ;
+    }
 }
 ?>

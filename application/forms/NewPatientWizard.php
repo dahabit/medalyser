@@ -44,6 +44,9 @@ class Application_Form_NewPatientWizard extends Zend_Form
         $lastname->addValidator('Alpha');
         $lastname->addErrorMessage(
         'Lastname can consist solely of letters and should not be empty');
+        $userId = new Zend_Form_Element_Text('userid');
+        $userId->addValidator('Digits')->addValidator('StringLength', false, 
+        array('min' => 100000000, 'max' => 999999999));
         $this->addElements(
         array($primaryemail, $firstname, $middlename, $lastname));
     }

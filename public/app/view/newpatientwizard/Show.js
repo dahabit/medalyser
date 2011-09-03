@@ -217,7 +217,8 @@ Ext
 							allowBlank : true,
 							maxValue : 999999999,
 							minValue : 100000000,
-							emptyText : 'Leave empty'
+							emptyText : 'Leave empty',
+							name:'userid'
 						};
 						var card_0_userpass_name = {
 							xtype : 'fieldcontainer',

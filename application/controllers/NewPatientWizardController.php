@@ -48,19 +48,10 @@ class NewPatientWizardController extends Zend_Controller_Action
             if ($form->isValid($this->_request->getPost())) {
                 Zend_Registry::get('logger')->debug('validation was a success');
                 //generate random userid
-                $finished = false; // we're not finished yet (we just started)
-                while (! $finished) : // while not finished
-                    $userId = mt_rand(100000000, 999999999); // random number
-                    if (! $this->em->getRepository(
-                    'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
-                        $finished = true;
-                    // ...we are finished
-   endif;
-                endwhile
-                ;
+                $this->_generateUserId();
                 //process $profilephoto
                 $ProfilePhotoUploader = new MFAN_Controller_Action_Helper_ProfilePhotoUploader();
-                $ProfilePhotoUploader->upload('patient', $userId);
+                $ProfilePhotoUploader->upload('patient', $this->userId);
                 // Does an account associated with this email already exist?
                 $primaryemail = $this->_request->getParam(
                 'primaryemail');
@@ -128,34 +119,52 @@ class NewPatientWizardController extends Zend_Controller_Action
                         // Save the account to the database
                         $this->em->persist($account);
                         $this->em->flush();
-                        $form = array('success' => true, 
-                        'msg' => 'New patient successfully created');
-                        $this->em = $this->_helper->AjaxResponse('success', 
+                        $this->em = $this->_helper->AjaxResponse(true, 
                         'New patient successfully created');
                     } catch (Exception $e) {
                         $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
                         $e->getMessage());
                     }
                 } else {
-                    $this->_response->appendBody(
-                    Zend_Json::encode(
-                    "The desired useremail has already been taken, or
-              the provided e-mail address is already associated with a registered user."));
+                    $this->_helper->AjaxResponse(TRUE, 
+                    'The desired useremail has already been taken, or
+              the provided e-mail address is already associated with a registered user.');
                 }
             } else { //Output validation error messagaes to firebug
-                Zend_Registry::get('logger')->crit(
-                'validation was a failure');
-                //Output validation error messagaes as json format
-                $validationerror = array('success' => false, 
-                'msg' => 'Some entered data are not acceptable. Please check back, correct them and try submitting the form again.', 
-                'errors' => $form->getMessages());
-                $this->_response->appendBody(
-                Zend_Json::encode($validationerror));
+                $this->_helper->getHelper('AjaxResponse')->logValidationErrors(
+                $form->getMessages());
             }
         } else { //Output validation error messagaes as json format
-            $validationerror = array('success' => false, 
-            'msg' => 'Invalid request.');
-            $this->_response->appendBody(Zend_Json::encode($validationerror));
+            $this->_response->appendBody(
+            Zend_Json::encode($validationerror));
+            $this->_helper->AjaxResponse(false, 'Invalid request.');
+        }
+    }
+    private function _generateUserId ()
+    {
+        //generate random userid only if no user id is submitted
+        if (! $this->getRequest()->getParam('userid')) {
+            $finished = false; // we're not finished yet (we just started)
+            while (! $finished) : // while not finished
+                $this->userId = mt_rand(100000000, 999999999); // random number
+                if (! $this->em->getRepository(
+                'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
+                    $finished = true;
+                
+                    // ...we are finished
+   endif;
+            endwhile
+            ;
+        } else { //check if suggested userid from client side is not already taken
+            if (! $this->em->getRepository(
+            'Entities\Patientprofile')->findOneByUserid(
+            $this->getRequest()
+                ->getParam('userid'))) {
+                $this->userId = $this->getRequest()->getParam('userid');
+            } else {
+                $this->_helper->AjaxResponse(FALSE, 
+                'Entered userid already exists.');
+            }
         }
     }
 }
