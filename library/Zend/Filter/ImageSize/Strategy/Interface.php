@@ -1,5 +1,4 @@
 <?php
-
 interface Zend_Filter_ImageSize_Strategy_Interface
 {
     /**
@@ -9,5 +8,5 @@ interface Zend_Filter_ImageSize_Strategy_Interface
      * @param int $height Output height
      * @return resource GD image resource
      */
-    public function resize($image, $width, $height);
+    public function resize ($image, $width, $height);
 }
