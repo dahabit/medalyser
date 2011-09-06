@@ -16,14 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST\Functions;
-
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
-
 /**
  * "DATE_ADD(date1, interval, unit)"
  *
@@ -37,22 +34,25 @@ class DateSubFunction extends DateAddFunction
     public $firstDateExpression = null;
     public $intervalExpression = null;
     public $unit = null;
-
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql (SqlWalker $sqlWalker)
     {
         $unit = strtolower($this->unit);
         if ($unit == "day") {
-            return $sqlWalker->getConnection()->getDatabasePlatform()->getDateSubDaysExpression(
-                $this->firstDateExpression->dispatch($sqlWalker),
-                $this->intervalExpression->dispatch($sqlWalker)
-            );
-        } else if ($unit == "month") {
-            return $sqlWalker->getConnection()->getDatabasePlatform()->getDateSubMonthExpression(
-                $this->firstDateExpression->dispatch($sqlWalker),
-                $this->intervalExpression->dispatch($sqlWalker)
-            );
-        } else {
-            throw QueryException::semanticalError('DATE_SUB() only supports units of type day and month.');
-        }
+            return $sqlWalker->getConnection()
+                ->getDatabasePlatform()
+                ->getDateSubDaysExpression(
+            $this->firstDateExpression->dispatch($sqlWalker), 
+            $this->intervalExpression->dispatch($sqlWalker));
+        } else 
+            if ($unit == "month") {
+                return $sqlWalker->getConnection()
+                    ->getDatabasePlatform()
+                    ->getDateSubMonthExpression(
+                $this->firstDateExpression->dispatch($sqlWalker), 
+                $this->intervalExpression->dispatch($sqlWalker));
+            } else {
+                throw QueryException::semanticalError(
+                'DATE_SUB() only supports units of type day and month.');
+            }
     }
 }

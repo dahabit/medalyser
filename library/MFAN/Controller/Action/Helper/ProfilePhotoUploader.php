@@ -42,8 +42,8 @@ class MFAN_Controller_Action_Helper_ProfilePhotoUploader extends Zend_Controller
             ->// Limit the extensions to graphics
         addValidator('Extension', false, 'jpg,png,gif,jpeg,bmp');
         if ($profilephoto->receive()) {
-            if (!$profilephoto-> isValid($profilephoto->getFileName(null))) {
-                die($profilephoto-> getMessages());
+            if (! $profilephoto->isValid($profilephoto->getFileName(null))) {
+                die($profilephoto->getMessages());
             }
             $profilePhotoName = $profilephoto->getFileName(null);
             $ext = $this->_findexts($profilephoto->getFileName(null));

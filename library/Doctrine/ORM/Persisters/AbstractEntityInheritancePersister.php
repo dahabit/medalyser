@@ -16,12 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Persisters;
-
-use Doctrine\ORM\Mapping\ClassMetadata,
-    Doctrine\DBAL\Types\Type;
-
+use Doctrine\ORM\Mapping\ClassMetadata, Doctrine\DBAL\Types\Type;
 /**
  * Base class for entity persisters that implement a certain inheritance mapping strategy.
  * All these persisters are assumed to use a discriminator column to discriminate entity
@@ -36,7 +32,7 @@ abstract class AbstractEntityInheritancePersister extends BasicEntityPersister
     /**
      * {@inheritdoc}
      */
-    protected function _prepareInsertData($entity)
+    protected function _prepareInsertData ($entity)
     {
         $data = parent::_prepareInsertData($entity);
         // Populate the discriminator column
@@ -45,33 +41,33 @@ abstract class AbstractEntityInheritancePersister extends BasicEntityPersister
         $data[$this->_getDiscriminatorColumnTableName()][$discColumn['name']] = $this->_class->discriminatorValue;
         return $data;
     }
-
     /**
      * Gets the name of the table that contains the discriminator column.
      * 
      * @return string The table name.
      */
-    abstract protected function _getDiscriminatorColumnTableName();
-
+    abstract protected function _getDiscriminatorColumnTableName ();
     /**
      * {@inheritdoc}
      */
-    protected function _getSelectColumnSQL($field, ClassMetadata $class, $alias = 'r')
+    protected function _getSelectColumnSQL ($field, ClassMetadata $class, 
+    $alias = 'r')
     {
         $columnName = $class->columnNames[$field];
-        $sql = $this->_getSQLTableAlias($class->name, $alias == 'r' ? '' : $alias) . '.' . $class->getQuotedColumnName($field, $this->_platform);
-        $columnAlias = $this->_platform->getSQLResultCasing($columnName . $this->_sqlAliasCounter++);
+        $sql = $this->_getSQLTableAlias($class->name, 
+        $alias == 'r' ? '' : $alias) . '.' .
+         $class->getQuotedColumnName($field, $this->_platform);
+        $columnAlias = $this->_platform->getSQLResultCasing(
+        $columnName . $this->_sqlAliasCounter ++);
         $this->_rsm->addFieldResult($alias, $columnAlias, $field, $class->name);
-
         return "$sql AS $columnAlias";
     }
-
-    protected function getSelectJoinColumnSQL($tableAlias, $joinColumnName, $className)
+    protected function getSelectJoinColumnSQL ($tableAlias, $joinColumnName, 
+    $className)
     {
-        $columnAlias = $joinColumnName . $this->_sqlAliasCounter++;
+        $columnAlias = $joinColumnName . $this->_sqlAliasCounter ++;
         $resultColumnName = $this->_platform->getSQLResultCasing($columnAlias);
         $this->_rsm->addMetaResult('r', $resultColumnName, $joinColumnName);
-        
         return $tableAlias . ".$joinColumnName AS $columnAlias";
     }
 }

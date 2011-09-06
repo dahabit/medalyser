@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
-
 /**
  * Type that maps a PHP array to a clob SQL type.
  *
@@ -26,31 +24,31 @@ namespace Doctrine\DBAL\Types;
  */
 class ArrayType extends Type
 {
-    public function getSQLDeclaration(array $fieldDeclaration, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function getSQLDeclaration (array $fieldDeclaration, 
+    Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         return $platform->getClobTypeDeclarationSQL($fieldDeclaration);
     }
-
-    public function convertToDatabaseValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function convertToDatabaseValue ($value, 
+    Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         return serialize($value);
     }
-
-    public function convertToPHPValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function convertToPHPValue ($value, 
+    Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
         }
-
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
         $val = unserialize($value);
         if ($val === false && $value != 'b:0;') {
-            throw ConversionException::conversionFailed($value, $this->getName());
+            throw ConversionException::conversionFailed($value, 
+            $this->getName());
         }
         return $val;
     }
-
-    public function getName()
+    public function getName ()
     {
         return Type::TARRAY;
     }

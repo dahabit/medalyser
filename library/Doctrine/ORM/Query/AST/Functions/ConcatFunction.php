@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST\Functions;
-
 use Doctrine\ORM\Query\Lexer;
-
 /**
  * "CONCAT" "(" StringPrimary "," StringPrimary ")"
  *
@@ -36,31 +33,26 @@ class ConcatFunction extends FunctionNode
 {
     public $firstStringPrimary;
     public $secondStringPriamry;
-
     /**
      * @override
      */
-    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql (\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         $platform = $sqlWalker->getConnection()->getDatabasePlatform();
         return $platform->getConcatExpression(
-            $sqlWalker->walkStringPrimary($this->firstStringPrimary),
-            $sqlWalker->walkStringPrimary($this->secondStringPrimary)
-        );
+        $sqlWalker->walkStringPrimary($this->firstStringPrimary), 
+        $sqlWalker->walkStringPrimary($this->secondStringPrimary));
     }
-
     /**
      * @override
      */
-    public function parse(\Doctrine\ORM\Query\Parser $parser)
+    public function parse (\Doctrine\ORM\Query\Parser $parser)
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
-
         $this->firstStringPrimary = $parser->StringPrimary();
         $parser->match(Lexer::T_COMMA);
         $this->secondStringPrimary = $parser->StringPrimary();
-
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 }

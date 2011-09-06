@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\Common\Cache;
-
 /**
  * Interface for cache drivers.
  *
@@ -41,16 +39,14 @@ interface Cache
      * @param string $id cache id The id of the cache entry to fetch.
      * @return string The cached data or FALSE, if no cache entry exists for the given id.
      */
-    function fetch($id);
-
+    function fetch ($id);
     /**
      * Test if an entry exists in the cache.
      *
      * @param string $id cache id The cache id of the entry to check for.
      * @return boolean TRUE if a cache entry exists for the given cache id, FALSE otherwise.
      */
-    function contains($id);
-
+    function contains ($id);
     /**
      * Puts data into the cache.
      *
@@ -59,13 +55,12 @@ interface Cache
      * @param int $lifeTime The lifetime. If != 0, sets a specific lifetime for this cache entry (0 => infinite lifeTime).
      * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
-    function save($id, $data, $lifeTime = 0);
-
+    function save ($id, $data, $lifeTime = 0);
     /**
      * Deletes a cache entry.
      * 
      * @param string $id cache id
      * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
      */
-    function delete($id);
+    function delete ($id);
 }

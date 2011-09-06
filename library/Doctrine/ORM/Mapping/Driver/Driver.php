@@ -18,11 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Mapping\Driver;
-
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-
 /**
  * Contract for metadata drivers.
  *
@@ -38,15 +35,13 @@ interface Driver
      * @param string $className
      * @param ClassMetadataInfo $metadata
      */
-    function loadMetadataForClass($className, ClassMetadataInfo $metadata);
-    
+    function loadMetadataForClass ($className, ClassMetadataInfo $metadata);
     /**
      * Gets the names of all mapped classes known to this driver.
      * 
      * @return array The names of all mapped classes known to this driver.
      */
-    function getAllClassNames(); 
-
+    function getAllClassNames ();
     /**
      * Whether the class with the specified name should have its metadata loaded.
      * This is only the case if it is either mapped as an Entity or a
@@ -55,5 +50,5 @@ interface Driver
      * @param string $className
      * @return boolean
      */
-    function isTransient($className);
+    function isTransient ($className);
 }

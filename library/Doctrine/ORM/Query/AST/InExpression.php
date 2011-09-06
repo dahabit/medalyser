@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * InExpression ::= StateFieldPathExpression ["NOT"] "IN" "(" (Literal {"," Literal}* | Subselect) ")"
  *
@@ -38,13 +36,11 @@ class InExpression extends Node
     public $pathExpression;
     public $literals = array();
     public $subselect;
-
-    public function __construct($pathExpression)
+    public function __construct ($pathExpression)
     {
         $this->pathExpression = $pathExpression;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkInExpression($this);
     }

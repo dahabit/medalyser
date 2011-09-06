@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Logging;
-
 /**
  * Interface for SQL loggers.
  *
@@ -43,12 +41,11 @@ interface SQLLogger
      * @param array $types The SQL parameter types.
      * @return void
      */
-    public function startQuery($sql, array $params = null, array $types = null);
-
+    public function startQuery ($sql, array $params = null, array $types = null);
     /**
      * Mark the last started query as stopped. This can be used for timing of queries.
      *
      * @return void
      */
-    public function stopQuery();
+    public function stopQuery ();
 }

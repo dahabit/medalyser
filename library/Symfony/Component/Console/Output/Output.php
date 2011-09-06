@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,20 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Output;
-
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
-
 /**
  * Base class for output classes.
  *
  * There is three level of verbosity:
  *
- *  * normal: no option passed (normal output - information)
- *  * verbose: -v (more output - debug)
- *  * quiet: -q (no output)
+ * * normal: no option passed (normal output - information)
+ * * verbose: -v (more output - debug)
+ * * quiet: -q (no output)
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -31,7 +27,6 @@ abstract class Output implements OutputInterface
 {
     private $verbosity;
     private $formatter;
-
     /**
      * Constructor.
      *
@@ -41,17 +36,16 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
+    public function __construct ($verbosity = self::VERBOSITY_NORMAL, $decorated = null, 
+    OutputFormatterInterface $formatter = null)
     {
         if (null === $formatter) {
             $formatter = new OutputFormatter();
         }
-
         $this->verbosity = null === $verbosity ? self::VERBOSITY_NORMAL : $verbosity;
         $this->formatter = $formatter;
-        $this->formatter->setDecorated((Boolean) $decorated);
+        $this->formatter->setDecorated((boolean) $decorated);
     }
-
     /**
      * Sets output formatter.
      *
@@ -59,11 +53,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function setFormatter(OutputFormatterInterface $formatter)
+    public function setFormatter (OutputFormatterInterface $formatter)
     {
         $this->formatter = $formatter;
     }
-
     /**
      * Returns current output formatter instance.
      *
@@ -71,11 +64,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function getFormatter()
+    public function getFormatter ()
     {
         return $this->formatter;
     }
-
     /**
      * Sets the decorated flag.
      *
@@ -83,11 +75,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function setDecorated($decorated)
+    public function setDecorated ($decorated)
     {
-        $this->formatter->setDecorated((Boolean) $decorated);
+        $this->formatter->setDecorated((boolean) $decorated);
     }
-
     /**
      * Gets the decorated flag.
      *
@@ -95,11 +86,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function isDecorated()
+    public function isDecorated ()
     {
         return $this->formatter->isDecorated();
     }
-
     /**
      * Sets the verbosity of the output.
      *
@@ -107,11 +97,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function setVerbosity($level)
+    public function setVerbosity ($level)
     {
         $this->verbosity = (int) $level;
     }
-
     /**
      * Gets the current verbosity of the output.
      *
@@ -119,11 +108,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function getVerbosity()
+    public function getVerbosity ()
     {
         return $this->verbosity;
     }
-
     /**
      * Writes a message to the output and adds a newline at the end.
      *
@@ -132,11 +120,10 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function writeln($messages, $type = 0)
+    public function writeln ($messages, $type = 0)
     {
         $this->write($messages, true, $type);
     }
-
     /**
      * Writes a message to the output.
      *
@@ -148,14 +135,12 @@ abstract class Output implements OutputInterface
      *
      * @api
      */
-    public function write($messages, $newline = false, $type = 0)
+    public function write ($messages, $newline = false, $type = 0)
     {
         if (self::VERBOSITY_QUIET === $this->verbosity) {
             return;
         }
-
         $messages = (array) $messages;
-
         foreach ($messages as $message) {
             switch ($type) {
                 case OutputInterface::OUTPUT_NORMAL:
@@ -167,18 +152,17 @@ abstract class Output implements OutputInterface
                     $message = strip_tags($this->formatter->format($message));
                     break;
                 default:
-                    throw new \InvalidArgumentException(sprintf('Unknown output type given (%s)', $type));
+                    throw new \InvalidArgumentException(
+                    sprintf('Unknown output type given (%s)', $type));
             }
-
             $this->doWrite($message, $newline);
         }
     }
-
     /**
      * Writes a message to the output.
      *
      * @param string  $message A message to write to the output
      * @param Boolean $newline Whether to add a newline or not
      */
-    abstract public function doWrite($message, $newline);
+    abstract public function doWrite ($message, $newline);
 }

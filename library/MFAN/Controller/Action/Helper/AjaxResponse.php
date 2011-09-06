@@ -41,8 +41,8 @@ class MFAN_Controller_Action_Helper_AjaxResponse extends Zend_Controller_Action_
         $this->getFrontController()
             ->getResponse()
             ->appendBody(Zend_Json::encode($form));
-            //FIXME: send response to the client and stop executing the rest of the code without using die command
-            die();
+        //FIXME: send response to the client and stop executing the rest of the code without using die command
+        die();
     }
     public function logFlushErrors ($e)
     {

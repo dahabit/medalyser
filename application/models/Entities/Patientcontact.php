@@ -30,7 +30,6 @@ class Patientcontact
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     public function __construct ()
     {}
     public function __set ($key, $val)

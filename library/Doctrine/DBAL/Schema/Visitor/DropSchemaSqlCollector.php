@@ -18,18 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema\Visitor;
-
-use Doctrine\DBAL\Platforms\AbstractPlatform,
-    Doctrine\DBAL\Schema\Table,
-    Doctrine\DBAL\Schema\Schema,
-    Doctrine\DBAL\Schema\Column,
-    Doctrine\DBAL\Schema\ForeignKeyConstraint,
-    Doctrine\DBAL\Schema\Constraint,
-    Doctrine\DBAL\Schema\Sequence,
-    Doctrine\DBAL\Schema\Index;
-
+use Doctrine\DBAL\Platforms\AbstractPlatform, Doctrine\DBAL\Schema\Table, Doctrine\DBAL\Schema\Schema, Doctrine\DBAL\Schema\Column, Doctrine\DBAL\Schema\ForeignKeyConstraint, Doctrine\DBAL\Schema\Constraint, Doctrine\DBAL\Schema\Sequence, Doctrine\DBAL\Schema\Index;
 /**
  * Gather SQL statements that allow to completly drop the current schema.
  *
@@ -45,98 +35,86 @@ class DropSchemaSqlCollector implements Visitor
      * @var array
      */
     private $_constraints = array();
-    
     /**
      * @var array
      */
     private $_sequences = array();
-
     /**
      * @var array
      */
     private $_tables = array();
-
     /**
      *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $_platform = null;
-
     /**
      * @param AbstractPlatform $platform
      */
-    public function __construct(AbstractPlatform $platform)
+    public function __construct (AbstractPlatform $platform)
     {
         $this->_platform = $platform;
     }
-
     /**
      * @param Schema $schema
      */
-    public function acceptSchema(Schema $schema)
-    {
-        
-    }
-
+    public function acceptSchema (Schema $schema)
+    {}
     /**
      * @param Table $table
      */
-    public function acceptTable(Table $table)
+    public function acceptTable (Table $table)
     {
-        $this->_tables[] = $this->_platform->getDropTableSQL($table->getQuotedName($this->_platform));
+        $this->_tables[] = $this->_platform->getDropTableSQL(
+        $table->getQuotedName($this->_platform));
     }
-
     /**
      * @param Column $column
      */
-    public function acceptColumn(Table $table, Column $column)
-    {
-        
-    }
-
+    public function acceptColumn (Table $table, Column $column)
+    {}
     /**
      * @param Table $localTable
      * @param ForeignKeyConstraint $fkConstraint
      */
-    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
+    public function acceptForeignKey (Table $localTable, 
+    ForeignKeyConstraint $fkConstraint)
     {
         if (strlen($fkConstraint->getName()) == 0) {
-            throw SchemaException::namedForeignKeyRequired($localTable, $fkConstraint);
+            throw SchemaException::namedForeignKeyRequired($localTable, 
+            $fkConstraint);
         }
-
-        $this->_constraints[] = $this->_platform->getDropForeignKeySQL($fkConstraint->getQuotedName($this->_platform), $localTable->getQuotedName($this->_platform));
+        $this->_constraints[] = $this->_platform->getDropForeignKeySQL(
+        $fkConstraint->getQuotedName($this->_platform), 
+        $localTable->getQuotedName($this->_platform));
     }
-
     /**
      * @param Table $table
      * @param Index $index
      */
-    public function acceptIndex(Table $table, Index $index)
-    {
-        
-    }
-
+    public function acceptIndex (Table $table, Index $index)
+    {}
     /**
      * @param Sequence $sequence
      */
-    public function acceptSequence(Sequence $sequence)
+    public function acceptSequence (Sequence $sequence)
     {
-        $this->_sequences[] = $this->_platform->getDropSequenceSQL($sequence->getQuotedName($this->_platform));
+        $this->_sequences[] = $this->_platform->getDropSequenceSQL(
+        $sequence->getQuotedName($this->_platform));
     }
-
     /**
      * @return array
      */
-    public function clearQueries()
+    public function clearQueries ()
     {
         $this->_constraints = $this->_sequences = $this->_tables = array();
     }
-
     /**
      * @return array
      */
-    public function getQueries()
+    public function getQueries ()
     {
-        return array_merge($this->_constraints, $this->_sequences, $this->_tables);
+        return array_merge($this->_constraints, $this->_sequences, 
+        $this->_tables);
     }
 }

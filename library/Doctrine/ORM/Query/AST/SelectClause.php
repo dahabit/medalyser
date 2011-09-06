@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * SelectClause = "SELECT" ["DISTINCT"] SelectExpression {"," SelectExpression}
  *
@@ -36,14 +34,12 @@ class SelectClause extends Node
 {
     public $isDistinct;
     public $selectExpressions = array();
-
-    public function __construct(array $selectExpressions, $isDistinct)
+    public function __construct (array $selectExpressions, $isDistinct)
     {
         $this->isDistinct = $isDistinct;
         $this->selectExpressions = $selectExpressions;
     }
-    
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkSelectClause($this);
     }

@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
-
 use Doctrine\DBAL\DBALException;
-
 /**
  * The SqlitePlatform class describes the specifics and dialects of the SQLite
  * database platform.
@@ -38,11 +35,10 @@ class SqlitePlatform extends AbstractPlatform
      * @return string
      * @override
      */
-    public function getRegexpExpression()
+    public function getRegexpExpression ()
     {
         return 'RLIKE';
     }
-
     /**
      * Return string to call a variable with the current timestamp inside an SQL statement
      * There are three special variables for current date and time.
@@ -50,7 +46,7 @@ class SqlitePlatform extends AbstractPlatform
      * @return string       sqlite function as string
      * @override
      */
-    public function getNowExpression($type = 'timestamp')
+    public function getNowExpression ($type = 'timestamp')
     {
         switch ($type) {
             case 'time':
@@ -62,7 +58,6 @@ class SqlitePlatform extends AbstractPlatform
                 return 'datetime(\'now\')';
         }
     }
-
     /**
      * Trim a string, leading/trailing/both and with a given char which defaults to space.
      *
@@ -71,22 +66,20 @@ class SqlitePlatform extends AbstractPlatform
      * @param string $char
      * @return string
      */
-    public function getTrimExpression($str, $pos = self::TRIM_UNSPECIFIED, $char = false)
+    public function getTrimExpression ($str, $pos = self::TRIM_UNSPECIFIED, $char = false)
     {
         $trimFn = '';
         $trimChar = ($char != false) ? (', ' . $char) : '';
-
         if ($pos == self::TRIM_LEADING) {
             $trimFn = 'LTRIM';
-        } else if($pos == self::TRIM_TRAILING) {
-            $trimFn = 'RTRIM';
-        } else {
-            $trimFn = 'TRIM';
-        }
-
+        } else 
+            if ($pos == self::TRIM_TRAILING) {
+                $trimFn = 'RTRIM';
+            } else {
+                $trimFn = 'TRIM';
+            }
         return $trimFn . '(' . $str . $trimChar . ')';
     }
-
     /**
      * return string to call a function to get a substring inside an SQL statement
      *
@@ -100,14 +93,14 @@ class SqlitePlatform extends AbstractPlatform
      * @return string               SQL substring function with given parameters
      * @override
      */
-    public function getSubstringExpression($value, $position, $length = null)
+    public function getSubstringExpression ($value, $position, $length = null)
     {
         if ($length !== null) {
             return 'SUBSTR(' . $value . ', ' . $position . ', ' . $length . ')';
         }
-        return 'SUBSTR(' . $value . ', ' . $position . ', LENGTH(' . $value . '))';
+        return 'SUBSTR(' . $value . ', ' . $position . ', LENGTH(' . $value .
+         '))';
     }
-
     /**
      * returns the position of the first occurrence of substring $substr in string $str
      *
@@ -116,41 +109,35 @@ class SqlitePlatform extends AbstractPlatform
      * @param int    $pos       position to start at, beginning of string by default
      * @return integer
      */
-    public function getLocateExpression($str, $substr, $startPos = false)
+    public function getLocateExpression ($str, $substr, $startPos = false)
     {
         if ($startPos == false) {
-            return 'LOCATE('.$str.', '.$substr.')';
+            return 'LOCATE(' . $str . ', ' . $substr . ')';
         } else {
-            return 'LOCATE('.$str.', '.$substr.', '.$startPos.')';
+            return 'LOCATE(' . $str . ', ' . $substr . ', ' . $startPos . ')';
         }
     }
-
-    public function getDateDiffExpression($date1, $date2)
+    public function getDateDiffExpression ($date1, $date2)
     {
-        return 'ROUND(JULIANDAY('.$date1 . ')-JULIANDAY('.$date2.'))';
+        return 'ROUND(JULIANDAY(' . $date1 . ')-JULIANDAY(' . $date2 . '))';
     }
-
-    public function getDateAddDaysExpression($date, $days)
+    public function getDateAddDaysExpression ($date, $days)
     {
-        return "DATE(" . $date . ",'+". $days . " day')";
+        return "DATE(" . $date . ",'+" . $days . " day')";
     }
-
-    public function getDateSubDaysExpression($date, $days)
+    public function getDateSubDaysExpression ($date, $days)
     {
-        return "DATE(" . $date . ",'-". $days . " day')";
+        return "DATE(" . $date . ",'-" . $days . " day')";
     }
-
-    public function getDateAddMonthExpression($date, $months)
+    public function getDateAddMonthExpression ($date, $months)
     {
-        return "DATE(" . $date . ",'+". $months . " month')";
+        return "DATE(" . $date . ",'+" . $months . " month')";
     }
-
-    public function getDateSubMonthExpression($date, $months)
+    public function getDateSubMonthExpression ($date, $months)
     {
-        return "DATE(" . $date . ",'-". $months . " month')";
+        return "DATE(" . $date . ",'-" . $months . " month')";
     }
-
-    protected function _getTransactionIsolationLevelSQL($level)
+    protected function _getTransactionIsolationLevelSQL ($level)
     {
         switch ($level) {
             case \Doctrine\DBAL\Connection::TRANSACTION_READ_UNCOMMITTED:
@@ -163,152 +150,138 @@ class SqlitePlatform extends AbstractPlatform
                 return parent::_getTransactionIsolationLevelSQL($level);
         }
     }
-
-    public function getSetTransactionIsolationSQL($level)
+    public function getSetTransactionIsolationSQL ($level)
     {
-        return 'PRAGMA read_uncommitted = ' . $this->_getTransactionIsolationLevelSQL($level);
+        return 'PRAGMA read_uncommitted = ' .
+         $this->_getTransactionIsolationLevelSQL($level);
     }
-
     /** 
      * @override 
      */
-    public function prefersIdentityColumns()
+    public function prefersIdentityColumns ()
     {
         return true;
     }
-    
     /** 
      * @override 
      */
-    public function getBooleanTypeDeclarationSQL(array $field)
+    public function getBooleanTypeDeclarationSQL (array $field)
     {
         return 'BOOLEAN';
     }
-
     /** 
      * @override 
      */
-    public function getIntegerTypeDeclarationSQL(array $field)
+    public function getIntegerTypeDeclarationSQL (array $field)
     {
         return $this->_getCommonIntegerTypeDeclarationSQL($field);
     }
-
     /** 
      * @override 
      */
-    public function getBigIntTypeDeclarationSQL(array $field)
+    public function getBigIntTypeDeclarationSQL (array $field)
     {
         return $this->_getCommonIntegerTypeDeclarationSQL($field);
     }
-
     /** 
      * @override 
      */
-    public function getTinyIntTypeDeclarationSql(array $field)
+    public function getTinyIntTypeDeclarationSql (array $field)
     {
         return $this->_getCommonIntegerTypeDeclarationSQL($field);
     }
-
     /** 
      * @override 
      */
-    public function getSmallIntTypeDeclarationSQL(array $field)
+    public function getSmallIntTypeDeclarationSQL (array $field)
     {
         return $this->_getCommonIntegerTypeDeclarationSQL($field);
     }
-
     /** 
      * @override 
      */
-    public function getMediumIntTypeDeclarationSql(array $field)
+    public function getMediumIntTypeDeclarationSql (array $field)
     {
         return $this->_getCommonIntegerTypeDeclarationSQL($field);
     }
-
     /** 
      * @override 
      */
-    public function getDateTimeTypeDeclarationSQL(array $fieldDeclaration)
+    public function getDateTimeTypeDeclarationSQL (array $fieldDeclaration)
     {
         return 'DATETIME';
     }
-    
     /**
      * @override
      */
-    public function getDateTypeDeclarationSQL(array $fieldDeclaration)
+    public function getDateTypeDeclarationSQL (array $fieldDeclaration)
     {
         return 'DATE';
     }
-
     /**
      * @override
      */
-    public function getTimeTypeDeclarationSQL(array $fieldDeclaration)
+    public function getTimeTypeDeclarationSQL (array $fieldDeclaration)
     {
         return 'TIME';
     }
-
     /** 
      * @override 
      */
-    protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
+    protected function _getCommonIntegerTypeDeclarationSQL (array $columnDef)
     {
         $autoinc = ! empty($columnDef['autoincrement']) ? ' AUTOINCREMENT' : '';
         $pk = ! empty($columnDef['primary']) && ! empty($autoinc) ? ' PRIMARY KEY' : '';
-
         return 'INTEGER' . $pk . $autoinc;
     }
-
     /**
      * create a new table
      *
      * @param string $name   Name of the database that should be created
      * @param array $fields  Associative array that contains the definition of each field of the new table
-     *                       The indexes of the array entries are the names of the fields of the table an
-     *                       the array entry values are associative arrays like those that are meant to be
-     *                       passed with the field definitions to get[Type]Declaration() functions.
-     *                          array(
-     *                              'id' => array(
-     *                                  'type' => 'integer',
-     *                                  'unsigned' => 1
-     *                                  'notnull' => 1
-     *                                  'default' => 0
-     *                              ),
-     *                              'name' => array(
-     *                                  'type' => 'text',
-     *                                  'length' => 12
-     *                              ),
-     *                              'password' => array(
-     *                                  'type' => 'text',
-     *                                  'length' => 12
-     *                              )
-     *                          );
+     * The indexes of the array entries are the names of the fields of the table an
+     * the array entry values are associative arrays like those that are meant to be
+     * passed with the field definitions to get[Type]Declaration() functions.
+     * array(
+     * 'id' => array(
+     * 'type' => 'integer',
+     * 'unsigned' => 1
+     * 'notnull' => 1
+     * 'default' => 0
+     * ),
+     * 'name' => array(
+     * 'type' => 'text',
+     * 'length' => 12
+     * ),
+     * 'password' => array(
+     * 'type' => 'text',
+     * 'length' => 12
+     * )
+     * );
      * @param array $options  An associative array of table options:
      *
      * @return void
      * @override
      */
-    protected function _getCreateTableSQL($name, array $columns, array $options = array())
+    protected function _getCreateTableSQL ($name, array $columns, 
+    array $options = array())
     {
         $queryFields = $this->getColumnDeclarationListSQL($columns);
-
         $autoinc = false;
-        foreach($columns as $field) {
+        foreach ($columns as $field) {
             if (isset($field['autoincrement']) && $field['autoincrement']) {
                 $autoinc = true;
                 break;
             }
         }
-
-        if ( ! $autoinc && isset($options['primary']) && ! empty($options['primary'])) {
+        if (! $autoinc && isset($options['primary']) &&
+         ! empty($options['primary'])) {
             $keyColumns = array_unique(array_values($options['primary']));
-            $keyColumns = array_map(array($this, 'quoteIdentifier'), $keyColumns);
-            $queryFields.= ', PRIMARY KEY('.implode(', ', $keyColumns).')';
+            $keyColumns = array_map(array($this, 'quoteIdentifier'), 
+            $keyColumns);
+            $queryFields .= ', PRIMARY KEY(' . implode(', ', $keyColumns) . ')';
         }
-
         $query[] = 'CREATE TABLE ' . $name . ' (' . $queryFields . ')';
-
         if (isset($options['indexes']) && ! empty($options['indexes'])) {
             foreach ($options['indexes'] as $index => $indexDef) {
                 $query[] = $this->getCreateIndexSQL($indexDef, $name);
@@ -321,58 +294,48 @@ class SqlitePlatform extends AbstractPlatform
         }
         return $query;
     }
-
     /**
      * {@inheritdoc}
      */
-    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
+    protected function getVarcharTypeDeclarationSQLSnippet ($length, $fixed)
     {
-        return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(255)')
-                : ($length ? 'VARCHAR(' . $length . ')' : 'TEXT');
+        return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(255)') : ($length ? 'VARCHAR(' .
+         $length . ')' : 'TEXT');
     }
-    
-    public function getClobTypeDeclarationSQL(array $field)
+    public function getClobTypeDeclarationSQL (array $field)
     {
         return 'CLOB';
     }
-
-    public function getListTableConstraintsSQL($table)
+    public function getListTableConstraintsSQL ($table)
     {
         return "SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name = '$table' AND sql NOT NULL ORDER BY name";
     }
-
-    public function getListTableColumnsSQL($table, $currentDatabase = null)
+    public function getListTableColumnsSQL ($table, $currentDatabase = null)
     {
         return "PRAGMA table_info($table)";
     }
-
-    public function getListTableIndexesSQL($table, $currentDatabase = null)
+    public function getListTableIndexesSQL ($table, $currentDatabase = null)
     {
         return "PRAGMA index_list($table)";
     }
-
-    public function getListTablesSQL()
+    public function getListTablesSQL ()
     {
-        return "SELECT name FROM sqlite_master WHERE type = 'table' AND name != 'sqlite_sequence' "
-             . "UNION ALL SELECT name FROM sqlite_temp_master "
-             . "WHERE type = 'table' ORDER BY name";
+        return "SELECT name FROM sqlite_master WHERE type = 'table' AND name != 'sqlite_sequence' " .
+         "UNION ALL SELECT name FROM sqlite_temp_master " .
+         "WHERE type = 'table' ORDER BY name";
     }
-
-    public function getListViewsSQL($database)
+    public function getListViewsSQL ($database)
     {
         return "SELECT name, sql FROM sqlite_master WHERE type='view' AND sql NOT NULL";
     }
-
-    public function getCreateViewSQL($name, $sql)
+    public function getCreateViewSQL ($name, $sql)
     {
         return 'CREATE VIEW ' . $name . ' AS ' . $sql;
     }
-
-    public function getDropViewSQL($name)
+    public function getDropViewSQL ($name)
     {
-        return 'DROP VIEW '. $name;
+        return 'DROP VIEW ' . $name;
     }
-
     /**
      * SQLite does support foreign key constraints, but only in CREATE TABLE statements...
      * This really limits their usefulness and requires SQLite specific handling, so
@@ -381,113 +344,84 @@ class SqlitePlatform extends AbstractPlatform
      * @return boolean FALSE
      * @override
      */
-    public function supportsForeignKeyConstraints()
+    public function supportsForeignKeyConstraints ()
     {
         return false;
     }
-
-    public function supportsAlterTable()
+    public function supportsAlterTable ()
     {
         return false;
     }
-
-    public function supportsIdentityColumns()
+    public function supportsIdentityColumns ()
     {
         return true;
     }
-
     /**
      * Get the platform name for this instance
      *
      * @return string
      */
-    public function getName()
+    public function getName ()
     {
         return 'sqlite';
     }
-
     /**
      * @inheritdoc
      */
-    public function getTruncateTableSQL($tableName, $cascade = false)
+    public function getTruncateTableSQL ($tableName, $cascade = false)
     {
-        return 'DELETE FROM '.$tableName;
+        return 'DELETE FROM ' . $tableName;
     }
-
     /**
      * User-defined function for Sqlite that is used with PDO::sqliteCreateFunction()
      *
      * @param  int|float $value
      * @return float
      */
-    static public function udfSqrt($value)
+    static public function udfSqrt ($value)
     {
         return sqrt($value);
     }
-
     /**
      * User-defined function for Sqlite that implements MOD(a, b)
      */
-    static public function udfMod($a, $b)
+    static public function udfMod ($a, $b)
     {
         return ($a % $b);
     }
-
     /**
      * @param string $str
      * @param string $substr
      * @param int $offset
      */
-    static public function udfLocate($str, $substr, $offset = 0)
+    static public function udfLocate ($str, $substr, $offset = 0)
     {
         $pos = strpos($str, $substr, $offset);
         if ($pos !== false) {
-            return $pos+1;
+            return $pos + 1;
         }
         return 0;
     }
-
-    public function getForUpdateSql()
+    public function getForUpdateSql ()
     {
         return '';
     }
-
-    protected function initializeDoctrineTypeMappings()
+    protected function initializeDoctrineTypeMappings ()
     {
-        $this->doctrineTypeMapping = array(
-            'boolean'       => 'boolean',
-            'tinyint'       => 'boolean',
-            'smallint'      => 'smallint',
-            'mediumint'     => 'integer',
-            'int'           => 'integer',
-            'integer'       => 'integer',
-            'serial'        => 'integer',
-            'bigint'        => 'bigint',
-            'bigserial'     => 'bigint',
-            'clob'          => 'text',
-            'tinytext'      => 'text',
-            'mediumtext'    => 'text',
-            'longtext'      => 'text',
-            'text'          => 'text',
-            'varchar'       => 'string',
-            'varchar2'      => 'string',
-            'nvarchar'      => 'string',
-            'image'         => 'string',
-            'ntext'         => 'string',
-            'char'          => 'string',
-            'date'          => 'date',
-            'datetime'      => 'datetime',
-            'timestamp'     => 'datetime',
-            'time'          => 'time',
-            'float'         => 'float',
-            'double'        => 'float',
-            'real'          => 'float',
-            'decimal'       => 'decimal',
-            'numeric'       => 'decimal',
-        );
+        $this->doctrineTypeMapping = array('boolean' => 'boolean', 
+        'tinyint' => 'boolean', 'smallint' => 'smallint', 
+        'mediumint' => 'integer', 'int' => 'integer', 
+        'integer' => 'integer', 'serial' => 'integer', 
+        'bigint' => 'bigint', 'bigserial' => 'bigint', 'clob' => 'text', 
+        'tinytext' => 'text', 'mediumtext' => 'text', 'longtext' => 'text', 
+        'text' => 'text', 'varchar' => 'string', 'varchar2' => 'string', 
+        'nvarchar' => 'string', 'image' => 'string', 'ntext' => 'string', 
+        'char' => 'string', 'date' => 'date', 'datetime' => 'datetime', 
+        'timestamp' => 'datetime', 'time' => 'time', 'float' => 'float', 
+        'double' => 'float', 'real' => 'float', 'decimal' => 'decimal', 
+        'numeric' => 'decimal');
     }
-    
-    protected function getReservedKeywordsClass()
+    protected function getReservedKeywordsClass ()
     {
         return 'Doctrine\DBAL\Platforms\Keywords\SQLiteKeywords';
     }

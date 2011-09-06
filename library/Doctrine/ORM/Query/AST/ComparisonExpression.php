@@ -18,16 +18,14 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * ComparisonExpression ::= ArithmeticExpression ComparisonOperator ( QuantifiedExpression | ArithmeticExpression ) |
- *                          StringExpression ComparisonOperator (StringExpression | QuantifiedExpression) |
- *                          BooleanExpression ("=" | "<>" | "!=") (BooleanExpression | QuantifiedExpression) |
- *                          EnumExpression ("=" | "<>" | "!=") (EnumExpression | QuantifiedExpression) |
- *                          DatetimeExpression ComparisonOperator (DatetimeExpression | QuantifiedExpression) |
- *                          EntityExpression ("=" | "<>") (EntityExpression | QuantifiedExpression)
+ * StringExpression ComparisonOperator (StringExpression | QuantifiedExpression) |
+ * BooleanExpression ("=" | "<>" | "!=") (BooleanExpression | QuantifiedExpression) |
+ * EnumExpression ("=" | "<>" | "!=") (EnumExpression | QuantifiedExpression) |
+ * DatetimeExpression ComparisonOperator (DatetimeExpression | QuantifiedExpression) |
+ * EntityExpression ("=" | "<>") (EntityExpression | QuantifiedExpression)
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
@@ -42,15 +40,13 @@ class ComparisonExpression extends Node
     public $leftExpression;
     public $rightExpression;
     public $operator;
-
-    public function __construct($leftExpr, $operator, $rightExpr)
+    public function __construct ($leftExpr, $operator, $rightExpr)
     {
         $this->leftExpression = $leftExpr;
         $this->rightExpression = $rightExpr;
         $this->operator = $operator;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkComparisonExpression($this);
     }

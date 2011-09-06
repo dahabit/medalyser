@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Helper;
-
 /**
  * HelperInterface is the interface all helpers must implement.
  *
@@ -27,8 +24,7 @@ interface HelperInterface
      *
      * @api
      */
-    function setHelperSet(HelperSet $helperSet = null);
-
+    function setHelperSet (HelperSet $helperSet = null);
     /**
      * Gets the helper set associated with this helper.
      *
@@ -36,8 +32,7 @@ interface HelperInterface
      *
      * @api
      */
-    function getHelperSet();
-
+    function getHelperSet ();
     /**
      * Returns the canonical name of this helper.
      *
@@ -45,5 +40,5 @@ interface HelperInterface
      *
      * @api
      */
-    function getName();
+    function getName ();
 }

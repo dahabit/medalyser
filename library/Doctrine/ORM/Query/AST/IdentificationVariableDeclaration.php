@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * IdentificationVariableDeclaration ::= RangeVariableDeclaration [IndexBy] {JoinVariableDeclaration}*
  *
@@ -37,15 +35,14 @@ class IdentificationVariableDeclaration extends Node
     public $rangeVariableDeclaration = null;
     public $indexBy = null;
     public $joinVariableDeclarations = array();
-
-    public function __construct($rangeVariableDecl, $indexBy, array $joinVariableDecls)
+    public function __construct ($rangeVariableDecl, $indexBy, 
+    array $joinVariableDecls)
     {
         $this->rangeVariableDeclaration = $rangeVariableDecl;
         $this->indexBy = $indexBy;
         $this->joinVariableDeclarations = $joinVariableDecls;
     }
-    
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkIdentificationVariableDeclaration($this);
     }

@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\ORM\Event;
-
 /**
  * Lifecycle Events are triggered by the UnitOfWork during lifecycle transitions
  * of entities.
@@ -33,27 +31,23 @@ class LifecycleEventArgs extends \Doctrine\Common\EventArgs
      * @var EntityManager
      */
     private $_em;
-
     /**
      * @var object
      */
     private $_entity;
-    
-    public function __construct($entity, $em)
+    public function __construct ($entity, $em)
     {
         $this->_entity = $entity;
         $this->_em = $em;
     }
-    
-    public function getEntity()
+    public function getEntity ()
     {
         return $this->_entity;
     }
-
     /**
      * @return EntityManager
      */
-    public function getEntityManager()
+    public function getEntityManager ()
     {
         return $this->_em;
     }

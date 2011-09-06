@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,11 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Yaml;
-
 use Symfony\Component\Yaml\Exception\ParseException;
-
 /**
  * Yaml offers convenience methods to load and dump YAML.
  *
@@ -28,11 +24,11 @@ class Yaml
      * The parse method, when supplied with a YAML stream (string or file),
      * will do its best to convert YAML in a file into a PHP array.
      *
-     *  Usage:
-     *  <code>
-     *   $array = Yaml::parse('config.yml');
-     *   print_r($array);
-     *  </code>
+     * Usage:
+     * <code>
+     * $array = Yaml::parse('config.yml');
+     * print_r($array);
+     * </code>
      *
      * @param string $input Path to a YAML file or a string containing YAML
      *
@@ -42,40 +38,33 @@ class Yaml
      *
      * @api
      */
-    static public function parse($input)
+    static public function parse ($input)
     {
         $file = '';
-
         // if input is a file, process it
-        if (strpos($input, "\n") === false && is_file($input) && is_readable($input)) {
+        if (strpos($input, "\n") === false && is_file($input) &&
+         is_readable($input)) {
             $file = $input;
-
             ob_start();
-            $retval = include($input);
+            $retval = include ($input);
             $content = ob_get_clean();
-
             // if an array is returned by the config file assume it's in plain php form else in YAML
             $input = is_array($retval) ? $retval : $content;
         }
-
         // if an array is returned by the config file assume it's in plain php form else in YAML
         if (is_array($input)) {
             return $input;
         }
-
         $yaml = new Parser();
-
         try {
             return $yaml->parse($input);
         } catch (ParseException $e) {
             if ($file) {
                 $e->setParsedFile($file);
             }
-
             throw $e;
         }
     }
-
     /**
      * Dumps a PHP array to a YAML string.
      *
@@ -89,10 +78,9 @@ class Yaml
      *
      * @api
      */
-    static public function dump($array, $inline = 2)
+    static public function dump ($array, $inline = 2)
     {
         $yaml = new Dumper();
-
         return $yaml->dump($array, $inline);
     }
 }

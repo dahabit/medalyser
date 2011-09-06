@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM;
-
 /**
  * Exception thrown when an ORM query unexpectedly does not return any results.
  * 
@@ -27,8 +25,9 @@ namespace Doctrine\ORM;
  */
 class NoResultException extends ORMException
 {
-    public function __construct()
+    public function __construct ()
     {
-        parent::__construct('No result was found for query although at least one row was expected.');
+        parent::__construct(
+        'No result was found for query although at least one row was expected.');
     }
 }

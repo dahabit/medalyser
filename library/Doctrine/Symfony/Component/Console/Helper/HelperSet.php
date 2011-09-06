@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,11 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Helper;
-
 use Symfony\Component\Console\Command\Command;
-
 /**
  * HelperSet represents a set of helpers to be used with a command.
  *
@@ -22,34 +18,30 @@ class HelperSet
 {
     private $helpers;
     private $command;
-
     /**
      * @param Helper[] $helpers An array of helper.
      */
-    public function __construct(array $helpers = array())
+    public function __construct (array $helpers = array())
     {
         $this->helpers = array();
         foreach ($helpers as $alias => $helper) {
             $this->set($helper, is_int($alias) ? null : $alias);
         }
     }
-
     /**
      * Sets a helper.
      *
      * @param HelperInterface $helper The helper instance
      * @param string          $alias  An alias
      */
-    public function set(HelperInterface $helper, $alias = null)
+    public function set (HelperInterface $helper, $alias = null)
     {
         $this->helpers[$helper->getName()] = $helper;
         if (null !== $alias) {
             $this->helpers[$alias] = $helper;
         }
-
         $helper->setHelperSet($this);
     }
-
     /**
      * Returns true if the helper if defined.
      *
@@ -57,11 +49,10 @@ class HelperSet
      *
      * @return Boolean true if the helper is defined, false otherwise
      */
-    public function has($name)
+    public function has ($name)
     {
         return isset($this->helpers[$name]);
     }
-
     /**
      * Gets a helper value.
      *
@@ -71,31 +62,29 @@ class HelperSet
      *
      * @throws \InvalidArgumentException if the helper is not defined
      */
-    public function get($name)
+    public function get ($name)
     {
-        if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf('The helper "%s" is not defined.', $name));
+        if (! $this->has($name)) {
+            throw new \InvalidArgumentException(
+            sprintf('The helper "%s" is not defined.', $name));
         }
-
         return $this->helpers[$name];
     }
-
     /**
      * Sets the command associated with this helper set.
      *
      * @param Command $command A Command instance
      */
-    public function setCommand(Command $command = null)
+    public function setCommand (Command $command = null)
     {
         $this->command = $command;
     }
-
     /**
      * Gets the command associated with this helper set.
      *
      * @return Command A Command instance
      */
-    public function getCommand()
+    public function getCommand ()
     {
         return $this->command;
     }

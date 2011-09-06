@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools;
-
 /**
  * Class to generate entity repository classes
  *
@@ -35,8 +33,7 @@ namespace Doctrine\ORM\Tools;
  */
 class EntityRepositoryGenerator
 {
-    protected static $_template =
-'<?php
+    protected static $_template = '<?php
 
 namespace <namespace>;
 
@@ -51,32 +48,26 @@ use Doctrine\ORM\EntityRepository;
 class <className> extends EntityRepository
 {
 }';
-
-    public function generateEntityRepositoryClass($fullClassName)
+    public function generateEntityRepositoryClass ($fullClassName)
     {
         $namespace = substr($fullClassName, 0, strrpos($fullClassName, '\\'));
-        $className = substr($fullClassName, strrpos($fullClassName, '\\') + 1, strlen($fullClassName));
-
-        $variables = array(
-            '<namespace>' => $namespace,
-            '<className>' => $className
-        );
-        return str_replace(array_keys($variables), array_values($variables), self::$_template);
+        $className = substr($fullClassName, strrpos($fullClassName, '\\') + 1, 
+        strlen($fullClassName));
+        $variables = array('<namespace>' => $namespace, 
+        '<className>' => $className);
+        return str_replace(array_keys($variables), array_values($variables), 
+        self::$_template);
     }
-
-    public function writeEntityRepositoryClass($fullClassName, $outputDirectory)
+    public function writeEntityRepositoryClass ($fullClassName, $outputDirectory)
     {
         $code = $this->generateEntityRepositoryClass($fullClassName);
-
-        $path = $outputDirectory . DIRECTORY_SEPARATOR
-              . str_replace('\\', \DIRECTORY_SEPARATOR, $fullClassName) . '.php';
+        $path = $outputDirectory . DIRECTORY_SEPARATOR .
+         str_replace('\\', \DIRECTORY_SEPARATOR, $fullClassName) . '.php';
         $dir = dirname($path);
-
-        if ( ! is_dir($dir)) {
+        if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-
-        if ( ! file_exists($path)) {
+        if (! file_exists($path)) {
             file_put_contents($path, $code);
         }
     }

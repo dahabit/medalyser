@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOMySql;
-
 use Doctrine\DBAL\Connection;
-
 /**
  * PDO MySql driver.
  *
@@ -37,23 +34,19 @@ class Driver implements \Doctrine\DBAL\Driver
      * @param array $driverOptions
      * @return Doctrine\DBAL\Driver\Connection
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect (array $params, $username = null, $password = null, 
+    array $driverOptions = array())
     {
         $conn = new \Doctrine\DBAL\Driver\PDOConnection(
-            $this->_constructPdoDsn($params),
-            $username,
-            $password,
-            $driverOptions
-        );
+        $this->_constructPdoDsn($params), $username, $password, $driverOptions);
         return $conn;
     }
-
     /**
      * Constructs the MySql PDO DSN.
      *
      * @return string  The DSN.
      */
-    private function _constructPdoDsn(array $params)
+    private function _constructPdoDsn (array $params)
     {
         $dsn = 'mysql:';
         if (isset($params['host']) && $params['host'] != '') {
@@ -71,26 +64,21 @@ class Driver implements \Doctrine\DBAL\Driver
         if (isset($params['charset'])) {
             $dsn .= 'charset=' . $params['charset'] . ';';
         }
-        
         return $dsn;
     }
-
-    public function getDatabasePlatform()
+    public function getDatabasePlatform ()
     {
         return new \Doctrine\DBAL\Platforms\MySqlPlatform();
     }
-
-    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
+    public function getSchemaManager (\Doctrine\DBAL\Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\MySqlSchemaManager($conn);
     }
-
-    public function getName()
+    public function getName ()
     {
         return 'pdo_mysql';
     }
-
-    public function getDatabase(\Doctrine\DBAL\Connection $conn)
+    public function getDatabase (\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
         return $params['dbname'];

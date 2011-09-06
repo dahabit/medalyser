@@ -18,13 +18,13 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Proxy;
-
 /**
  * Interface for proxy classes.
  * 
  * @author Roman Borschel <roman@code-factory.org>
  * @since 2.0
  */
-interface Proxy {}
+interface Proxy
+{
+}

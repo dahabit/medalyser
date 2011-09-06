@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Id;
-
 use Doctrine\ORM\EntityManager;
-
 abstract class AbstractIdGenerator
 {
     /**
@@ -29,8 +26,7 @@ abstract class AbstractIdGenerator
      * @param Doctrine\ORM\Entity $entity
      * @return mixed
      */
-    abstract public function generate(EntityManager $em, $entity);
-
+    abstract public function generate (EntityManager $em, $entity);
     /**
      * Gets whether this generator is a post-insert generator which means that
      * {@link generate()} must be called after the entity has been inserted
@@ -41,7 +37,7 @@ abstract class AbstractIdGenerator
      *
      * @return boolean
      */
-    public function isPostInsertGenerator()
+    public function isPostInsertGenerator ()
     {
         return false;
     }

@@ -95,7 +95,7 @@ input,textarea,select {
 	top: 0;
 	overflow: hidden;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 0 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   0 );
 	opacity: 0
 }
 
@@ -109,7 +109,7 @@ input,textarea,select {
 
 .x-item-disabled {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 40 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   40 );
 	opacity: 0.4
 }
 
@@ -420,7 +420,7 @@ input,textarea,select {
 	top: 0;
 	left: 0;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5;
 	width: 100%;
 	height: 100%;
@@ -548,13 +548,14 @@ input,textarea,select {
 
 .x-btn-disabled {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 100 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   100
+		);
 	opacity: 1
 }
 
 .x-btn-disabled span {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5
 }
 
@@ -569,7 +570,7 @@ input,textarea,select {
 .x-ie6 .x-btn-disabled .x-btn-icon,.x-ie7 .x-btn-disabled .x-btn-icon,.x-ie8 .x-btn-disabled .x-btn-icon
 	{
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 60 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   60 );
 	opacity: 0.6
 }
 
@@ -2567,13 +2568,14 @@ input,textarea,select {
 	cursor: pointer;
 	text-decoration: none !important;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 70 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   70 );
 	opacity: 0.7
 }
 
 .x-datepicker-prev a:hover,.x-datepicker-next a:hover {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 100 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   100
+		);
 	opacity: 1
 }
 
@@ -2598,7 +2600,7 @@ input,textarea,select {
 .x-item-disabled .x-datepicker-prev a:hover,.x-item-disabled .x-datepicker-next a:hover
 	{
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 60 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   60 );
 	opacity: 0.6
 }
 
@@ -3054,7 +3056,7 @@ table.x-datepicker-inner .x-datepicker-disabled a {
 
 .x-menu-item-disabled {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5
 }
 
@@ -3065,7 +3067,7 @@ table.x-datepicker-inner .x-datepicker-disabled a {
 
 .x-ie .x-menu-item-disabled .x-menu-item-icon {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5
 }
 
@@ -4132,7 +4134,7 @@ textarea.x-form-field {
 	right: -2px;
 	height: 34px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 0 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   0 );
 	opacity: 0;
 	font-size: 100px
 }
@@ -4557,7 +4559,7 @@ textarea.x-form-field {
 
 .x-panel-ghost,.x-window-ghost {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 65 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   65 );
 	opacity: 0.65;
 	cursor: move
 }
@@ -5770,7 +5772,7 @@ textarea.x-form-field {
 	_border-top-color: pink;
 	_border-left-color: pink;
 	_border-right-color: pink;
-	_filter: chroma(color = pink)
+	_filter: chroma(color =   pink)
 }
 
 .x-tip-anchor-bottom {
@@ -5780,7 +5782,7 @@ textarea.x-form-field {
 	_border-bottom-color: pink;
 	_border-left-color: pink;
 	_border-right-color: pink;
-	_filter: chroma(color = pink)
+	_filter: chroma(color =   pink)
 }
 
 .x-tip-anchor-left {
@@ -5790,7 +5792,7 @@ textarea.x-form-field {
 	_border-top-color: pink;
 	_border-bottom-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color = pink)
+	_filter: chroma(color =   pink)
 }
 
 .x-tip-anchor-right {
@@ -5800,7 +5802,7 @@ textarea.x-form-field {
 	_border-top-color: pink;
 	_border-bottom-color: pink;
 	_border-right-color: pink;
-	_filter: chroma(color = pink)
+	_filter: chroma(color =   pink)
 }
 
 .x-form-invalid-tip {
@@ -7313,13 +7315,14 @@ textarea.x-form-field {
 		url('../../resources/themes/images/access/tabs/tab-close.gif')
 		no-repeat;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 60 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   60 );
 	opacity: 0.6
 }
 
 .x-tab-close-btn:hover {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 100 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   100
+		);
 	opacity: 1
 }
 
@@ -7757,7 +7760,7 @@ textarea.x-form-field {
 
 .x-dd-drag-repair .x-dd-drag-ghost {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 60 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   60 );
 	opacity: 0.6
 }
 
@@ -7767,7 +7770,7 @@ textarea.x-form-field {
 
 .x-dd-drag-ghost {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 85 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   85 );
 	opacity: 0.85;
 	padding: 5px;
 	padding-left: 20px;
@@ -7800,7 +7803,7 @@ textarea.x-form-field {
 	background-color: #c3daf9;
 	border: 1px dotted #3399bb;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5;
 	zoom: 1
 }
@@ -7828,7 +7831,7 @@ textarea.x-form-field {
 	overflow: hidden;
 	zoom: 1;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 0 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   0 );
 	opacity: 0;
 	background-color: #fff
 }
@@ -7936,13 +7939,14 @@ textarea.x-form-field {
 .x-resizable-over .x-resizable-handle,.x-resizable-pinned .x-resizable-handle
 	{
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 100 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   100
+		);
 	opacity: 1
 }
 
 .x-window .x-window-handle {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 0 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   0 );
 	opacity: 0
 }
 
@@ -7969,7 +7973,7 @@ textarea.x-form-field {
 	z-index: 200000;
 	background-color: #fff;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 0 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   0 );
 	opacity: 0
 }
 
@@ -8105,13 +8109,13 @@ textarea.x-form-field {
 	font-size: 1px;
 	background-color: #b4b4b4;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 80 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   80 );
 	opacity: 0.8
 }
 
 .x-splitter-active .x-collapse-el {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 30 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   30 );
 	opacity: 0.3
 }
 
@@ -8119,7 +8123,7 @@ textarea.x-form-field {
 	position: absolute;
 	background: #b4b4b4;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 80 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   80 );
 	opacity: 0.8
 }
 
@@ -8299,7 +8303,7 @@ textarea.x-form-field {
 	{
 	background-position: -18px 0;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5;
 	cursor: default
 }
@@ -8353,7 +8357,7 @@ textarea.x-form-field {
 	{
 	background-position: 0 0;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity = 50 );
+	filter: progid :   DXImageTransform.Microsoft.Alpha (   Opacity =   50 );
 	opacity: 0.5;
 	cursor: default
 }

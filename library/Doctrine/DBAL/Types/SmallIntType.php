@@ -18,11 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
-
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 /**
  * Type that maps a database SMALLINT to a PHP integer.
  *
@@ -30,22 +27,20 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class SmallIntType extends Type
 {
-    public function getName()
+    public function getName ()
     {
         return Type::SMALLINT;
     }
-
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration (array $fieldDeclaration, 
+    AbstractPlatform $platform)
     {
         return $platform->getSmallIntTypeDeclarationSQL($fieldDeclaration);
     }
-
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue ($value, AbstractPlatform $platform)
     {
         return (null === $value) ? null : (int) $value;
     }
-
-    public function getBindingType()
+    public function getBindingType ()
     {
         return \PDO::PARAM_INT;
     }

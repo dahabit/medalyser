@@ -18,13 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Console\Command\ClearCache;
-
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console;
-
+use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console;
 /**
  * Command to clear the query cache of the various cache drivers.
  *
@@ -42,38 +37,35 @@ class QueryCommand extends Console\Command\Command
     /**
      * @see Console\Command\Command
      */
-    protected function configure()
+    protected function configure ()
     {
-        $this
-        ->setName('orm:clear-cache:query')
-        ->setDescription('Clear all query cache of the various cache drivers.')
-        ->setDefinition(array())
-        ->setHelp(<<<EOT
+        $this->setName('orm:clear-cache:query')
+            ->setDescription(
+        'Clear all query cache of the various cache drivers.')
+            ->setDefinition(array())
+            ->setHelp(
+        <<<EOT
 Clear all query cache of the various cache drivers.
-EOT
-        );
+EOT);
     }
-
     /**
      * @see Console\Command\Command
      */
-    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    protected function execute (Console\Input\InputInterface $input, 
+    Console\Output\OutputInterface $output)
     {
         $em = $this->getHelper('em')->getEntityManager();
         $cacheDriver = $em->getConfiguration()->getQueryCacheImpl();
-
-        if ( ! $cacheDriver) {
-            throw new \InvalidArgumentException('No Query cache driver is configured on given EntityManager.');
+        if (! $cacheDriver) {
+            throw new \InvalidArgumentException(
+            'No Query cache driver is configured on given EntityManager.');
         }
-
         if ($cacheDriver instanceof \Doctrine\Common\Cache\ApcCache) {
-            throw new \LogicException("Cannot clear APC Cache from Console, its shared in the Webserver memory and not accessible from the CLI.");
+            throw new \LogicException(
+            "Cannot clear APC Cache from Console, its shared in the Webserver memory and not accessible from the CLI.");
         }
-
         $output->write('Clearing ALL Query cache entries' . PHP_EOL);
-
         $cacheIds = $cacheDriver->deleteAll();
-
         if ($cacheIds) {
             foreach ($cacheIds as $cacheId) {
                 $output->write(' - ' . $cacheId . PHP_EOL);

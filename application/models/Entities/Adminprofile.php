@@ -60,7 +60,7 @@ class Adminprofile
     private $profilephoto;
     /** @Column(type="smallint", nullable=true) */
     private $sex;
-        /** @Column(type="string", length=5) */
+    /** @Column(type="string", length=5) */
     private $language;
     /**
      * @ManyToMany(targetEntity="Adminaddress", inversedBy="admins")

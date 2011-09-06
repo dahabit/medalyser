@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
-
 /**
  * Configuration for a Schema
  *
@@ -36,40 +34,35 @@ class SchemaConfig
      * @var bool
      */
     protected $_hasExplicitForeignKeyIndexes = false;
-
     /**
      * @var int
      */
     protected $_maxIdentifierLength = 63;
-
     /**
      * @return bool
      */
-    public function hasExplicitForeignKeyIndexes()
+    public function hasExplicitForeignKeyIndexes ()
     {
         return $this->_hasExplicitForeignKeyIndexes;
     }
-
     /**
      * @param bool $flag
      */
-    public function setExplicitForeignKeyIndexes($flag)
+    public function setExplicitForeignKeyIndexes ($flag)
     {
-        $this->_hasExplicitForeignKeyIndexes = (bool)$flag;
+        $this->_hasExplicitForeignKeyIndexes = (bool) $flag;
     }
-
     /**
      * @param int $length
      */
-    public function setMaxIdentifierLength($length)
+    public function setMaxIdentifierLength ($length)
     {
-        $this->_maxIdentifierLength = (int)$length;
+        $this->_maxIdentifierLength = (int) $length;
     }
-
     /**
      * @return int
      */
-    public function getMaxIdentifierLength()
+    public function getMaxIdentifierLength ()
     {
         return $this->_maxIdentifierLength;
     }

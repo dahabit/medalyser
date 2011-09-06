@@ -16,13 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\Common;
-
 /**
  * Base exception class for package Doctrine\Common
  * @author heinrich
  *
  */
-class CommonException extends \Exception {
+class CommonException extends \Exception
+{
 }

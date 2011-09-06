@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * ExistsExpression ::= ["NOT"] "EXISTS" "(" Subselect ")"
  *
@@ -36,13 +34,11 @@ class ExistsExpression extends Node
 {
     public $not;
     public $subselect;
-
-    public function __construct($subselect)
+    public function __construct ($subselect)
     {
         $this->subselect = $subselect;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkExistsExpression($this);
     }

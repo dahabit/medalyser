@@ -18,13 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Console\Command;
-
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console;
-
+use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console;
 /**
  * Command to ensure that Doctrine is properly configured for a production environment.
  *
@@ -42,34 +37,30 @@ class EnsureProductionSettingsCommand extends Console\Command\Command
     /**
      * @see Console\Command\Command
      */
-    protected function configure()
+    protected function configure ()
     {
-        $this
-        ->setName('orm:ensure-production-settings')
-        ->setDescription('Verify that Doctrine is properly configured for a production environment.')
-        ->setDefinition(array(
-            new InputOption(
-                'complete', null, InputOption::VALUE_NONE,
-                'Flag to also inspect database connection existance.'
-            )
-        ))
-        ->setHelp(<<<EOT
+        $this->setName('orm:ensure-production-settings')
+            ->setDescription(
+        'Verify that Doctrine is properly configured for a production environment.')
+            ->setDefinition(
+        array(
+        new InputOption('complete', null, InputOption::VALUE_NONE, 
+        'Flag to also inspect database connection existance.')))
+            ->setHelp(
+        <<<EOT
 Verify that Doctrine is properly configured for a production environment.
-EOT
-        );
+EOT);
     }
-
     /**
      * @see Console\Command\Command
      */
-    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    protected function execute (Console\Input\InputInterface $input, 
+    Console\Output\OutputInterface $output)
     {
         $em = $this->getHelper('em')->getEntityManager();
-
         $error = false;
         try {
             $em->getConfiguration()->ensureProductionSettings();
-
             if ($input->getOption('complete') !== null) {
                 $em->getConnection()->connect();
             }
@@ -77,9 +68,10 @@ EOT
             $error = true;
             $output->writeln('<error>' . $e->getMessage() . '</error>');
         }
-
         if ($error === false) {
-            $output->write('<info>Environment is correctly configured for production.</info>' . PHP_EOL);
+            $output->write(
+            '<info>Environment is correctly configured for production.</info>' .
+             PHP_EOL);
         }
     }
 }

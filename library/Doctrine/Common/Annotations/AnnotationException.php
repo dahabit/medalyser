@@ -16,9 +16,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\Common\Annotations;
-
 /**
  * Description of AnnotationException
  *
@@ -36,18 +34,17 @@ class AnnotationException extends \Exception
      * @param string $message Exception message
      * @return AnnotationException
      */
-    public static function syntaxError($message)
+    public static function syntaxError ($message)
     {
         return new self('[Syntax Error] ' . $message);
     }
-
     /**
      * Creates a new AnnotationException describing a Semantical error.
      *
      * @param string $message Exception message
      * @return AnnotationException
      */
-    public static function semanticalError($message)
+    public static function semanticalError ($message)
     {
         return new self('[Semantical Error] ' . $message);
     }

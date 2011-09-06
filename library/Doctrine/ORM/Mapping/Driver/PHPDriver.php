@@ -16,17 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Mapping\Driver;
-
-use Doctrine\Common\Cache\ArrayCache,
-    Doctrine\Common\Annotations\AnnotationReader,
-    Doctrine\DBAL\Schema\AbstractSchemaManager,
-    Doctrine\ORM\Mapping\ClassMetadataInfo,
-    Doctrine\ORM\Mapping\MappingException,
-    Doctrine\Common\Util\Inflector,
-    Doctrine\ORM\Mapping\Driver\AbstractFileDriver;
-
+use Doctrine\Common\Cache\ArrayCache, Doctrine\Common\Annotations\AnnotationReader, Doctrine\DBAL\Schema\AbstractSchemaManager, Doctrine\ORM\Mapping\ClassMetadataInfo, Doctrine\ORM\Mapping\MappingException, Doctrine\Common\Util\Inflector, Doctrine\ORM\Mapping\Driver\AbstractFileDriver;
 /**
  * The PHPDriver includes php files which just populate ClassMetadataInfo
  * instances with plain php code
@@ -48,20 +39,19 @@ class PHPDriver extends AbstractFileDriver
      */
     protected $_fileExtension = '.php';
     protected $_metadata;
-
     /**
      * {@inheritdoc}
      */
-    public function loadMetadataForClass($className, ClassMetadataInfo $metadata)
+    public function loadMetadataForClass ($className, 
+    ClassMetadataInfo $metadata)
     {
         $this->_metadata = $metadata;
         $this->_loadMappingFile($this->_findMappingFile($className));
     }
-
     /**
      * {@inheritdoc}
      */
-    protected function _loadMappingFile($file)
+    protected function _loadMappingFile ($file)
     {
         $metadata = $this->_metadata;
         include $file;

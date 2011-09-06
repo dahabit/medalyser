@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Helper;
-
 /**
  * The Formatter class provides helpers to format messages.
  *
@@ -25,11 +22,10 @@ class FormatterHelper extends Helper
      * @param string  $message The message
      * @param string  $style   The style to apply to the section
      */
-    public function formatSection($section, $message, $style = 'info')
+    public function formatSection ($section, $message, $style = 'info')
     {
         return sprintf('<%s>[%s]</%s> %s', $style, $section, $style, $message);
     }
-
     /**
      * Formats a message as a block of text.
      *
@@ -39,32 +35,27 @@ class FormatterHelper extends Helper
      *
      * @return string The formatter message
      */
-    public function formatBlock($messages, $style, $large = false)
+    public function formatBlock ($messages, $style, $large = false)
     {
         $messages = (array) $messages;
-
         $len = 0;
         $lines = array();
         foreach ($messages as $message) {
             $lines[] = sprintf($large ? '  %s  ' : ' %s ', $message);
             $len = max($this->strlen($message) + ($large ? 4 : 2), $len);
         }
-
         $messages = $large ? array(str_repeat(' ', $len)) : array();
         foreach ($lines as $line) {
-            $messages[] = $line.str_repeat(' ', $len - $this->strlen($line));
+            $messages[] = $line . str_repeat(' ', $len - $this->strlen($line));
         }
         if ($large) {
             $messages[] = str_repeat(' ', $len);
         }
-
         foreach ($messages as &$message) {
             $message = sprintf('<%s>%s</%s>', $style, $message, $style);
         }
-
         return implode("\n", $messages);
     }
-
     /**
      * Returns the length of a string, uses mb_strlen if it is available.
      *
@@ -72,17 +63,17 @@ class FormatterHelper extends Helper
      *
      * @return integer The length of the string
      */
-    private function strlen($string)
+    private function strlen ($string)
     {
-        return function_exists('mb_strlen') ? mb_strlen($string, mb_detect_encoding($string)) : strlen($string);
+        return function_exists('mb_strlen') ? mb_strlen($string, 
+        mb_detect_encoding($string)) : strlen($string);
     }
-
     /**
      * Returns the helper's canonical name
      *
      * @return string The canonical name of the helper
      */
-    public function getName()
+    public function getName ()
     {
         return 'formatter';
     }

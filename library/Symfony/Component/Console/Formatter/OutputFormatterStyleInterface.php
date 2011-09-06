@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Formatter;
-
 /**
  * Formatter style interface for defining styles.
  *
@@ -27,8 +24,7 @@ interface OutputFormatterStyleInterface
      *
      * @api
      */
-    function setForeground($color = null);
-
+    function setForeground ($color = null);
     /**
      * Sets style background color.
      *
@@ -36,8 +32,7 @@ interface OutputFormatterStyleInterface
      *
      * @api
      */
-    function setBackground($color = null);
-
+    function setBackground ($color = null);
     /**
      * Sets some specific style option.
      *
@@ -45,22 +40,19 @@ interface OutputFormatterStyleInterface
      *
      * @api
      */
-    function setOption($option);
-
+    function setOption ($option);
     /**
      * Unsets some specific style option.
      *
      * @param   string  $option     option name
      */
-    function unsetOption($option);
-
+    function unsetOption ($option);
     /**
      * Set multiple style options at once.
      *
      * @param   array   $options
      */
-    function setOptions(array $options);
-
+    function setOptions (array $options);
     /**
      * Applies the style to a given text.
      *
@@ -68,5 +60,5 @@ interface OutputFormatterStyleInterface
      *
      * @return string
      */
-    function apply($text);
+    function apply ($text);
 }

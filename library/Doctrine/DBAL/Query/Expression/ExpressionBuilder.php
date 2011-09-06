@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Query\Expression;
-
 use Doctrine\DBAL\Connection;
-
 /**
  * ExpressionBuilder class is responsible to dynamically create SQL query parts.
  *
@@ -32,64 +29,61 @@ use Doctrine\DBAL\Connection;
  */
 class ExpressionBuilder
 {
-    const EQ  = '=';
+    const EQ = '=';
     const NEQ = '<>';
-    const LT  = '<';
+    const LT = '<';
     const LTE = '<=';
-    const GT  = '>';
+    const GT = '>';
     const GTE = '>=';
-    
     /**
      * @var Doctrine\DBAL\Connection DBAL Connection
      */
     private $connection = null;
-
     /**
      * Initializes a new <tt>ExpressionBuilder</tt>.
      *
      * @param Doctrine\DBAL\Connection $connection DBAL Connection
      */
-    public function __construct(Connection $connection)
+    public function __construct (Connection $connection)
     {
         $this->connection = $connection;
     }
-    
     /**
      * Creates a conjunction of the given boolean expressions.
      *
      * Example:
      *
-     *     [php]
-     *     // (u.type = ?) AND (u.role = ?)
-     *     $expr->andX('u.type = ?', 'u.role = ?'));
+     * [php]
+     * // (u.type = ?) AND (u.role = ?)
+     * $expr->andX('u.type = ?', 'u.role = ?'));
      *
      * @param mixed $x Optional clause. Defaults = null, but requires
-     *                 at least one defined when converting to string.
+     * at least one defined when converting to string.
      * @return CompositeExpression
      */
-    public function andX($x = null)
+    public function andX ($x = null)
     {
-        return new CompositeExpression(CompositeExpression::TYPE_AND, func_get_args());
+        return new CompositeExpression(CompositeExpression::TYPE_AND, 
+        func_get_args());
     }
-
     /**
      * Creates a disjunction of the given boolean expressions.
      *
      * Example:
      *
-     *     [php]
-     *     // (u.type = ?) OR (u.role = ?)
-     *     $qb->where($qb->expr()->orX('u.type = ?', 'u.role = ?'));
+     * [php]
+     * // (u.type = ?) OR (u.role = ?)
+     * $qb->where($qb->expr()->orX('u.type = ?', 'u.role = ?'));
      *
      * @param mixed $x Optional clause. Defaults = null, but requires
-     *                 at least one defined when converting to string.
+     * at least one defined when converting to string.
      * @return CompositeExpression
      */
-    public function orX($x = null)
+    public function orX ($x = null)
     {
-        return new CompositeExpression(CompositeExpression::TYPE_OR, func_get_args());
+        return new CompositeExpression(CompositeExpression::TYPE_OR, 
+        func_get_args());
     }
-
     /**
      * Creates a comparison expression.
      * 
@@ -98,120 +92,113 @@ class ExpressionBuilder
      * @param mixed $y Right expression
      * @return string
      */
-    public function comparison($x, $operator, $y)
+    public function comparison ($x, $operator, $y)
     {
         return $x . ' ' . $operator . ' ' . $y;
     }
-    
     /**
      * Creates an equality comparison expression with the given arguments.
      *
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> = <right expr>. Example:
      *
-     *     [php]
-     *     // u.id = ?
-     *     $expr->eq('u.id', '?');
+     * [php]
+     * // u.id = ?
+     * $expr->eq('u.id', '?');
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function eq($x, $y)
+    public function eq ($x, $y)
     {
         return $this->comparison($x, self::EQ, $y);
     }
-
     /**
      * Creates a non equality comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> <> <right expr>. Example:
      *
-     *     [php]
-     *     // u.id <> 1
-     *     $q->where($q->expr()->neq('u.id', '1'));
+     * [php]
+     * // u.id <> 1
+     * $q->where($q->expr()->neq('u.id', '1'));
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function neq($x, $y)
+    public function neq ($x, $y)
     {
         return $this->comparison($x, self::NEQ, $y);
     }
-
     /**
      * Creates a lower-than comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> < <right expr>. Example:
      *
-     *     [php]
-     *     // u.id < ?
-     *     $q->where($q->expr()->lt('u.id', '?'));
+     * [php]
+     * // u.id < ?
+     * $q->where($q->expr()->lt('u.id', '?'));
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function lt($x, $y)
+    public function lt ($x, $y)
     {
         return $this->comparison($x, self::LT, $y);
     }
-
     /**
      * Creates a lower-than-equal comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> <= <right expr>. Example:
      *
-     *     [php]
-     *     // u.id <= ?
-     *     $q->where($q->expr()->lte('u.id', '?'));
+     * [php]
+     * // u.id <= ?
+     * $q->where($q->expr()->lte('u.id', '?'));
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function lte($x, $y)
+    public function lte ($x, $y)
     {
         return $this->comparison($x, self::LTE, $y);
     }
-
     /**
      * Creates a greater-than comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> > <right expr>. Example:
      *
-     *     [php]
-     *     // u.id > ?
-     *     $q->where($q->expr()->gt('u.id', '?'));
+     * [php]
+     * // u.id > ?
+     * $q->where($q->expr()->gt('u.id', '?'));
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function gt($x, $y)
+    public function gt ($x, $y)
     {
         return $this->comparison($x, self::GT, $y);
     }
-
     /**
      * Creates a greater-than-equal comparison expression with the given arguments.
      * First argument is considered the left expression and the second is the right expression.
      * When converted to string, it will generated a <left expr> >= <right expr>. Example:
      *
-     *     [php]
-     *     // u.id >= ?
-     *     $q->where($q->expr()->gte('u.id', '?'));
+     * [php]
+     * // u.id >= ?
+     * $q->where($q->expr()->gte('u.id', '?'));
      *
      * @param mixed $x Left expression
      * @param mixed $y Right expression
      * @return string
      */
-    public function gte($x, $y)
+    public function gte ($x, $y)
     {
         return $this->comparison($x, self::GTE, $y);
     }
-
     /**
      * Creates an IS NULL expression with the given arguments.
      *
@@ -219,11 +206,10 @@ class ExpressionBuilder
      * 
      * @return string
      */
-    public function isNull($x)
+    public function isNull ($x)
     {
         return $x . ' IS NULL';
     }
-
     /**
      * Creates an IS NOT NULL expression with the given arguments.
      *
@@ -231,11 +217,10 @@ class ExpressionBuilder
      * 
      * @return string
      */
-    public function isNotNull($x)
+    public function isNotNull ($x)
     {
         return $x . ' IS NOT NULL';
     }
-
     /**
      * Creates a LIKE() comparison expression with the given arguments.
      *
@@ -244,11 +229,10 @@ class ExpressionBuilder
      * 
      * @return string
      */
-    public function like($x, $y)
+    public function like ($x, $y)
     {
         return $this->comparison($x, 'LIKE', $y);
     }
-    
     /**
      * Quotes a given input parameter.
      * 
@@ -257,7 +241,7 @@ class ExpressionBuilder
      * 
      * @return string
      */
-    public function literal($input, $type = null)
+    public function literal ($input, $type = null)
     {
         return $this->connection->quote($input, $type);
     }

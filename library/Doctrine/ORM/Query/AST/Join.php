@@ -18,12 +18,10 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * Join ::= ["LEFT" ["OUTER"] | "INNER"] "JOIN" JoinAssociationPathExpression
- *          ["AS"] AliasIdentificationVariable [("ON" | "WITH") ConditionalExpression]
+ * ["AS"] AliasIdentificationVariable [("ON" | "WITH") ConditionalExpression]
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
@@ -38,20 +36,17 @@ class Join extends Node
     const JOIN_TYPE_LEFT = 1;
     const JOIN_TYPE_LEFTOUTER = 2;
     const JOIN_TYPE_INNER = 3;
-
-    public $joinType = self::JOIN_TYPE_INNER;    
+    public $joinType = self::JOIN_TYPE_INNER;
     public $joinAssociationPathExpression = null;
     public $aliasIdentificationVariable = null;
     public $conditionalExpression = null;
-
-    public function __construct($joinType, $joinAssocPathExpr, $aliasIdentVar)
+    public function __construct ($joinType, $joinAssocPathExpr, $aliasIdentVar)
     {
         $this->joinType = $joinType;
         $this->joinAssociationPathExpression = $joinAssocPathExpr;
         $this->aliasIdentificationVariable = $aliasIdentVar;
     }
-    
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkJoin($this);
     }

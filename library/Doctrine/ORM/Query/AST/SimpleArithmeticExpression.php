@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * SimpleArithmeticExpression ::= ArithmeticTerm {("+" | "-") ArithmeticTerm}*
  *
@@ -35,13 +33,11 @@ namespace Doctrine\ORM\Query\AST;
 class SimpleArithmeticExpression extends Node
 {
     public $arithmeticTerms = array();
-
-    public function __construct(array $arithmeticTerms)
+    public function __construct (array $arithmeticTerms)
     {
         $this->arithmeticTerms = $arithmeticTerms;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkSimpleArithmeticExpression($this);
     }

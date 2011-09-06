@@ -18,12 +18,10 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * SimpleSelectExpression ::= StateFieldPathExpression | IdentificationVariable
- *                          | (AggregateExpression [["AS"] FieldAliasIdentificationVariable])
+ * | (AggregateExpression [["AS"] FieldAliasIdentificationVariable])
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
@@ -37,13 +35,11 @@ class SimpleSelectExpression extends Node
 {
     public $expression;
     public $fieldIdentificationVariable;
-
-    public function __construct($expression)
+    public function __construct ($expression)
     {
         $this->expression = $expression;
-    }    
-    
-    public function dispatch($sqlWalker)
+    }
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkSimpleSelectExpression($this);
     }

@@ -16,13 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Mapping\Driver;
-
-use Doctrine\ORM\Mapping\Driver\Driver,
-    Doctrine\ORM\Mapping\ClassMetadataInfo,
-    Doctrine\ORM\Mapping\MappingException;
-
+use Doctrine\ORM\Mapping\Driver\Driver, Doctrine\ORM\Mapping\ClassMetadataInfo, Doctrine\ORM\Mapping\MappingException;
 /**
  * The DriverChain allows you to add multiple other mapping drivers for
  * certain namespaces
@@ -40,35 +35,33 @@ class DriverChain implements Driver
      * @var array
      */
     private $_drivers = array();
-
     /**
      * Add a nested driver.
      *
      * @param Driver $nestedDriver
      * @param string $namespace
      */
-    public function addDriver(Driver $nestedDriver, $namespace)
+    public function addDriver (Driver $nestedDriver, $namespace)
     {
         $this->_drivers[$namespace] = $nestedDriver;
     }
-
     /**
      * Get the array of nested drivers.
      *
      * @return array $drivers
      */
-    public function getDrivers()
+    public function getDrivers ()
     {
         return $this->_drivers;
     }
-
     /**
      * Loads the metadata for the specified class into the provided container.
      *
      * @param string $className
      * @param ClassMetadataInfo $metadata
      */
-    public function loadMetadataForClass($className, ClassMetadataInfo $metadata)
+    public function loadMetadataForClass ($className, 
+    ClassMetadataInfo $metadata)
     {
         foreach ($this->_drivers as $namespace => $driver) {
             if (strpos($className, $namespace) === 0) {
@@ -76,26 +69,24 @@ class DriverChain implements Driver
                 return;
             }
         }
-
-        throw MappingException::classIsNotAValidEntityOrMappedSuperClass($className);
+        throw MappingException::classIsNotAValidEntityOrMappedSuperClass(
+        $className);
     }
-
     /**
      * Gets the names of all mapped classes known to this driver.
      *
      * @return array The names of all mapped classes known to this driver.
      */
-    public function getAllClassNames()
+    public function getAllClassNames ()
     {
         $classNames = array();
         $driverClasses = array();
-        foreach ($this->_drivers AS $namespace => $driver) {
+        foreach ($this->_drivers as $namespace => $driver) {
             $oid = spl_object_hash($driver);
-            if (!isset($driverClasses[$oid])) {
+            if (! isset($driverClasses[$oid])) {
                 $driverClasses[$oid] = $driver->getAllClassNames();
             }
-            
-            foreach ($driverClasses[$oid] AS $className) {
+            foreach ($driverClasses[$oid] as $className) {
                 if (strpos($className, $namespace) === 0) {
                     $classNames[$className] = true;
                 }
@@ -103,7 +94,6 @@ class DriverChain implements Driver
         }
         return array_keys($classNames);
     }
-
     /**
      * Whether the class with the specified name should have its metadata loaded.
      *
@@ -112,14 +102,13 @@ class DriverChain implements Driver
      * @param string $className
      * @return boolean
      */
-    public function isTransient($className)
+    public function isTransient ($className)
     {
-        foreach ($this->_drivers AS $namespace => $driver) {
+        foreach ($this->_drivers as $namespace => $driver) {
             if (strpos($className, $namespace) === 0) {
                 return $driver->isTransient($className);
             }
         }
-
         // class isTransient, i.e. not an entity or mapped superclass
         return true;
     }

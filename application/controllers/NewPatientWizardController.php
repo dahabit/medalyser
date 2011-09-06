@@ -153,6 +153,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $finished = true;
                 
                 
+                
                     // ...we are finished
    endif;
             endwhile

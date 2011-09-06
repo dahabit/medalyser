@@ -16,11 +16,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
-
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 /**
  * Type that maps an SQL DATE to a PHP Date object.
  *
@@ -28,31 +25,30 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DateType extends Type
 {
-    public function getName()
+    public function getName ()
     {
         return Type::DATE;
     }
-
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration (array $fieldDeclaration, 
+    AbstractPlatform $platform)
     {
         return $platform->getDateTypeDeclarationSQL($fieldDeclaration);
     }
-
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue ($value, AbstractPlatform $platform)
     {
-        return ($value !== null) 
-            ? $value->format($platform->getDateFormatString()) : null;
+        return ($value !== null) ? $value->format(
+        $platform->getDateFormatString()) : null;
     }
-    
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue ($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
         }
-
-        $val = \DateTime::createFromFormat('!'.$platform->getDateFormatString(), $value);
-        if (!$val) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateFormatString());
+        $val = \DateTime::createFromFormat('!' .
+         $platform->getDateFormatString(), $value);
+        if (! $val) {
+            throw ConversionException::conversionFailedFormat($value, 
+            $this->getName(), $platform->getDateFormatString());
         }
         return $val;
     }

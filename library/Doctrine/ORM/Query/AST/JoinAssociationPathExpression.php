@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
- 
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * JoinAssociationPathExpression ::= IdentificationVariable "." (SingleValuedAssociationField | CollectionValuedAssociationField)
  *
@@ -36,14 +34,12 @@ class JoinAssociationPathExpression extends Node
 {
     public $identificationVariable;
     public $associationField;
-
-    public function __construct($identificationVariable, $associationField)
+    public function __construct ($identificationVariable, $associationField)
     {
         $this->identificationVariable = $identificationVariable;
         $this->associationField = $associationField;
     }
-
-    public function dispatch($sqlWalker)
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkJoinPathExpression($this);
     }

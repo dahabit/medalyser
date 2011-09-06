@@ -16,14 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST\Functions;
-
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
-
 /**
  * "DATE_ADD(date1, interval, unit)"
  *
@@ -37,30 +34,31 @@ class DateAddFunction extends FunctionNode
     public $firstDateExpression = null;
     public $intervalExpression = null;
     public $unit = null;
-
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql (SqlWalker $sqlWalker)
     {
         $unit = strtolower($this->unit);
         if ($unit == "day") {
-            return $sqlWalker->getConnection()->getDatabasePlatform()->getDateAddDaysExpression(
-                $this->firstDateExpression->dispatch($sqlWalker),
-                $this->intervalExpression->dispatch($sqlWalker)
-            );
-        } else if ($unit == "month") {
-            return $sqlWalker->getConnection()->getDatabasePlatform()->getDateAddMonthExpression(
-                $this->firstDateExpression->dispatch($sqlWalker),
-                $this->intervalExpression->dispatch($sqlWalker)
-            );
-        } else {
-            throw QueryException::semanticalError('DATE_ADD() only supports units of type day and month.');
-        }
+            return $sqlWalker->getConnection()
+                ->getDatabasePlatform()
+                ->getDateAddDaysExpression(
+            $this->firstDateExpression->dispatch($sqlWalker), 
+            $this->intervalExpression->dispatch($sqlWalker));
+        } else 
+            if ($unit == "month") {
+                return $sqlWalker->getConnection()
+                    ->getDatabasePlatform()
+                    ->getDateAddMonthExpression(
+                $this->firstDateExpression->dispatch($sqlWalker), 
+                $this->intervalExpression->dispatch($sqlWalker));
+            } else {
+                throw QueryException::semanticalError(
+                'DATE_ADD() only supports units of type day and month.');
+            }
     }
-
-    public function parse(Parser $parser)
+    public function parse (Parser $parser)
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
-
         $this->firstDateExpression = $parser->ArithmeticPrimary();
         $parser->match(Lexer::T_COMMA);
         $this->intervalExpression = $parser->ArithmeticPrimary();

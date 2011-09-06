@@ -1,11 +1,9 @@
 <?php
 // Define path to application directory
-defined('APPLICATION_PATH') ||
- define('APPLICATION_PATH', 
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', 
 realpath(dirname(__FILE__) . '/../application'));
 // Define application environment
-defined('APPLICATION_ENV') ||
- define('APPLICATION_ENV', 
+defined('APPLICATION_ENV') || define('APPLICATION_ENV', 
 (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 // Ensure library/ is on include_path
 set_include_path(

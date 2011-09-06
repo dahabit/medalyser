@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Input;
-
 /**
  * Represents a command line argument.
  *
@@ -23,12 +20,10 @@ class InputArgument
     const REQUIRED = 1;
     const OPTIONAL = 2;
     const IS_ARRAY = 4;
-
     private $name;
     private $mode;
     private $default;
     private $description;
-
     /**
      * Constructor.
      *
@@ -41,51 +36,48 @@ class InputArgument
      *
      * @api
      */
-    public function __construct($name, $mode = null, $description = '', $default = null)
+    public function __construct ($name, $mode = null, $description = '', 
+    $default = null)
     {
         if (null === $mode) {
             $mode = self::OPTIONAL;
-        } else if (is_string($mode) || $mode > 7) {
-            throw new \InvalidArgumentException(sprintf('Argument mode "%s" is not valid.', $mode));
-        }
-
-        $this->name        = $name;
-        $this->mode        = $mode;
+        } else 
+            if (is_string($mode) || $mode > 7) {
+                throw new \InvalidArgumentException(
+                sprintf('Argument mode "%s" is not valid.', $mode));
+            }
+        $this->name = $name;
+        $this->mode = $mode;
         $this->description = $description;
-
         $this->setDefault($default);
     }
-
     /**
      * Returns the argument name.
      *
      * @return string The argument name
      */
-    public function getName()
+    public function getName ()
     {
         return $this->name;
     }
-
     /**
      * Returns true if the argument is required.
      *
      * @return Boolean true if parameter mode is self::REQUIRED, false otherwise
      */
-    public function isRequired()
+    public function isRequired ()
     {
         return self::REQUIRED === (self::REQUIRED & $this->mode);
     }
-
     /**
      * Returns true if the argument can take multiple values.
      *
      * @return Boolean true if mode is self::IS_ARRAY, false otherwise
      */
-    public function isArray()
+    public function isArray ()
     {
         return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
     }
-
     /**
      * Sets the default value.
      *
@@ -93,39 +85,38 @@ class InputArgument
      *
      * @throws \LogicException When incorrect default value is given
      */
-    public function setDefault($default = null)
+    public function setDefault ($default = null)
     {
         if (self::REQUIRED === $this->mode && null !== $default) {
-            throw new \LogicException('Cannot set a default value except for Parameter::OPTIONAL mode.');
+            throw new \LogicException(
+            'Cannot set a default value except for Parameter::OPTIONAL mode.');
         }
-
         if ($this->isArray()) {
             if (null === $default) {
                 $default = array();
-            } else if (!is_array($default)) {
-                throw new \LogicException('A default value for an array argument must be an array.');
-            }
+            } else 
+                if (! is_array($default)) {
+                    throw new \LogicException(
+                    'A default value for an array argument must be an array.');
+                }
         }
-
         $this->default = $default;
     }
-
     /**
      * Returns the default value.
      *
      * @return mixed The default value
      */
-    public function getDefault()
+    public function getDefault ()
     {
         return $this->default;
     }
-
     /**
      * Returns the description text.
      *
      * @return string The description text
      */
-    public function getDescription()
+    public function getDescription ()
     {
         return $this->description;
     }

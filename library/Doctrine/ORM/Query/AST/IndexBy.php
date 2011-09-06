@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\AST;
-
 /**
  * IndexBy ::= "INDEX" "BY" SimpleStateFieldPathExpression
  *
@@ -35,13 +33,11 @@ namespace Doctrine\ORM\Query\AST;
 class IndexBy extends Node
 {
     public $simpleStateFieldPathExpression = null;
-
-    public function __construct($simpleStateFieldPathExpression)
+    public function __construct ($simpleStateFieldPathExpression)
     {
         $this->simpleStateFieldPathExpression = $simpleStateFieldPathExpression;
-    }    
-    
-    public function dispatch($sqlWalker)
+    }
+    public function dispatch ($sqlWalker)
     {
         return $sqlWalker->walkIndexBy($this);
     }

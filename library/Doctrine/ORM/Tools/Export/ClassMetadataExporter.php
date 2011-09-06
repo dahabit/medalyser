@@ -1,5 +1,4 @@
 <?php
-
 /*
  *  $Id$
  *
@@ -19,12 +18,8 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Export;
-
-use Doctrine\ORM\Tools\Export\ExportException,
-    Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\Tools\Export\ExportException, Doctrine\ORM\EntityManager;
 /**
  * Class used for converting your mapping information between the
  * supported formats: yaml, xml, and php/annotation.
@@ -38,24 +33,21 @@ use Doctrine\ORM\Tools\Export\ExportException,
 class ClassMetadataExporter
 {
     private static $_exporterDrivers = array(
-        'xml' => 'Doctrine\ORM\Tools\Export\Driver\XmlExporter',
-        'yaml' => 'Doctrine\ORM\Tools\Export\Driver\YamlExporter',
-        'yml' => 'Doctrine\ORM\Tools\Export\Driver\YamlExporter',
-        'php' => 'Doctrine\ORM\Tools\Export\Driver\PhpExporter',
-        'annotation' => 'Doctrine\ORM\Tools\Export\Driver\AnnotationExporter'
-    );
-
+    'xml' => 'Doctrine\ORM\Tools\Export\Driver\XmlExporter', 
+    'yaml' => 'Doctrine\ORM\Tools\Export\Driver\YamlExporter', 
+    'yml' => 'Doctrine\ORM\Tools\Export\Driver\YamlExporter', 
+    'php' => 'Doctrine\ORM\Tools\Export\Driver\PhpExporter', 
+    'annotation' => 'Doctrine\ORM\Tools\Export\Driver\AnnotationExporter');
     /**
      * Register a new exporter driver class under a specified name
      *
      * @param string $name
      * @param string $class
      */
-    public static function registerExportDriver($name, $class)
+    public static function registerExportDriver ($name, $class)
     {
         self::$_exporterDrivers[$name] = $class;
     }
-
     /**
      * Get a exporter driver instance
      *
@@ -63,14 +55,12 @@ class ClassMetadataExporter
      * @param string $source    The directory where the exporter will export to
      * @return AbstractExporter $exporter
      */
-    public function getExporter($type, $dest = null)
+    public function getExporter ($type, $dest = null)
     {
-        if ( ! isset(self::$_exporterDrivers[$type])) {
+        if (! isset(self::$_exporterDrivers[$type])) {
             throw ExportException::invalidExporterDriverType($type);
         }
-
         $class = self::$_exporterDrivers[$type];
-
         return new $class($dest);
     }
 }

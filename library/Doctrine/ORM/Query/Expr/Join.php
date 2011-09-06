@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Query\Expr;
-
 /**
  * Expression class for DQL from
  *
@@ -35,33 +33,31 @@ namespace Doctrine\ORM\Query\Expr;
 class Join
 {
     const INNER_JOIN = 'INNER';
-    const LEFT_JOIN  = 'LEFT';
-    
-    const ON   = 'ON';
+    const LEFT_JOIN = 'LEFT';
+    const ON = 'ON';
     const WITH = 'WITH';
-    
     private $_joinType;
     private $_join;
     private $_alias;
     private $_conditionType;
     private $_condition;
     private $_indexBy;
-
-    public function __construct($joinType, $join, $alias = null, $conditionType = null, $condition = null, $indexBy = null)
+    public function __construct ($joinType, $join, $alias = null, 
+    $conditionType = null, $condition = null, $indexBy = null)
     {
-        $this->_joinType       = $joinType;
-        $this->_join           = $join;
-        $this->_alias          = $alias;
-        $this->_conditionType  = $conditionType;
-        $this->_condition      = $condition;
-        $this->_indexBy        = $indexBy;
+        $this->_joinType = $joinType;
+        $this->_join = $join;
+        $this->_alias = $alias;
+        $this->_conditionType = $conditionType;
+        $this->_condition = $condition;
+        $this->_indexBy = $indexBy;
     }
-
-    public function __toString()
+    public function __toString ()
     {
-        return strtoupper($this->_joinType) . ' JOIN ' . $this->_join
-             . ($this->_alias ? ' ' . $this->_alias : '')
-             . ($this->_condition ? ' ' . strtoupper($this->_conditionType) . ' ' . $this->_condition : '')
-             . ($this->_indexBy ? ' INDEX BY ' . $this->_indexBy : '');
+        return strtoupper($this->_joinType) . ' JOIN ' . $this->_join .
+         ($this->_alias ? ' ' . $this->_alias : '') .
+         ($this->_condition ? ' ' . strtoupper($this->_conditionType) . ' ' .
+         $this->_condition : '') .
+         ($this->_indexBy ? ' INDEX BY ' . $this->_indexBy : '');
     }
 }

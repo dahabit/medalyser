@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
-
 /**
  * Marker interface for contraints
  *
@@ -32,7 +30,6 @@ namespace Doctrine\DBAL\Schema;
  */
 interface Constraint
 {
-    public function getName();
-
-    public function getColumns();
+    public function getName ();
+    public function getColumns ();
 }

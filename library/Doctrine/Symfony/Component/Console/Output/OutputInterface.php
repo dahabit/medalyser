@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -8,11 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Output;
-
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
-
 /**
  * OutputInterface is the interface implemented by all Output classes.
  *
@@ -22,14 +18,12 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  */
 interface OutputInterface
 {
-    const VERBOSITY_QUIET   = 0;
-    const VERBOSITY_NORMAL  = 1;
+    const VERBOSITY_QUIET = 0;
+    const VERBOSITY_NORMAL = 1;
     const VERBOSITY_VERBOSE = 2;
-
     const OUTPUT_NORMAL = 0;
     const OUTPUT_RAW = 1;
     const OUTPUT_PLAIN = 2;
-
     /**
      * Writes a message to the output.
      *
@@ -41,8 +35,7 @@ interface OutputInterface
      *
      * @api
      */
-    function write($messages, $newline = false, $type = 0);
-
+    function write ($messages, $newline = false, $type = 0);
     /**
      * Writes a message to the output and adds a newline at the end.
      *
@@ -51,8 +44,7 @@ interface OutputInterface
      *
      * @api
      */
-    function writeln($messages, $type = 0);
-
+    function writeln ($messages, $type = 0);
     /**
      * Sets the verbosity of the output.
      *
@@ -60,15 +52,13 @@ interface OutputInterface
      *
      * @api
      */
-    function setVerbosity($level);
-
+    function setVerbosity ($level);
     /**
      * Gets the current verbosity of the output.
      *
      * @return integer The current level of verbosity
      */
-    function getVerbosity();
-
+    function getVerbosity ();
     /**
      * Sets the decorated flag.
      *
@@ -76,8 +66,7 @@ interface OutputInterface
      *
      * @api
      */
-    function setDecorated($decorated);
-
+    function setDecorated ($decorated);
     /**
      * Gets the decorated flag.
      *
@@ -85,8 +74,7 @@ interface OutputInterface
      *
      * @api
      */
-    function isDecorated();
-
+    function isDecorated ();
     /**
      * Sets output formatter.
      *
@@ -94,8 +82,7 @@ interface OutputInterface
      *
      * @api
      */
-    function setFormatter(OutputFormatterInterface $formatter);
-
+    function setFormatter (OutputFormatterInterface $formatter);
     /**
      * Returns current output formatter instance.
      *
@@ -103,5 +90,5 @@ interface OutputInterface
      *
      * @api
      */
-    function getFormatter();
+    function getFormatter ();
 }

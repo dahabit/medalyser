@@ -18,9 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
-
 namespace Doctrine\ORM;
-
 /**
  * Pessimistic Lock Exception
  *
@@ -33,7 +31,7 @@ namespace Doctrine\ORM;
  */
 class PessimisticLockException extends ORMException
 {
-    public static function lockFailed()
+    public static function lockFailed ()
     {
         return new self("The pessimistic lock failed.");
     }

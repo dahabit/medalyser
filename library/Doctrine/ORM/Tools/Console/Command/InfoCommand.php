@@ -16,15 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Tools\Console\Command;
-
 use Doctrine\ORM\Mapping\MappingException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
-
 /**
  * Show information about mapped entities
  *
@@ -35,44 +32,41 @@ use Symfony\Component\Console\Command\Command;
  */
 class InfoCommand extends Command
 {
-    protected function configure()
+    protected function configure ()
     {
-        $this
-            ->setName('orm:info')
+        $this->setName('orm:info')
             ->setDescription('Show basic information about all mapped entities')
-            ->setHelp(<<<EOT
+            ->setHelp(
+        <<<EOT
 The <info>doctrine:mapping:info</info> shows basic information about which
 entities exist and possibly if their mapping information contains errors or
 not.
-EOT
-        );
+EOT);
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute (InputInterface $input, OutputInterface $output)
     {
         /* @var $entityManager Doctrine\ORM\EntityManager */
         $entityManager = $this->getHelper('em')->getEntityManager();
-
         $entityClassNames = $entityManager->getConfiguration()
-                                          ->getMetadataDriverImpl()
-                                          ->getAllClassNames();
-
-        if (!$entityClassNames) {
+            ->getMetadataDriverImpl()
+            ->getAllClassNames();
+        if (! $entityClassNames) {
             throw new \Exception(
-                'You do not have any mapped Doctrine ORM entities according to the current configuration. '.
-                'If you have entities or mapping files you should check your mapping configuration for errors.'
-            );
+            'You do not have any mapped Doctrine ORM entities according to the current configuration. ' .
+             'If you have entities or mapping files you should check your mapping configuration for errors.');
         }
-
-        $output->writeln(sprintf("Found <info>%d</info> mapped entities:", count($entityClassNames)));
-
+        $output->writeln(
+        sprintf("Found <info>%d</info> mapped entities:", 
+        count($entityClassNames)));
         foreach ($entityClassNames as $entityClassName) {
             try {
                 $cm = $entityManager->getClassMetadata($entityClassName);
-                $output->writeln(sprintf("<info>[OK]</info>   %s", $entityClassName));
+                $output->writeln(
+                sprintf("<info>[OK]</info>   %s", $entityClassName));
             } catch (MappingException $e) {
-                $output->writeln("<error>[FAIL]</error> ".$entityClassName);
-                $output->writeln(sprintf("<comment>%s</comment>", $e->getMessage()));
+                $output->writeln("<error>[FAIL]</error> " . $entityClassName);
+                $output->writeln(
+                sprintf("<comment>%s</comment>", $e->getMessage()));
                 $output->writeln('');
             }
         }

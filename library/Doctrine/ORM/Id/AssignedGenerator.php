@@ -16,12 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\ORM\Id;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
-
 /**
  * Special generator for application-assigned identifiers (doesnt really generate anything).
  *
@@ -40,7 +37,7 @@ class AssignedGenerator extends AbstractIdGenerator
      * @return mixed
      * @override
      */
-    public function generate(EntityManager $em, $entity)
+    public function generate (EntityManager $em, $entity)
     {
         $class = $em->getClassMetadata(get_class($entity));
         $identifier = array();
@@ -50,12 +47,13 @@ class AssignedGenerator extends AbstractIdGenerator
                 $value = $class->reflFields[$idField]->getValue($entity);
                 if (isset($value)) {
                     if (isset($class->associationMappings[$idField])) {
-                        if (!$em->getUnitOfWork()->isInIdentityMap($value)) {
-                            throw ORMException::entityMissingForeignAssignedId($entity, $value);
+                        if (! $em->getUnitOfWork()->isInIdentityMap($value)) {
+                            throw ORMException::entityMissingForeignAssignedId(
+                            $entity, $value);
                         }
-                        
                         // NOTE: Single Columns as associated identifiers only allowed - this constraint it is enforced.
-                        $identifier[$idField] = current($em->getUnitOfWork()->getEntityIdentifier($value));
+                        $identifier[$idField] = current(
+                        $em->getUnitOfWork()->getEntityIdentifier($value));
                     } else {
                         $identifier[$idField] = $value;
                     }
@@ -68,12 +66,13 @@ class AssignedGenerator extends AbstractIdGenerator
             $value = $class->reflFields[$idField]->getValue($entity);
             if (isset($value)) {
                 if (isset($class->associationMappings[$idField])) {
-                    if (!$em->getUnitOfWork()->isInIdentityMap($value)) {
-                        throw ORMException::entityMissingForeignAssignedId($entity, $value);
+                    if (! $em->getUnitOfWork()->isInIdentityMap($value)) {
+                        throw ORMException::entityMissingForeignAssignedId(
+                        $entity, $value);
                     }
-                    
                     // NOTE: Single Columns as associated identifiers only allowed - this constraint it is enforced.
-                    $identifier[$idField] = current($em->getUnitOfWork()->getEntityIdentifier($value));
+                    $identifier[$idField] = current(
+                    $em->getUnitOfWork()->getEntityIdentifier($value));
                 } else {
                     $identifier[$idField] = $value;
                 }
@@ -81,7 +80,6 @@ class AssignedGenerator extends AbstractIdGenerator
                 throw ORMException::entityMissingAssignedId($entity);
             }
         }
-        
         return $identifier;
     }
 }
