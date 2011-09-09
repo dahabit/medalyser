@@ -23,9 +23,39 @@ Ext
 
 			appFolder : 'app',
 
-			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History','Settings','Patient'],
+			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History',
+					'Settings', 'Patient' ],
 			launch : function() {
-				var adminResource=Ext.create('MA.store.AdminResources');
+				Ext.Ajax.request({
+					url : './account/getadminstores',
+					success : function(response) {
+						var json = Ext.decode(response.responseText);
+						var adminStores = new Array();
+						// setup and intitialize on the fly stores
+						for ( var key1 in json) {
+							var storeFields = new Array();
+							for ( var key2 in json[key1]) {// if (i==1){break;}
+								// console.log(key2);
+								for ( var key3 in json[key1][key2]) {
+									storeFields.push(key3);
+								}
+								break;
+							}
+							;
+							Ext.define('MA.store.' + key1, {
+								extend : 'Ext.data.Store',
+								fields : storeFields,
+								data : json[key1]
+							});
+							// adminStores.push(Ext.create('MA.store.' + key1));
+							console.log(storeFields);
+
+						}
+						;
+
+					}
+				});
+
 				Ext
 						.create(
 								'Ext.container.Viewport',
@@ -52,13 +82,17 @@ Ext
 											},
 											{
 												region : 'center',
-												xtype : 'tabpanel', 
+												xtype : 'tabpanel',
 												activeTab : 1,
-												id:'centertabpanel',
-												items : [{
-													title : 'Overview',
-													html : 'The first tab\'s content. Others may be added dynamically'
-												},{xtype:'ViewAllPatients'}]
+												id : 'centertabpanel',
+												items : [
+														{
+															title : 'Overview',
+															html : 'The first tab\'s content. Others may be added dynamically'
+														},
+														{
+															xtype : 'ViewAllPatients'
+														} ]
 											} ]
 								});
 			}

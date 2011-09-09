@@ -341,7 +341,8 @@ Ext
 							xtype : 'combo',
 							name : 'language',
 							fieldLabel : 'Language',
-							store : 'Language',
+							store : Ext
+							.create('MA.store.Languages'),
 							queryMode : 'local',
 							displayField : 'name',
 							valueField : 'id',
@@ -441,9 +442,10 @@ Ext
 
 						var card_1_address_country = {
 							xtype : 'combo',
-							store : 'Countries',
-							displayField : 'name',
-							valueField : 'iso',
+							store : Ext
+							.create('MA.store.Countries'),
+							displayField : 'id',
+							valueField : 'id',
 							forceSelection : true,
 							fieldLabel : 'Country',
 							typeAhead : true,
@@ -559,9 +561,10 @@ Ext
 																					},
 																					{
 																						xtype : 'combo',
-																						store : 'Countries',
+																						store : Ext
+																						.create('MA.store.Countries'),
 																						displayField : 'name',
-																						valueField : 'iso',
+																						valueField : 'id',
 																						forceSelection : true,
 																						fieldLabel : 'Country',
 																						typeAhead : true,

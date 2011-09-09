@@ -282,17 +282,23 @@ class AccountController extends Zend_Controller_Action
         $adminSettings[0]['recovery'], $adminSettings[0]['confirmed'], 
         $adminSettings[0]['created'], $adminSettings[0]['updated'], 
         $adminSettings[0]['id']);
-        //push $adminSettings into $stores array
-        foreach ($adminSettings as $key => $value) {
-            $stores['adminsettings'] = $value;
+        $stores['AdminSettings'] = $adminSettings;
+        //countries
+        $countries = Zend_Locale::getTranslationList('Territory', null, 
+        2);
+        //add countries store to the final store
+        foreach ($countries as $key => $value) {
+            $countriesStore[] = array('id' => $key, 'name' => $value);
+        }
+        $stores['Countries'] = $countriesStore;
+        //languages
+        $languages = Zend_Locale::getTranslationList('language');
+        foreach ($languages as $key => $value) {
+            $languagesStore[] = array('id' => $key, 'name' => $value);
         }
         //add countries store to the final store
-        $stores['countries'] = Zend_Locale::getTranslationList(
-        'Territory', null, 2);
-        //add countries store to the final store
-        $stores['languages'] = Zend_Locale::getTranslationList(
-        'language');
-        $this->getResponse()->appendBody(Zend_Json::encode($stores));
+        $stores['Languages'] = $languagesStore;
+         $this->getResponse()->appendBody(Zend_Json::encode($stores));
     }
 }
 

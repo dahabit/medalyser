@@ -19,11 +19,16 @@
 Ext.define('MA.controller.NewPatientWizard', {
     extend: 'Ext.app.Controller',
 
-    stores: ['MarriageStatus','Countries','AddressType','Race','Language'],
+    stores: ['MarriageStatus'
+           //  ,'Countries'
+             ,'AddressType',
+             'Race'
+            // ,'Language'
+             ]
 
    // models: ['NewPatientWizard'],
 
-    views: ['newpatientwizard.Show']
+    //,views: ['newpatientwizard.Show']
 
  /*   ,refs: [
         {

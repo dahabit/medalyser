@@ -19,7 +19,7 @@
 Ext.define('MA.controller.Settings', {
     extend: 'Ext.app.Controller',
 
-    stores: ['Countries','ExtjsTemplate','Language'],
+    stores: ['ExtjsTemplate'],
     views: ['settings.Edit']
 
  /*   ,refs: [
