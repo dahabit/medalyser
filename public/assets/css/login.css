@@ -50,6 +50,7 @@ body {
 	color: #333333;
 	position: relative;
 	line-height: 1.2em;
+	#background-image:url(../images/elements/bg.jpg);
 	background-color: #dfeff9;
 }
 
