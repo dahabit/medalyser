@@ -56,8 +56,6 @@ else {
 }
 //add notification plugin
 $this->headScript()->appendFile('./app/plugins/Notification.js');
-//add clock plugin
-$this->headScript()->appendFile('./app/plugins/Clock.js');
 //add user set extjs theme css file
 if ($this->extjstemplate == 0 or ! $this->extjstemplate) {
     $this->headLink()->prependStylesheet(
@@ -94,8 +92,7 @@ echo $this->headScript();
 <div id="x-loading-mask"
 	style="width: 100%; height: 100%; background-image:url(assets/images/elements/bg.jpg);background-position:center; background-repeat:no-repeat; position: absolute; z-index: 20000; left: 0; top: 0;">&#160;</div>
 
-<div id="x-loading-panel"
-	style="position: absolute; left: 35%; top: 30%; border: 1px solid #9c9f9d; padding: 2px; background: #d1d8db; width: 340px; text-align: center; z-index: 20001;">
+<div id="x-loading-panel" style="position: absolute; left: 35%; top: 30%; border: 1px solid #9c9f9d; padding: 2px; background: #d1d8db; width: 340px; text-align: center; z-index: 20001;">
 <div class="x-loading-panel-mask-indicator"
 	style="border: 1px solid #c1d1d6; color: #666; background: white; padding: 10px; margin: 0; padding-left: 20px; height: 200px; text-align: left;">
 <img class="x-loading-panel-logo"
@@ -105,7 +102,7 @@ echo $this->headScript();
 	id="load-status">Initializing System ...</span>
 <div style="font-size: 10px; font-weight: normal; margin-top: 15px;">Copyright
 &copy; 2011 MedAlyser Project</div>
-</div>
+</div></div>
 <script type="text/javascript">
 Ext.onReady(function(){
     function removeLoadMask() {
