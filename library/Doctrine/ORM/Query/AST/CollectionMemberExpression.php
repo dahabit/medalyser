@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+ 
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * CollectionMemberExpression ::= EntityExpression ["NOT"] "MEMBER" ["OF"] CollectionValuedPathExpression
  *
@@ -35,12 +37,14 @@ class CollectionMemberExpression extends Node
     public $entityExpression;
     public $collectionValuedPathExpression;
     public $not;
-    public function __construct ($entityExpr, $collValuedPathExpr)
+
+    public function __construct($entityExpr, $collValuedPathExpr)
     {
         $this->entityExpression = $entityExpr;
         $this->collectionValuedPathExpression = $collValuedPathExpr;
     }
-    public function dispatch ($walker)
+
+    public function dispatch($walker)
     {
         return $walker->walkCollectionMemberExpression($this);
     }

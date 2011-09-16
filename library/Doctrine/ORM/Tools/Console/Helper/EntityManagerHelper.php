@@ -18,8 +18,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Tools\Console\Helper;
-use Symfony\Component\Console\Helper\Helper, Doctrine\ORM\EntityManager;
+
+use Symfony\Component\Console\Helper\Helper,
+    Doctrine\ORM\EntityManager;
+
 /**
  * Doctrine CLI Connection Helper.
  *
@@ -39,28 +43,31 @@ class EntityManagerHelper extends Helper
      * @var EntityManager
      */
     protected $_em;
+
     /**
      * Constructor
      *
      * @param Connection $connection Doctrine Database Connection
      */
-    public function __construct (EntityManager $em)
+    public function __construct(EntityManager $em)
     {
         $this->_em = $em;
     }
+
     /**
      * Retrieves Doctrine ORM EntityManager
      *
      * @return EntityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->_em;
     }
+
     /**
      * @see Helper
      */
-    public function getName ()
+    public function getName()
     {
         return 'entityManager';
     }

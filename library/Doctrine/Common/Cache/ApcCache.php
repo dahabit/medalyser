@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Cache;
+
 /**
  * APC cache driver.
  *
@@ -38,42 +40,50 @@ class ApcCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function getIds ()
+    public function getIds()
     {
         $ci = apc_cache_info('user');
         $keys = array();
+
         foreach ($ci['cache_list'] as $entry) {
             $keys[] = $entry['info'];
         }
+
         return $keys;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doFetch ($id)
+    protected function _doFetch($id)
     {
         return apc_fetch($id);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doContains ($id)
+    protected function _doContains($id)
     {
         $found = false;
+
         apc_fetch($id, $found);
+
         return $found;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doSave ($id, $data, $lifeTime = 0)
+    protected function _doSave($id, $data, $lifeTime = 0)
     {
         return (bool) apc_store($id, $data, (int) $lifeTime);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doDelete ($id)
+    protected function _doDelete($id)
     {
         return apc_delete($id);
     }

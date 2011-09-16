@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Internal\Hydration;
+
 /**
  * Represents a result structure that can be iterated over, hydrating row-by-row
  * during the iteration. An IterableResult is obtained by AbstractHydrator#iterate().
@@ -30,26 +32,31 @@ class IterableResult implements \Iterator
      * @var Doctrine\ORM\Internal\Hydration\AbstractHydrator
      */
     private $_hydrator;
+
     /**
      * @var boolean
      */
     private $_rewinded = false;
+
     /**
      * @var integer
      */
-    private $_key = - 1;
+    private $_key = -1;
+
     /**
      * @var object
      */
     private $_current = null;
+
     /**
      * @param Doctrine\ORM\Internal\Hydration\AbstractHydrator $hydrator
      */
-    public function __construct ($hydrator)
+    public function __construct($hydrator)
     {
         $this->_hydrator = $hydrator;
     }
-    public function rewind ()
+
+    public function rewind()
     {
         if ($this->_rewinded == true) {
             throw new HydrationException("Can only iterate a Result once.");
@@ -58,36 +65,40 @@ class IterableResult implements \Iterator
             $this->_rewinded = true;
         }
     }
+
     /**
      * Gets the next set of results.
      *
      * @return array
      */
-    public function next ()
+    public function next()
     {
         $this->_current = $this->_hydrator->hydrateRow();
-        $this->_key ++;
+        $this->_key++;
         return $this->_current;
     }
+
     /**
      * @return mixed
      */
-    public function current ()
+    public function current()
     {
         return $this->_current;
     }
+
     /**
      * @return int
      */
-    public function key ()
+    public function key()
     {
         return $this->_key;
     }
+
     /**
      * @return bool
      */
-    public function valid ()
+    public function valid()
     {
-        return ($this->_current != false);
+        return ($this->_current!=false);
     }
 }

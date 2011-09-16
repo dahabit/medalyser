@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Annotations;
+
 final class AnnotationRegistry
 {
     /**
@@ -29,22 +31,26 @@ final class AnnotationRegistry
      * 
      * @var array
      */
-    private static $autoloadNamespaces = array();
+    static private $autoloadNamespaces = array();
+    
     /**
      * A map of autoloader callables.
      * 
      * @var array
      */
-    private static $loaders = array();
-    static public function reset ()
+    static private $loaders = array();
+    
+    static public function reset()
     {
         self::$autoloadNamespaces = array();
         self::$loaders = array();
     }
-    static public function registerFile ($file)
+    
+    static public function registerFile($file)
     {
         require_once $file;
     }
+    
     /**
      * Add a namespace with one or many directories to look for files or null for the include path.
      * 
@@ -53,10 +59,11 @@ final class AnnotationRegistry
      * @param string $namespace
      * @param string|array|null $dirs 
      */
-    static public function registerAutoloadNamespace ($namespace, $dirs = null)
+    static public function registerAutoloadNamespace($namespace, $dirs = null)
     {
         self::$autoloadNamespaces[$namespace] = $dirs;
     }
+    
     /**
      * Register multiple namespaces
      * 
@@ -64,11 +71,11 @@ final class AnnotationRegistry
      * 
      * @param array $namespaces
      */
-    static public function registerAutoloadNamespaces (array $namespaces)
+    static public function registerAutoloadNamespaces(array $namespaces)
     {
-        self::$autoloadNamespaces = array_merge(self::$autoloadNamespaces, 
-        $namespaces);
+        self::$autoloadNamespaces = array_merge(self::$autoloadNamespaces, $namespaces);
     }
+    
     /**
      * Register an autoloading callabale for annotations, much like spl_autoload_register().
      * 
@@ -77,23 +84,23 @@ final class AnnotationRegistry
      * 
      * @param callabale $callabale 
      */
-    static public function registerLoader ($callabale)
+    static public function registerLoader($callabale)
     {
-        if (! is_callable($callabale)) {
-            throw new \InvalidArgumentException(
-            "A callable is expected in AnnotationRegistry::registerLoader().");
+        if (!is_callable($callabale)) {
+            throw new \InvalidArgumentException("A callable is expected in AnnotationRegistry::registerLoader().");
         }
         self::$loaders[] = $callabale;
     }
+    
     /**
      * Autoload an annotation class silently.
      * 
      * @param string $class
      * @return void
      */
-    static public function loadAnnotationClass ($class)
+    static public function loadAnnotationClass($class)
     {
-        foreach (self::$autoloadNamespaces as $namespace => $dirs) {
+        foreach (self::$autoloadNamespaces AS $namespace => $dirs) {
             if (strpos($class, $namespace) === 0) {
                 $file = str_replace("\\", DIRECTORY_SEPARATOR, $class) . ".php";
                 if ($dirs === null) {
@@ -102,7 +109,7 @@ final class AnnotationRegistry
                         return true;
                     }
                 } else {
-                    foreach ((array) $dirs as $dir) {
+                    foreach((array)$dirs AS $dir) {
                         if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
                             require $dir . DIRECTORY_SEPARATOR . $file;
                             return true;
@@ -111,7 +118,8 @@ final class AnnotationRegistry
                 }
             }
         }
-        foreach (self::$loaders as $loader) {
+        
+        foreach (self::$loaders AS $loader) {
             if (call_user_func($loader, $class) === true) {
                 return true;
             }

@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * ArithmeticTerm ::= ArithmeticFactor {("*" | "/") ArithmeticFactor}*
  *
@@ -33,11 +35,13 @@ namespace Doctrine\ORM\Query\AST;
 class ArithmeticTerm extends Node
 {
     public $arithmeticFactors;
-    public function __construct (array $arithmeticFactors)
+
+    public function __construct(array $arithmeticFactors)
     {
         $this->arithmeticFactors = $arithmeticFactors;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkArithmeticTerm($this);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM;
+
 /**
  * Represents a native SQL query.
  *
@@ -26,31 +28,34 @@ namespace Doctrine\ORM;
 final class NativeQuery extends AbstractQuery
 {
     private $_sql;
+
     /**
      * Sets the SQL of the query.
      *
      * @param string $sql
      * @return NativeQuery This query instance.
      */
-    public function setSQL ($sql)
+    public function setSQL($sql)
     {
         $this->_sql = $sql;
         return $this;
     }
+
     /**
      * Gets the SQL query.
      *
      * @return mixed The built SQL query or an array of all SQL queries.
      * @override
      */
-    public function getSQL ()
+    public function getSQL()
     {
         return $this->_sql;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doExecute ()
+    protected function _doExecute()
     {
         $stmt = $this->_em->getConnection()->prepare($this->_sql);
         $params = $this->_params;
@@ -62,6 +67,7 @@ final class NativeQuery extends AbstractQuery
             }
         }
         $stmt->execute();
+
         return $stmt;
     }
 }

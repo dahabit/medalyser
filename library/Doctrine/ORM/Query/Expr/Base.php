@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Abstract base Expr class for building DQL parts
  *
@@ -36,41 +38,48 @@ abstract class Base
     protected $_separator = ', ';
     protected $_postSeparator = ')';
     protected $_allowedClasses = array();
+
     protected $_parts = array();
-    public function __construct ($args = array())
+
+    public function __construct($args = array())
     {
         $this->addMultiple($args);
     }
-    public function addMultiple ($args = array())
+    
+    public function addMultiple($args = array())
     {
         foreach ((array) $args as $arg) {
             $this->add($arg);
         }
     }
-    public function add ($arg)
+
+    public function add($arg)
     {
-        if ($arg !== null || ($arg instanceof self && $arg->count() > 0)) {
+        if ( $arg !== null || ($arg instanceof self && $arg->count() > 0)) {
             // If we decide to keep Expr\Base instances, we can use this check
-            if (! is_string($arg)) {
+            if ( ! is_string($arg)) {
                 $class = get_class($arg);
-                if (! in_array($class, $this->_allowedClasses)) {
-                    throw new \InvalidArgumentException(
-                    "Expression of type '$class' not allowed in this context.");
+
+                if ( ! in_array($class, $this->_allowedClasses)) {
+                    throw new \InvalidArgumentException("Expression of type '$class' not allowed in this context.");
                 }
             }
+
             $this->_parts[] = $arg;
         }
     }
-    public function count ()
+
+    public function count()
     {
         return count($this->_parts);
     }
-    public function __toString ()
+
+    public function __toString()
     {
         if ($this->count() == 1) {
             return (string) $this->_parts[0];
         }
-        return $this->_preSeparator . implode($this->_separator, $this->_parts) .
-         $this->_postSeparator;
+        
+        return $this->_preSeparator . implode($this->_separator, $this->_parts) . $this->_postSeparator;
     }
 }

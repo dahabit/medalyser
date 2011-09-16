@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST\Functions;
+
 use Doctrine\ORM\Query\AST\Node;
+
 /**
  * Abtract Function Node.
  *
@@ -32,14 +35,18 @@ use Doctrine\ORM\Query\AST\Node;
 abstract class FunctionNode extends Node
 {
     public $name;
-    public function __construct ($name)
+
+    public function __construct($name)
     {
         $this->name = $name;
     }
-    abstract public function getSql (\Doctrine\ORM\Query\SqlWalker $sqlWalker);
-    public function dispatch ($sqlWalker)
+
+    abstract public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker);
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkFunction($this);
     }
-    abstract public function parse (\Doctrine\ORM\Query\Parser $parser);
+
+    abstract public function parse(\Doctrine\ORM\Query\Parser $parser);
 }

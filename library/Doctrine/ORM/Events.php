@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM;
+
 /**
  * Container for all ORM events.
  *
@@ -29,8 +31,7 @@ namespace Doctrine\ORM;
  */
 final class Events
 {
-    private function __construct ()
-    {}
+    private function __construct() {}
     /**
      * The preRemove event occurs for a given entity before the respective
      * EntityManager remove operation for that entity is executed.
@@ -107,6 +108,7 @@ final class Events
      * @var string
      */
     const loadClassMetadata = 'loadClassMetadata';
+    
     /**
      * The onFlush event occurs when the EntityManager#flush() operation is invoked,
      * after any changes to managed entities have been determined but before any
@@ -117,6 +119,7 @@ final class Events
      * @var string
      */
     const onFlush = 'onFlush';
+
     /**
      * The onClear event occurs when the EntityManager#clear() operation is invoked,
      * after all references to entities have been removed from the unit of work.

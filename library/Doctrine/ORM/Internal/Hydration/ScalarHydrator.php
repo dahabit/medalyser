@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Internal\Hydration;
+
 use Doctrine\DBAL\Connection;
+
 /**
  * Hydrator that produces flat, rectangular results of scalar data.
  * The created result is almost the same as a regular SQL result set, except
@@ -29,7 +32,7 @@ use Doctrine\DBAL\Connection;
 class ScalarHydrator extends AbstractHydrator
 {
     /** @override */
-    protected function _hydrateAll ()
+    protected function _hydrateAll()
     {
         $result = array();
         $cache = array();
@@ -38,8 +41,9 @@ class ScalarHydrator extends AbstractHydrator
         }
         return $result;
     }
+
     /** @override */
-    protected function _hydrateRow (array $data, array &$cache, array &$result)
+    protected function _hydrateRow(array $data, array &$cache, array &$result)
     {
         $result[] = $this->_gatherScalarRowData($data, $cache);
     }

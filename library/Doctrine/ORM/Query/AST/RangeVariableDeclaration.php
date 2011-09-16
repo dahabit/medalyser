@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * RangeVariableDeclaration ::= AbstractSchemaName ["AS"] AliasIdentificationVariable
  *
@@ -34,12 +36,14 @@ class RangeVariableDeclaration extends Node
 {
     public $abstractSchemaName;
     public $aliasIdentificationVariable;
-    public function __construct ($abstractSchemaName, $aliasIdentificationVar)
+
+    public function __construct($abstractSchemaName, $aliasIdentificationVar)
     {
         $this->abstractSchemaName = $abstractSchemaName;
         $this->aliasIdentificationVariable = $aliasIdentificationVar;
-    }
-    public function dispatch ($walker)
+    }    
+    
+    public function dispatch($walker)
     {
         return $walker->walkRangeVariableDeclaration($this);
     }

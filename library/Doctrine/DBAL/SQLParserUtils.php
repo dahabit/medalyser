@@ -16,8 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
+
 namespace Doctrine\DBAL;
+
 use Doctrine\DBAL\Connection;
+
 /**
  * Utility class that parses sql statements with regard to types and parameters.
  *
@@ -38,40 +42,40 @@ class SQLParserUtils
      * @param bool $isPositional
      * @return array
      */
-    static public function getPlaceholderPositions ($statement, 
-    $isPositional = true)
-    {
+    static public function getPlaceholderPositions($statement, $isPositional = true)
+    {   
         $match = ($isPositional) ? '?' : ':';
         if (strpos($statement, $match) === false) {
             return array();
         }
+        
         $count = 0;
         $inLiteral = false; // a valid query never starts with quotes
         $stmtLen = strlen($statement);
         $paramMap = array();
-        for ($i = 0; $i < $stmtLen; $i ++) {
-            if ($statement[$i] == $match && ! $inLiteral) {
+        for ($i = 0; $i < $stmtLen; $i++) {
+            if ($statement[$i] == $match && !$inLiteral) {
                 // real positional parameter detected
                 if ($isPositional) {
                     $paramMap[$count] = $i;
                 } else {
                     $name = "";
                     // TODO: Something faster/better to match this than regex?
-                    for ($j = $i; ($j < $stmtLen &&
-                     preg_match('(([:a-zA-Z0-9]{1}))', $statement[$j])); $j ++) {
+                    for ($j = $i; ($j < $stmtLen && preg_match('(([:a-zA-Z0-9]{1}))', $statement[$j])); $j++) {
                         $name .= $statement[$j];
                     }
                     $paramMap[$name][] = $i; // named parameters can be duplicated!
                     $i = $j;
                 }
-                ++ $count;
-            } else 
-                if ($statement[$i] == "'" || $statement[$i] == '"') {
-                    $inLiteral = ! $inLiteral; // switch state!
-                }
+                ++$count;
+            } else if ($statement[$i] == "'" || $statement[$i] == '"') {
+                $inLiteral = ! $inLiteral; // switch state!
+            }
         }
+
         return $paramMap;
     }
+    
     /**
      * For a positional query this method can rewrite the sql statement with regard to array parameters.
      * 
@@ -79,51 +83,61 @@ class SQLParserUtils
      * @param array $params
      * @param array $types 
      */
-    static public function expandListParameters ($query, $params, $types)
-    {
+    static public function expandListParameters($query, $params, $types)
+    {        
         $isPositional = is_int(key($params));
         $arrayPositions = array();
-        $bindIndex = - 1;
-        foreach ($types as $name => $type) {
-            ++ $bindIndex;
-            if ($type === Connection::PARAM_INT_ARRAY ||
-             $type == Connection::PARAM_STR_ARRAY) {
+        $bindIndex = -1;
+        foreach ($types AS $name => $type) {
+            ++$bindIndex;
+            if ($type === Connection::PARAM_INT_ARRAY || $type == Connection::PARAM_STR_ARRAY) {
                 if ($isPositional) {
                     $name = $bindIndex;
                 }
+                
                 $arrayPositions[$name] = false;
             }
         }
-        if (! $arrayPositions || count($params) != count($types)) {
+        
+        if (!$arrayPositions || count($params) != count($types)) {
             return array($query, $params, $types);
         }
+        
         $paramPos = self::getPlaceholderPositions($query, $isPositional);
         if ($isPositional) {
             $paramOffset = 0;
             $queryOffset = 0;
-            foreach ($paramPos as $needle => $needlePos) {
-                if (! isset($arrayPositions[$needle])) {
+            foreach ($paramPos AS $needle => $needlePos) {
+                if (!isset($arrayPositions[$needle])) {
                     continue;
                 }
+                
                 $needle += $paramOffset;
                 $needlePos += $queryOffset;
                 $len = count($params[$needle]);
-                $params = array_merge(array_slice($params, 0, $needle), 
-                $params[$needle], array_slice($params, $needle + 1));
-                $types = array_merge(array_slice($types, 0, $needle), 
-                array_fill(0, $len, 
-                $types[$needle] - Connection::ARRAY_PARAM_OFFSET),  // array needles are at PDO::PARAM_* + 100
-                array_slice($types, $needle + 1));
+                
+                $params = array_merge(
+                    array_slice($params, 0, $needle),
+                    $params[$needle],
+                    array_slice($params, $needle + 1)
+                );
+                
+                $types = array_merge(
+                    array_slice($types, 0, $needle),
+                    array_fill(0, $len, $types[$needle] - Connection::ARRAY_PARAM_OFFSET), // array needles are at PDO::PARAM_* + 100
+                    array_slice($types, $needle + 1)
+                );
+                
                 $expandStr = implode(", ", array_fill(0, $len, "?"));
-                $query = substr($query, 0, $needlePos) . $expandStr .
-                 substr($query, $needlePos + 1);
+                $query = substr($query, 0, $needlePos) . $expandStr . substr($query, $needlePos + 1);
+                
                 $paramOffset += ($len - 1); // Grows larger by number of parameters minus the replaced needle.
                 $queryOffset += (strlen($expandStr) - 1);
             }
         } else {
-            throw new DBALException(
-            "Array parameters are not supported for named placeholders.");
+            throw new DBALException("Array parameters are not supported for named placeholders.");
         }
+        
         return array($query, $params, $types);
     }
 }

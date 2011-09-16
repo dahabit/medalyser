@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Cache;
+
 /**
  * Xcache cache driver.
  *
@@ -37,59 +39,67 @@ class XcacheCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function getIds ()
+    public function getIds()
     {
         $this->_checkAuth();
         $keys = array();
-        for ($i = 0, $count = xcache_count(XC_TYPE_VAR); $i < $count; $i ++) {
+
+        for ($i = 0, $count = xcache_count(XC_TYPE_VAR); $i < $count; $i++) {
             $entries = xcache_list(XC_TYPE_VAR, $i);
+
             if (is_array($entries['cache_list'])) {
                 foreach ($entries['cache_list'] as $entry) {
                     $keys[] = $entry['name'];
                 }
             }
         }
+
         return $keys;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doFetch ($id)
+    protected function _doFetch($id)
     {
         return $this->_doContains($id) ? unserialize(xcache_get($id)) : false;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doContains ($id)
+    protected function _doContains($id)
     {
         return xcache_isset($id);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doSave ($id, $data, $lifeTime = 0)
+    protected function _doSave($id, $data, $lifeTime = 0)
     {
         return xcache_set($id, serialize($data), (int) $lifeTime);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doDelete ($id)
+    protected function _doDelete($id)
     {
         return xcache_unset($id);
     }
+
+
     /**
      * Checks that xcache.admin.enable_auth is Off
      *
      * @throws \BadMethodCallException When xcache.admin.enable_auth is On
      * @return void
      */
-    protected function _checkAuth ()
+    protected function _checkAuth()
     {
         if (ini_get('xcache.admin.enable_auth')) {
-            throw new \BadMethodCallException(
-            'To use all features of \Doctrine\Common\Cache\XcacheCache, you must set "xcache.admin.enable_auth" to "Off" in your php.ini.');
+            throw new \BadMethodCallException('To use all features of \Doctrine\Common\Cache\XcacheCache, you must set "xcache.admin.enable_auth" to "Off" in your php.ini.');
         }
     }
 }

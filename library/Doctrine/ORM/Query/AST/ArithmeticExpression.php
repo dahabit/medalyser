@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * ArithmeticExpression ::= SimpleArithmeticExpression | "(" Subselect ")"
  *
@@ -34,15 +36,18 @@ class ArithmeticExpression extends Node
 {
     public $simpleArithmeticExpression;
     public $subselect;
-    public function isSimpleArithmeticExpression ()
+
+    public function isSimpleArithmeticExpression()
     {
         return (bool) $this->simpleArithmeticExpression;
     }
-    public function isSubselect ()
+
+    public function isSubselect()
     {
         return (bool) $this->subselect;
     }
-    public function dispatch ($walker)
+
+    public function dispatch($walker)
     {
         return $walker->walkArithmeticExpression($this);
     }

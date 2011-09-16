@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common;
+
 /**
  * An EventSubscriber knows himself what events he is interested in.
  * If an EventSubscriber is added to an EventManager, the manager invokes
@@ -39,5 +41,5 @@ interface EventSubscriber
      *
      * @return array
      */
-    public function getSubscribedEvents ();
+    public function getSubscribedEvents();
 }

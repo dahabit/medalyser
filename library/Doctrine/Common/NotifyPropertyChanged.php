@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common;
+
 /**
  * Contract for classes that provide the service of notifying listeners of
  * changes to their properties.
@@ -38,6 +40,6 @@ interface NotifyPropertyChanged
      *
      * @param PropertyChangedListener $listener
      */
-    function addPropertyChangedListener (PropertyChangedListener $listener);
+    function addPropertyChangedListener(PropertyChangedListener $listener);
 }
 

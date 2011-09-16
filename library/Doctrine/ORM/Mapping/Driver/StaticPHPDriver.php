@@ -16,8 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Mapping\Driver;
-use Doctrine\ORM\Mapping\ClassMetadataInfo, Doctrine\ORM\Mapping\MappingException;
+
+use Doctrine\ORM\Mapping\ClassMetadataInfo,
+ Doctrine\ORM\Mapping\MappingException;
+
 /**
  * The StaticPHPDriver calls a static loadMetadata() method on your entity
  * classes where you can manually populate the ClassMetadata instance.
@@ -38,83 +42,96 @@ class StaticPHPDriver implements Driver
      * @var array
      */
     private $_paths = array();
+    
     /**
      * Map of all class names.
      * 
      * @var array
      */
     private $_classNames;
+    
     /**
      * The file extension of mapping documents.
      * 
      * @var string
      */
     private $_fileExtension = '.php';
-    public function __construct ($paths)
+
+    public function __construct($paths)
     {
         $this->addPaths((array) $paths);
     }
-    public function addPaths (array $paths)
+
+    public function addPaths(array $paths)
     {
         $this->_paths = array_unique(array_merge($this->_paths, $paths));
     }
+
     /**
      * {@inheritdoc}
      */
-    public function loadMetadataForClass ($className, 
-    ClassMetadataInfo $metadata)
+    public function loadMetadataForClass($className, ClassMetadataInfo $metadata)
     {
-        call_user_func_array(array($className, 'loadMetadata'), 
-        array($metadata));
+        call_user_func_array(array($className, 'loadMetadata'), array($metadata));
     }
+
     /**
      * {@inheritDoc}
      * @todo Same code exists in AnnotationDriver, should we re-use it somehow or not worry about it?
      */
-    public function getAllClassNames ()
+    public function getAllClassNames()
     {
         if ($this->_classNames !== null) {
             return $this->_classNames;
         }
-        if (! $this->_paths) {
+
+        if (!$this->_paths) {
             throw MappingException::pathRequired();
         }
+
         $classes = array();
         $includedFiles = array();
+
         foreach ($this->_paths as $path) {
-            if (! is_dir($path)) {
-                throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath(
-                $path);
+            if (!is_dir($path)) {
+                throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
             }
+
             $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path), 
-            \RecursiveIteratorIterator::LEAVES_ONLY);
+                            new \RecursiveDirectoryIterator($path),
+                            \RecursiveIteratorIterator::LEAVES_ONLY
+            );
+
             foreach ($iterator as $file) {
-                if (($fileName = $file->getBasename($this->_fileExtension)) ==
-                 $file->getBasename()) {
+                if (($fileName = $file->getBasename($this->_fileExtension)) == $file->getBasename()) {
                     continue;
                 }
+
                 $sourceFile = realpath($file->getPathName());
                 require_once $sourceFile;
                 $includedFiles[] = $sourceFile;
             }
         }
+
         $declared = get_declared_classes();
+
         foreach ($declared as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles) &&
-             ! $this->isTransient($className)) {
+            if (in_array($sourceFile, $includedFiles) && !$this->isTransient($className)) {
                 $classes[] = $className;
             }
         }
+
         $this->_classNames = $classes;
+
         return $classes;
     }
+
     /**
      * {@inheritdoc}
      */
-    public function isTransient ($className)
+    public function isTransient($className)
     {
         return method_exists($className, 'loadMetadata') ? false : true;
     }

@@ -18,8 +18,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
+
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * Type that maps an SQL VARCHAR to a PHP string.
  *
@@ -28,18 +31,19 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 class StringType extends Type
 {
     /** @override */
-    public function getSQLDeclaration (array $fieldDeclaration, 
-    AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
+
     /** @override */
-    public function getDefaultLength (AbstractPlatform $platform)
+    public function getDefaultLength(AbstractPlatform $platform)
     {
         return $platform->getVarcharDefaultLength();
     }
+
     /** @override */
-    public function getName ()
+    public function getName()
     {
         return Type::STRING;
     }

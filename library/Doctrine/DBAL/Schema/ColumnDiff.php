@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
+
 /**
  * Represent the change of a column
  *
@@ -31,22 +33,25 @@ namespace Doctrine\DBAL\Schema;
 class ColumnDiff
 {
     public $oldColumnName;
+
     /**
      * @var Column
      */
     public $column;
+
     /**
      * @var array
      */
     public $changedProperties = array();
-    public function __construct ($oldColumnName, Column $column, 
-    array $changedProperties = array())
+
+    public function __construct($oldColumnName, Column $column, array $changedProperties = array())
     {
         $this->oldColumnName = $oldColumnName;
         $this->column = $column;
         $this->changedProperties = $changedProperties;
     }
-    public function hasChanged ($propertyName)
+
+    public function hasChanged($propertyName)
     {
         return in_array($propertyName, $this->changedProperties);
     }

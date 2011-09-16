@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * LikeExpression ::= StringExpression ["NOT"] "LIKE" string ["ESCAPE" char]
  *
@@ -36,14 +38,15 @@ class LikeExpression extends Node
     public $stringExpression;
     public $stringPattern;
     public $escapeChar;
-    public function __construct ($stringExpression, $stringPattern, 
-    $escapeChar = null)
+
+    public function __construct($stringExpression, $stringPattern, $escapeChar = null)
     {
         $this->stringExpression = $stringExpression;
         $this->stringPattern = $stringPattern;
         $this->escapeChar = $escapeChar;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkLikeExpression($this);
     }

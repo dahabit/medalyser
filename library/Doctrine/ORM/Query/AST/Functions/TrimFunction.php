@@ -16,9 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST\Functions;
+
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * "TRIM" "(" [["LEADING" | "TRAILING" | "BOTH"] [char] "FROM"] StringPrimary ")"
  *
@@ -37,56 +40,61 @@ class TrimFunction extends FunctionNode
     public $both;
     public $trimChar = false;
     public $stringPrimary;
+
     /**
      * @override
      */
-    public function getSql (\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         $pos = AbstractPlatform::TRIM_UNSPECIFIED;
         if ($this->leading) {
             $pos = AbstractPlatform::TRIM_LEADING;
-        } else 
-            if ($this->trailing) {
-                $pos = AbstractPlatform::TRIM_TRAILING;
-            } else 
-                if ($this->both) {
-                    $pos = AbstractPlatform::TRIM_BOTH;
-                }
-        return $sqlWalker->getConnection()
-            ->getDatabasePlatform()
-            ->getTrimExpression(
-        $sqlWalker->walkStringPrimary($this->stringPrimary), $pos, 
-        ($this->trimChar != false) ? $sqlWalker->getConnection()
-            ->quote($this->trimChar) : false);
+        } else if ($this->trailing) {
+            $pos = AbstractPlatform::TRIM_TRAILING;
+        } else if ($this->both) {
+            $pos = AbstractPlatform::TRIM_BOTH;
+        }
+
+        return $sqlWalker->getConnection()->getDatabasePlatform()->getTrimExpression(
+            $sqlWalker->walkStringPrimary($this->stringPrimary),
+            $pos,
+            ($this->trimChar != false) ? $sqlWalker->getConnection()->quote($this->trimChar) : false
+        );
     }
+
     /**
      * @override
      */
-    public function parse (\Doctrine\ORM\Query\Parser $parser)
+    public function parse(\Doctrine\ORM\Query\Parser $parser)
     {
         $lexer = $parser->getLexer();
+
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
+
         if (strcasecmp('leading', $lexer->lookahead['value']) === 0) {
             $parser->match(Lexer::T_LEADING);
             $this->leading = true;
-        } else 
-            if (strcasecmp('trailing', $lexer->lookahead['value']) === 0) {
-                $parser->match(Lexer::T_TRAILING);
-                $this->trailing = true;
-            } else 
-                if (strcasecmp('both', $lexer->lookahead['value']) === 0) {
-                    $parser->match(Lexer::T_BOTH);
-                    $this->both = true;
-                }
+        } else if (strcasecmp('trailing', $lexer->lookahead['value']) === 0) {
+            $parser->match(Lexer::T_TRAILING);
+            $this->trailing = true;
+        } else if (strcasecmp('both', $lexer->lookahead['value']) === 0) {
+            $parser->match(Lexer::T_BOTH);
+            $this->both = true;
+        }
+
         if ($lexer->isNextToken(Lexer::T_STRING)) {
             $parser->match(Lexer::T_STRING);
             $this->trimChar = $lexer->token['value'];
         }
+
         if ($this->leading || $this->trailing || $this->both || $this->trimChar) {
             $parser->match(Lexer::T_FROM);
         }
+
         $this->stringPrimary = $parser->StringPrimary();
+
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
+
 }

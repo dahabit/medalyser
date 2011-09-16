@@ -18,98 +18,130 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema\Visitor;
-use Doctrine\DBAL\Platforms\AbstractPlatform, Doctrine\DBAL\Schema\Table, Doctrine\DBAL\Schema\Schema, Doctrine\DBAL\Schema\Column, Doctrine\DBAL\Schema\ForeignKeyConstraint, Doctrine\DBAL\Schema\Constraint, Doctrine\DBAL\Schema\Sequence, Doctrine\DBAL\Schema\Index;
+
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Table,
+    Doctrine\DBAL\Schema\Schema,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\ForeignKeyConstraint,
+    Doctrine\DBAL\Schema\Constraint,
+    Doctrine\DBAL\Schema\Sequence,
+    Doctrine\DBAL\Schema\Index;
+
 class CreateSchemaSqlCollector implements Visitor
 {
     /**
      * @var array
      */
     private $_createTableQueries = array();
+
     /**
      * @var array
      */
     private $_createSequenceQueries = array();
+
     /**
      * @var array
      */
     private $_createFkConstraintQueries = array();
+
     /**
      *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $_platform = null;
+
     /**
      * @param AbstractPlatform $platform
      */
-    public function __construct (AbstractPlatform $platform)
+    public function __construct(AbstractPlatform $platform)
     {
         $this->_platform = $platform;
     }
+
     /**
      * @param Schema $schema
      */
-    public function acceptSchema (Schema $schema)
-    {}
+    public function acceptSchema(Schema $schema)
+    {
+
+    }
+
     /**
      * Generate DDL Statements to create the accepted table with all its dependencies.
      *
      * @param Table $table
      */
-    public function acceptTable (Table $table)
+    public function acceptTable(Table $table)
     {
-        $this->_createTableQueries = array_merge($this->_createTableQueries, 
-        $this->_platform->getCreateTableSQL($table));
+        $this->_createTableQueries = array_merge($this->_createTableQueries,
+            $this->_platform->getCreateTableSQL($table)
+        );
     }
-    public function acceptColumn (Table $table, Column $column)
-    {}
+
+    public function acceptColumn(Table $table, Column $column)
+    {
+        
+    }
+
     /**
      * @param Table $localTable
      * @param ForeignKeyConstraint $fkConstraint
      */
-    public function acceptForeignKey (Table $localTable, 
-    ForeignKeyConstraint $fkConstraint)
+    public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
         // Append the foreign key constraints SQL
         if ($this->_platform->supportsForeignKeyConstraints()) {
-            $this->_createFkConstraintQueries = array_merge(
-            $this->_createFkConstraintQueries, 
-            (array) $this->_platform->getCreateForeignKeySQL($fkConstraint, 
-            $localTable->getQuotedName($this->_platform)));
+            $this->_createFkConstraintQueries = array_merge($this->_createFkConstraintQueries,
+                (array) $this->_platform->getCreateForeignKeySQL(
+                    $fkConstraint, $localTable->getQuotedName($this->_platform)
+                )
+            );
         }
     }
+
     /**
      * @param Table $table
      * @param Index $index
      */
-    public function acceptIndex (Table $table, Index $index)
-    {}
+    public function acceptIndex(Table $table, Index $index)
+    {
+        
+    }
+
     /**
      * @param Sequence $sequence
      */
-    public function acceptSequence (Sequence $sequence)
+    public function acceptSequence(Sequence $sequence)
     {
         $this->_createSequenceQueries = array_merge(
-        $this->_createSequenceQueries, 
-        (array) $this->_platform->getCreateSequenceSQL($sequence));
+            $this->_createSequenceQueries, (array)$this->_platform->getCreateSequenceSQL($sequence)
+        );
     }
+
     /**
      * @return array
      */
-    public function resetQueries ()
+    public function resetQueries()
     {
         $this->_createTableQueries = array();
         $this->_createSequenceQueries = array();
         $this->_createFkConstraintQueries = array();
     }
+
     /**
      * Get all queries collected so far.
      *
      * @return array
      */
-    public function getQueries ()
+    public function getQueries()
     {
-        return array_merge($this->_createTableQueries, 
-        $this->_createSequenceQueries, $this->_createFkConstraintQueries);
+        return array_merge(
+            $this->_createTableQueries,
+            $this->_createSequenceQueries,
+            $this->_createFkConstraintQueries
+        );
     }
 }

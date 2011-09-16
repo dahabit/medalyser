@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Annotations;
+
 /**
  * Interface for annotation readers.
  *
@@ -24,11 +26,10 @@ namespace Doctrine\Common\Annotations;
  */
 interface Reader
 {
-    function getClassAnnotations (\ReflectionClass $class);
-    function getClassAnnotation (\ReflectionClass $class, $annotationName);
-    function getMethodAnnotations (\ReflectionMethod $method);
-    function getMethodAnnotation (\ReflectionMethod $method, $annotationName);
-    function getPropertyAnnotations (\ReflectionProperty $property);
-    function getPropertyAnnotation (\ReflectionProperty $property, 
-    $annotationName);
+    function getClassAnnotations(\ReflectionClass $class);
+    function getClassAnnotation(\ReflectionClass $class, $annotationName);
+    function getMethodAnnotations(\ReflectionMethod $method);
+    function getMethodAnnotation(\ReflectionMethod $method, $annotationName);
+    function getPropertyAnnotations(\ReflectionProperty $property);
+    function getPropertyAnnotation(\ReflectionProperty $property, $annotationName);
 }

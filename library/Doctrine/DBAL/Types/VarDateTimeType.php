@@ -16,8 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
+
 namespace Doctrine\DBAL\Types;
+
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * Variable DateTime Type using date_create() instead of DateTime::createFromFormat()
  *
@@ -41,15 +45,15 @@ class VarDateTimeType extends DateTimeType
      * @param AbstractPlatform $platform
      * @return DateTime
      */
-    public function convertToPHPValue ($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
         }
+
         $val = date_create($value);
-        if (! $val) {
-            throw ConversionException::conversionFailed($value, 
-            $this->getName());
+        if (!$val) {
+            throw ConversionException::conversionFailed($value, $this->getName());
         }
         return $val;
     }

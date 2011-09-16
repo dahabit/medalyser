@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Cache;
+
 /**
  * Array cache driver.
  *
@@ -38,44 +40,52 @@ class ArrayCache extends AbstractCache
      * @var array $data
      */
     private $data = array();
+
     /**
      * {@inheritdoc}
      */
-    public function getIds ()
+    public function getIds()
     {
         return array_keys($this->data);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doFetch ($id)
+    protected function _doFetch($id)
     {
         if (isset($this->data[$id])) {
             return $this->data[$id];
         }
+
         return false;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doContains ($id)
+    protected function _doContains($id)
     {
         return isset($this->data[$id]);
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doSave ($id, $data, $lifeTime = 0)
+    protected function _doSave($id, $data, $lifeTime = 0)
     {
         $this->data[$id] = $data;
+
         return true;
     }
+
     /**
      * {@inheritdoc}
      */
-    protected function _doDelete ($id)
+    protected function _doDelete($id)
     {
         unset($this->data[$id]);
+        
         return true;
     }
 }

@@ -16,93 +16,97 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
+
 namespace Doctrine\DBAL\Portability;
+
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
+
 class Connection extends \Doctrine\DBAL\Connection
 {
-    const PORTABILITY_ALL = 255;
-    const PORTABILITY_NONE = 0;
-    const PORTABILITY_RTRIM = 1;
-    const PORTABILITY_EMPTY_TO_NULL = 4;
-    const PORTABILITY_FIX_CASE = 8;
-    const PORTABILITY_ORACLE = 9;
-    const PORTABILITY_POSTGRESQL = 13;
-    const PORTABILITY_SQLITE = 13;
-    const PORTABILITY_OTHERVENDORS = 12;
+    const PORTABILITY_ALL               = 255;
+    const PORTABILITY_NONE              = 0;
+    const PORTABILITY_RTRIM             = 1;
+    const PORTABILITY_EMPTY_TO_NULL     = 4;
+    const PORTABILITY_FIX_CASE          = 8;
+    
+    const PORTABILITY_ORACLE            = 9;
+    const PORTABILITY_POSTGRESQL        = 13;
+    const PORTABILITY_SQLITE            = 13;
+    const PORTABILITY_OTHERVENDORS      = 12;
+    
     /**
      * @var int
      */
     private $portability = self::PORTABILITY_NONE;
+    
     /**
      * @var int
      */
     private $case = \PDO::CASE_NATURAL;
-    public function connect ()
+    
+    public function connect()
     {
         $ret = parent::connect();
-        if ($ret) {
+        if ($ret) {       
             $params = $this->getParams();
             if (isset($params['portability'])) {
                 if ($this->_platform->getName() === "oracle") {
-                    $params['portability'] = $params['portability'] &
-                     self::PORTABILITY_ORACLE;
-                } else 
-                    if ($this->_platform->getName() === "postgresql") {
-                        $params['portability'] = $params['portability'] &
-                         self::PORTABILITY_POSTGRESQL;
-                    } else 
-                        if ($this->_platform->getName() === "sqlite") {
-                            $params['portability'] = $params['portability'] &
-                             self::PORTABILITY_SQLITE;
-                        } else {
-                            $params['portability'] = $params['portability'] &
-                             self::PORTABILITY_OTHERVENDORS;
-                        }
+                    $params['portability'] = $params['portability'] & self::PORTABILITY_ORACLE;
+                } else if ($this->_platform->getName() === "postgresql") {
+                    $params['portability'] = $params['portability'] & self::PORTABILITY_POSTGRESQL;
+                } else if ($this->_platform->getName() === "sqlite") {
+                    $params['portability'] = $params['portability'] & self::PORTABILITY_SQLITE;
+                } else {
+                    $params['portability'] = $params['portability'] & self::PORTABILITY_OTHERVENDORS;
+                }
                 $this->portability = $params['portability'];
             }
-            if (isset($params['fetch_case']) &&
-             $this->portability & self::PORTABILITY_FIX_CASE) {
+            if (isset($params['fetch_case']) && $this->portability & self::PORTABILITY_FIX_CASE) {
                 if ($this->_conn instanceof \Doctrine\DBAL\Driver\PDOConnection) {
                     // make use of c-level support for case handling
-                    $this->_conn->setAttribute(
-                    \PDO::ATTR_CASE, $params['fetch_case']);
+                    $this->_conn->setAttribute(\PDO::ATTR_CASE, $params['fetch_case']);
                 } else {
                     $this->case = ($params['fetch_case'] == \PDO::CASE_LOWER) ? CASE_LOWER : CASE_UPPER;
                 }
-            }
+            }    
         }
         return $ret;
     }
-    public function getPortability ()
+    
+    public function getPortability()
     {
         return $this->portability;
     }
-    public function getFetchCase ()
+    
+    public function getFetchCase()
     {
         return $this->case;
     }
-    public function executeQuery ($query, array $params = array(), $types = array())
+    
+    public function executeQuery($query, array $params = array(), $types = array())
     {
-        return new Statement(parent::executeQuery($query, $params, $types), 
-        $this);
+        return new Statement(parent::executeQuery($query, $params, $types), $this);
     }
+    
     /**
      * Prepares an SQL statement.
      *
      * @param string $statement The SQL statement to prepare.
      * @return Doctrine\DBAL\Driver\Statement The prepared statement.
      */
-    public function prepare ($statement)
+    public function prepare($statement)
     {
         return new Statement(parent::prepare($statement), $this);
     }
-    public function query ()
+    
+    public function query()
     {
         $this->connect();
-        $stmt = call_user_func_array(array($this->_conn, 'query'), 
-        func_get_args());
+
+        $stmt = call_user_func_array(array($this->_conn, 'query'), func_get_args());
         return new Statement($stmt, $this);
     }
 }

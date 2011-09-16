@@ -18,8 +18,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
+
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * The abstract asset allows to reset the name of all assets without publishing this to the public userland.
  *
@@ -38,13 +41,15 @@ abstract class AbstractAsset
      * @var string
      */
     protected $_name;
+
     protected $_quoted = false;
+
     /**
      * Set name of this asset
      *
      * @param string $name
      */
-    protected function _setName ($name)
+    protected function _setName($name)
     {
         if ($this->isQuoted($name)) {
             $this->_quoted = true;
@@ -52,36 +57,39 @@ abstract class AbstractAsset
         }
         $this->_name = $name;
     }
+
     /**
      * Check if this identifier is quoted.
      *
      * @param  string $identifier
      * @return bool
      */
-    protected function isQuoted ($identifier)
+    protected function isQuoted($identifier)
     {
-        return (isset($identifier[0]) &&
-         ($identifier[0] == '`' || $identifier[0] == '"'));
+        return (isset($identifier[0]) && ($identifier[0] == '`' || $identifier[0] == '"'));
     }
+
     /**
      * Trim quotes from the identifier.
      * 
      * @param  string $identifier
      * @return string
      */
-    protected function trimQuotes ($identifier)
+    protected function trimQuotes($identifier)
     {
         return trim($identifier, '`"');
     }
+
     /**
      * Return name of this schema asset.
      * 
      * @return string
      */
-    public function getName ()
+    public function getName()
     {
         return $this->_name;
     }
+
     /**
      * Get the quoted representation of this asset but only if it was defined with one. Otherwise
      * return the plain unquoted value as inserted.
@@ -89,10 +97,11 @@ abstract class AbstractAsset
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function getQuotedName (AbstractPlatform $platform)
+    public function getQuotedName(AbstractPlatform $platform)
     {
         return ($this->_quoted) ? $platform->quoteIdentifier($this->_name) : $this->_name;
     }
+
     /**
      * Generate an identifier from a list of column names obeying a certain string length.
      *
@@ -105,8 +114,7 @@ abstract class AbstractAsset
      * @param  int $maxSize
      * @return string
      */
-    protected function _generateIdentifierName ($columnNames, $prefix = '', 
-    $maxSize = 30)
+    protected function _generateIdentifierName($columnNames, $prefix='', $maxSize=30)
     {
         /*$columnCount = count($columnNames);
         $postfixLen = strlen($postfix);
@@ -125,10 +133,9 @@ abstract class AbstractAsset
         }
 
         return $identifier;*/
-        $hash = implode("", 
-        array_map(
-        function  ($column)
-        {
+
+
+        $hash = implode("", array_map(function($column) {
             return dechex(crc32($column));
         }, $columnNames));
         return substr(strtoupper($prefix . "_" . $hash), 0, $maxSize);

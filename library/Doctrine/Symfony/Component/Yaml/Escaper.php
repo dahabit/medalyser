@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Symfony package.
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -6,7 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Symfony\Component\Yaml;
+
 /**
  * Escaper encapsulates escaping rules for single and double-quoted
  * YAML strings.
@@ -17,21 +20,24 @@ class Escaper
 {
     // Characters that would cause a dumped string to require double quoting.
     const REGEX_CHARACTER_TO_ESCAPE = "[\\x00-\\x1f]|\xc2\x85|\xc2\xa0|\xe2\x80\xa8|\xe2\x80\xa9";
+
     // Mapping arrays for escaping a double quoted string. The backslash is
     // first to ensure proper escaping because str_replace operates iteratively
     // on the input arrays. This ordering of the characters avoids the use of strtr,
     // which performs more slowly.
-    private static $escapees = array('\\\\', '\\"', "\x00", 
-    "\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\x09", 
-    "\x0a", "\x0b", "\x0c", "\x0d", "\x0e", "\x0f", "\x10", "\x11", "\x12", 
-    "\x13", "\x14", "\x15", "\x16", "\x17", "\x18", "\x19", "\x1a", "\x1b", 
-    "\x1c", "\x1d", "\x1e", "\x1f", "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", 
-    "\xe2\x80\xa9");
-    private static $escaped = array('\\"', '\\\\', "\\0", "\\x01", "\\x02", 
-    "\\x03", "\\x04", "\\x05", "\\x06", "\\a", "\\b", "\\t", "\\n", "\\v", "\\f", 
-    "\\r", "\\x0e", "\\x0f", "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", 
-    "\\x15", "\\x16", "\\x17", "\\x18", "\\x19", "\\x1a", "\\e", "\\x1c", 
-    "\\x1d", "\\x1e", "\\x1f", "\\N", "\\_", "\\L", "\\P");
+    static private $escapees = array('\\\\', '\\"',
+                                     "\x00",  "\x01",  "\x02",  "\x03",  "\x04",  "\x05",  "\x06",  "\x07",
+                                     "\x08",  "\x09",  "\x0a",  "\x0b",  "\x0c",  "\x0d",  "\x0e",  "\x0f",
+                                     "\x10",  "\x11",  "\x12",  "\x13",  "\x14",  "\x15",  "\x16",  "\x17",
+                                     "\x18",  "\x19",  "\x1a",  "\x1b",  "\x1c",  "\x1d",  "\x1e",  "\x1f",
+                                     "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9");
+    static private $escaped  = array('\\"', '\\\\',
+                                     "\\0",   "\\x01", "\\x02", "\\x03", "\\x04", "\\x05", "\\x06", "\\a",
+                                     "\\b",   "\\t",   "\\n",   "\\v",   "\\f",   "\\r",   "\\x0e", "\\x0f",
+                                     "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", "\\x15", "\\x16", "\\x17",
+                                     "\\x18", "\\x19", "\\x1a", "\\e",   "\\x1c", "\\x1d", "\\x1e", "\\x1f",
+                                     "\\N", "\\_", "\\L", "\\P");
+
     /**
      * Determines if a PHP value would require double quoting in YAML.
      *
@@ -39,10 +45,11 @@ class Escaper
      *
      * @return Boolean True if the value would require double quotes.
      */
-    static public function requiresDoubleQuoting ($value)
+    static public function requiresDoubleQuoting($value)
     {
-        return preg_match('/' . self::REGEX_CHARACTER_TO_ESCAPE . '/u', $value);
+        return preg_match('/'.self::REGEX_CHARACTER_TO_ESCAPE.'/u', $value);
     }
+
     /**
      * Escapes and surrounds a PHP value with double quotes.
      *
@@ -50,11 +57,11 @@ class Escaper
      *
      * @return string The quoted, escaped string
      */
-    static public function escapeWithDoubleQuotes ($value)
+    static public function escapeWithDoubleQuotes($value)
     {
-        return sprintf('"%s"', 
-        str_replace(self::$escapees, self::$escaped, $value));
+        return sprintf('"%s"', str_replace(self::$escapees, self::$escaped, $value));
     }
+
     /**
      * Determines if a PHP value would require single quoting in YAML.
      *
@@ -62,12 +69,11 @@ class Escaper
      *
      * @return Boolean True if the value would require single quotes.
      */
-    static public function requiresSingleQuoting ($value)
+    static public function requiresSingleQuoting($value)
     {
-        return preg_match(
-        '/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ - ? | < > = ! % @ ` ]/x', 
-        $value);
+        return preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ - ? | < > = ! % @ ` ]/x', $value);
     }
+
     /**
      * Escapes and surrounds a PHP value with single quotes.
      *
@@ -75,7 +81,7 @@ class Escaper
      *
      * @return string The quoted, escaped string
      */
-    static public function escapeWithSingleQuotes ($value)
+    static public function escapeWithSingleQuotes($value)
     {
         return sprintf("'%s'", str_replace('\'', '\'\'', $value));
     }

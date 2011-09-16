@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Annotations;
+
 use Doctrine\Common\Cache\Cache;
+
 /**
  * A cache aware annotation reader.
  *
@@ -27,125 +30,150 @@ use Doctrine\Common\Cache\Cache;
 final class CachedReader implements Reader
 {
     private static $CACHE_SALT = '@[Annot]';
+
     /**
      * @var Reader
      */
     private $delegate;
+
     /**
      * @var Cache
      */
     private $cache;
+
     /**
      * @var boolean
      */
     private $debug;
+
     /**
      * @var array
      */
     private $loadedAnnotations;
+
     /**
      * @param Reader $reader
      * @param Cache $cache
      */
-    public function __construct (Reader $reader, Cache $cache, $debug = false)
+    public function __construct(Reader $reader, Cache $cache, $debug = false)
     {
         $this->delegate = $reader;
         $this->cache = $cache;
         $this->debug = $debug;
     }
-    public function getClassAnnotations (\ReflectionClass $class)
+
+    public function getClassAnnotations(\ReflectionClass $class)
     {
         $cacheKey = $class->getName() . self::$CACHE_SALT;
+
         if (isset($this->loadedAnnotations[$cacheKey])) {
             return $this->loadedAnnotations[$cacheKey];
         }
+
         // Attempt to grab data from cache
         if (($data = $this->cache->fetch($cacheKey)) !== false) {
-            if (! $this->debug || $this->isCacheFresh($cacheKey, $class)) {
+            if (!$this->debug || $this->isCacheFresh($cacheKey, $class)) {
                 return $data;
             }
         }
+
         $annots = $this->delegate->getClassAnnotations($class);
         $this->cache->save($cacheKey, $annots);
-        $this->cache->save('[C]' . $cacheKey, time());
+        $this->cache->save('[C]'.$cacheKey, time());
+
         return $this->loadedAnnotations[$cacheKey] = $annots;
     }
-    public function getClassAnnotation (\ReflectionClass $class, $annotationName)
+
+    public function getClassAnnotation(\ReflectionClass $class, $annotationName)
     {
         foreach ($this->getClassAnnotations($class) as $annot) {
             if ($annot instanceof $annotationName) {
                 return $annot;
             }
         }
+
         return null;
     }
-    public function getPropertyAnnotations (\ReflectionProperty $property)
+
+    public function getPropertyAnnotations(\ReflectionProperty $property)
     {
         $class = $property->getDeclaringClass();
-        $cacheKey = $class->getName() . '$' . $property->getName() .
-         self::$CACHE_SALT;
+        $cacheKey = $class->getName().'$'.$property->getName().self::$CACHE_SALT;
+
         if (isset($this->loadedAnnotations[$cacheKey])) {
             return $this->loadedAnnotations[$cacheKey];
         }
+
         // Attempt to grab data from cache
         if (($data = $this->cache->fetch($cacheKey)) !== false) {
-            if (! $this->debug || $this->isCacheFresh($cacheKey, $class)) {
+            if (!$this->debug || $this->isCacheFresh($cacheKey, $class)) {
                 return $data;
             }
         }
+
         $annots = $this->delegate->getPropertyAnnotations($property);
         $this->cache->save($cacheKey, $annots);
-        $this->cache->save('[C]' . $cacheKey, time());
+        $this->cache->save('[C]'.$cacheKey, time());
+
         return $this->loadedAnnotations[$cacheKey] = $annots;
     }
-    public function getPropertyAnnotation (\ReflectionProperty $property, 
-    $annotationName)
+
+    public function getPropertyAnnotation(\ReflectionProperty $property, $annotationName)
     {
         foreach ($this->getPropertyAnnotations($property) as $annot) {
             if ($annot instanceof $annotationName) {
                 return $annot;
             }
         }
+
         return null;
     }
-    public function getMethodAnnotations (\ReflectionMethod $method)
+
+    public function getMethodAnnotations(\ReflectionMethod $method)
     {
         $class = $method->getDeclaringClass();
-        $cacheKey = $class->getName() . '#' . $method->getName() .
-         self::$CACHE_SALT;
+        $cacheKey = $class->getName().'#'.$method->getName().self::$CACHE_SALT;
+
         if (isset($this->loadedAnnotations[$cacheKey])) {
             return $this->loadedAnnotations[$cacheKey];
         }
-        // Attempt to grab data from cache
+
+       // Attempt to grab data from cache
         if (($data = $this->cache->fetch($cacheKey)) !== false) {
-            if (! $this->debug || $this->isCacheFresh($cacheKey, $class)) {
+            if (!$this->debug || $this->isCacheFresh($cacheKey, $class)) {
                 return $data;
             }
         }
+
         $annots = $this->delegate->getMethodAnnotations($method);
         $this->cache->save($cacheKey, $annots);
-        $this->cache->save('[C]' . $cacheKey, time());
+        $this->cache->save('[C]'.$cacheKey, time());
+
         return $this->loadedAnnotations[$cacheKey] = $annots;
     }
-    public function getMethodAnnotation (\ReflectionMethod $method, 
-    $annotationName)
+
+    public function getMethodAnnotation(\ReflectionMethod $method, $annotationName)
     {
         foreach ($this->getMethodAnnotations($method) as $annot) {
             if ($annot instanceof $annotationName) {
                 return $annot;
             }
         }
+
         return null;
     }
-    public function clearLoadedAnnotations ()
+
+    public function clearLoadedAnnotations()
     {
         $this->loadedAnnotations = array();
     }
-    private function isCacheFresh ($cacheKey,\ReflectionClass $class)
+
+    private function isCacheFresh($cacheKey, \ReflectionClass $class)
     {
         if (false === $filename = $class->getFilename()) {
             return true;
         }
-        return $this->cache->fetch('[C]' . $cacheKey) >= filemtime($filename);
+
+        return $this->cache->fetch('[C]'.$cacheKey) >= filemtime($filename);
     }
 }

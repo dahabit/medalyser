@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM\Event;
+
 /**
  * Provides event arguments for the onClear event.
  *
@@ -33,17 +35,19 @@ class OnClearEventArgs extends \Doctrine\Common\EventArgs
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
+
     /**
      * @param \Doctrine\ORM\EntityManager $em
      */
-    public function __construct ($em)
+    public function __construct($em)
     {
         $this->em = $em;
     }
+
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->em;
     }

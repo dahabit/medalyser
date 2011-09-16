@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Expression class for DQL comparison expressions
  *
@@ -32,24 +34,26 @@ namespace Doctrine\ORM\Query\Expr;
  */
 class Comparison
 {
-    const EQ = '=';
+    const EQ  = '=';
     const NEQ = '<>';
-    const LT = '<';
+    const LT  = '<';
     const LTE = '<=';
-    const GT = '>';
+    const GT  = '>';
     const GTE = '>=';
+    
     private $_leftExpr;
     private $_operator;
     private $_rightExpr;
-    public function __construct ($leftExpr, $operator, $rightExpr)
+
+    public function __construct($leftExpr, $operator, $rightExpr)
     {
-        $this->_leftExpr = $leftExpr;
-        $this->_operator = $operator;
+        $this->_leftExpr  = $leftExpr;
+        $this->_operator  = $operator;
         $this->_rightExpr = $rightExpr;
     }
-    public function __toString ()
+
+    public function __toString()
     {
-        return $this->_leftExpr . ' ' . $this->_operator . ' ' .
-         $this->_rightExpr;
+        return $this->_leftExpr . ' ' . $this->_operator . ' ' . $this->_rightExpr;
     }
 }

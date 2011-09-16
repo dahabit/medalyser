@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\DBAL\Schema;
+
 /**
  * Representation of a Database View
  *
@@ -34,15 +36,17 @@ class View extends AbstractAsset
      * @var string
      */
     private $_sql;
-    public function __construct ($name, $sql)
+
+    public function __construct($name, $sql)
     {
         $this->_setName($name);
         $this->_sql = $sql;
     }
+
     /**
      * @return string
      */
-    public function getSql ()
+    public function getSql()
     {
         return $this->_sql;
     }

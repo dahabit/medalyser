@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * FromClause ::= "FROM" IdentificationVariableDeclaration {"," IdentificationVariableDeclaration}
  *
@@ -30,11 +32,13 @@ namespace Doctrine\ORM\Query\AST;
 class FromClause extends Node
 {
     public $identificationVariableDeclarations = array();
-    public function __construct (array $identificationVariableDeclarations)
+
+    public function __construct(array $identificationVariableDeclarations)
     {
         $this->identificationVariableDeclarations = $identificationVariableDeclarations;
-    }
-    public function dispatch ($sqlWalker)
+    }    
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkFromClause($this);
     }

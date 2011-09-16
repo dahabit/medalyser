@@ -18,8 +18,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Exec;
-use Doctrine\DBAL\Connection, Doctrine\ORM\Query\AST;
+
+use Doctrine\DBAL\Connection,
+    Doctrine\ORM\Query\AST;
+
 /**
  * Executes the SQL statements for bulk DQL DELETE statements on classes in
  * Class Table Inheritance (JOINED).
@@ -35,65 +39,68 @@ class MultiTableDeleteExecutor extends AbstractSqlExecutor
     private $_createTempTableSql;
     private $_dropTempTableSql;
     private $_insertSql;
+    
     /**
      * Initializes a new <tt>MultiTableDeleteExecutor</tt>.
      *
      * @param Node $AST The root AST node of the DQL query.
      * @param SqlWalker $sqlWalker The walker used for SQL generation from the AST.
      * @internal Any SQL construction and preparation takes place in the constructor for
-     * best performance. With a query cache the executor will be cached.
+     *           best performance. With a query cache the executor will be cached.
      */
-    public function __construct (AST\Node $AST, $sqlWalker)
+    public function __construct(AST\Node $AST, $sqlWalker)
     {
         $em = $sqlWalker->getEntityManager();
         $conn = $em->getConnection();
         $platform = $conn->getDatabasePlatform();
-        $primaryClass = $em->getClassMetadata(
-        $AST->deleteClause->abstractSchemaName);
+
+        $primaryClass = $em->getClassMetadata($AST->deleteClause->abstractSchemaName);
         $primaryDqlAlias = $AST->deleteClause->aliasIdentificationVariable;
         $rootClass = $em->getClassMetadata($primaryClass->rootEntityName);
-        $tempTable = $platform->getTemporaryTableName(
-        $rootClass->getTemporaryIdTableName());
+
+        $tempTable = $platform->getTemporaryTableName($rootClass->getTemporaryIdTableName());
         $idColumnNames = $rootClass->getIdentifierColumnNames();
         $idColumnList = implode(', ', $idColumnNames);
+
         // 1. Create an INSERT INTO temptable ... SELECT identifiers WHERE $AST->getWhereClause()
-        $sqlWalker->setSQLTableAlias($primaryClass->table['name'], 't0', 
-        $primaryDqlAlias);
-        $this->_insertSql = 'INSERT INTO ' . $tempTable . ' (' . $idColumnList .
-         ')' . ' SELECT t0.' . implode(', t0.', $idColumnNames);
-        $rangeDecl = new AST\RangeVariableDeclaration($primaryClass->name, 
-        $primaryDqlAlias);
-        $fromClause = new AST\FromClause(
-        array(
-        new AST\IdentificationVariableDeclaration($rangeDecl, null, array())));
+        $sqlWalker->setSQLTableAlias($primaryClass->table['name'], 't0', $primaryDqlAlias);
+
+        $this->_insertSql = 'INSERT INTO ' . $tempTable . ' (' . $idColumnList . ')'
+                . ' SELECT t0.' . implode(', t0.', $idColumnNames);
+        
+        $rangeDecl = new AST\RangeVariableDeclaration($primaryClass->name, $primaryDqlAlias);
+        $fromClause = new AST\FromClause(array(new AST\IdentificationVariableDeclaration($rangeDecl, null, array())));
         $this->_insertSql .= $sqlWalker->walkFromClause($fromClause);
+
         // Append WHERE clause, if there is one.
         if ($AST->whereClause) {
             $this->_insertSql .= $sqlWalker->walkWhereClause($AST->whereClause);
         }
+
         // 2. Create ID subselect statement used in DELETE ... WHERE ... IN (subselect)
         $idSubselect = 'SELECT ' . $idColumnList . ' FROM ' . $tempTable;
+
         // 3. Create and store DELETE statements
-        $classNames = array_merge($primaryClass->parentClasses, 
-        array($primaryClass->name), $primaryClass->subClasses);
+        $classNames = array_merge($primaryClass->parentClasses, array($primaryClass->name), $primaryClass->subClasses);
         foreach (array_reverse($classNames) as $className) {
-            $tableName = $em->getClassMetadata($className)->getQuotedTableName(
-            $platform);
-            $this->_sqlStatements[] = 'DELETE FROM ' . $tableName . ' WHERE (' .
-             $idColumnList . ') IN (' . $idSubselect . ')';
+            $tableName = $em->getClassMetadata($className)->getQuotedTableName($platform);
+            $this->_sqlStatements[] = 'DELETE FROM ' . $tableName
+                    . ' WHERE (' . $idColumnList . ') IN (' . $idSubselect . ')';
         }
+    
         // 4. Store DDL for temporary identifier table.
         $columnDefinitions = array();
         foreach ($idColumnNames as $idColumnName) {
-            $columnDefinitions[$idColumnName] = array('notnull' => true, 
-            'type' => \Doctrine\DBAL\Types\Type::getType(
-            $rootClass->getTypeOfColumn($idColumnName)));
+            $columnDefinitions[$idColumnName] = array(
+                'notnull' => true,
+                'type' => \Doctrine\DBAL\Types\Type::getType($rootClass->getTypeOfColumn($idColumnName))
+            );
         }
-        $this->_createTempTableSql = $platform->getCreateTemporaryTableSnippetSQL() .
-         ' ' . $tempTable . ' (' .
-         $platform->getColumnDeclarationListSQL($columnDefinitions) . ')';
+        $this->_createTempTableSql = $platform->getCreateTemporaryTableSnippetSQL() . ' ' . $tempTable . ' ('
+                . $platform->getColumnDeclarationListSQL($columnDefinitions) . ')';
         $this->_dropTempTableSql = 'DROP TABLE ' . $tempTable;
     }
+
     /**
      * Executes all SQL statements.
      *
@@ -101,20 +108,24 @@ class MultiTableDeleteExecutor extends AbstractSqlExecutor
      * @param array $params The parameters.
      * @override
      */
-    public function execute (Connection $conn, array $params, array $types)
+    public function execute(Connection $conn, array $params, array $types)
     {
         $numDeleted = 0;
+
         // Create temporary id table
         $conn->executeUpdate($this->_createTempTableSql);
+
         // Insert identifiers
-        $numDeleted = $conn->executeUpdate($this->_insertSql, $params, 
-        $types);
+        $numDeleted = $conn->executeUpdate($this->_insertSql, $params, $types);
+
         // Execute DELETE statements
         foreach ($this->_sqlStatements as $sql) {
             $conn->executeUpdate($sql);
         }
+
         // Drop temporary table
         $conn->executeUpdate($this->_dropTempTableSql);
+
         return $numDeleted;
     }
 }

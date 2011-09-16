@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Id;
+
 use Serializable, Doctrine\ORM\EntityManager;
+
 /**
  * Represents an ID generator that uses a database sequence.
  *
@@ -30,6 +33,7 @@ class SequenceGenerator extends AbstractIdGenerator implements Serializable
     private $_sequenceName;
     private $_nextValue = 0;
     private $_maxValue = null;
+
     /**
      * Initializes a new sequence generator.
      *
@@ -37,11 +41,12 @@ class SequenceGenerator extends AbstractIdGenerator implements Serializable
      * @param string $sequenceName The name of the sequence.
      * @param integer $allocationSize The allocation size of the sequence.
      */
-    public function __construct ($sequenceName, $allocationSize)
+    public function __construct($sequenceName, $allocationSize)
     {
         $this->_sequenceName = $sequenceName;
         $this->_allocationSize = $allocationSize;
     }
+    
     /**
      * Generates an ID for the given entity.
      *
@@ -49,43 +54,47 @@ class SequenceGenerator extends AbstractIdGenerator implements Serializable
      * @return integer|float The generated value.
      * @override
      */
-    public function generate (EntityManager $em, $entity)
+    public function generate(EntityManager $em, $entity)
     {
         if ($this->_maxValue === null || $this->_nextValue == $this->_maxValue) {
             // Allocate new values
             $conn = $em->getConnection();
-            $sql = $conn->getDatabasePlatform()->getSequenceNextValSQL(
-            $this->_sequenceName);
+            $sql = $conn->getDatabasePlatform()->getSequenceNextValSQL($this->_sequenceName);
             $this->_nextValue = $conn->fetchColumn($sql);
             $this->_maxValue = $this->_nextValue + $this->_allocationSize;
         }
-        return $this->_nextValue ++;
+        return $this->_nextValue++;
     }
+
     /**
      * Gets the maximum value of the currently allocated bag of values.
      *
      * @return integer|float
      */
-    public function getCurrentMaxValue ()
+    public function getCurrentMaxValue()
     {
         return $this->_maxValue;
     }
+
     /**
      * Gets the next value that will be returned by generate().
      *
      * @return integer|float
      */
-    public function getNextValue ()
+    public function getNextValue()
     {
         return $this->_nextValue;
     }
-    public function serialize ()
+
+    public function serialize()
     {
-        return serialize(
-        array('allocationSize' => $this->_allocationSize, 
-        'sequenceName' => $this->_sequenceName));
+        return serialize(array(
+            'allocationSize' => $this->_allocationSize,
+            'sequenceName' => $this->_sequenceName
+        ));
     }
-    public function unserialize ($serialized)
+
+    public function unserialize($serialized)
     {
         $array = unserialize($serialized);
         $this->_sequenceName = $array['sequenceName'];

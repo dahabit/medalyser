@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * ConditionalFactor ::= ["NOT"] ConditionalPrimary
  *
@@ -34,11 +36,13 @@ class ConditionalFactor extends Node
 {
     public $not = false;
     public $conditionalPrimary;
-    public function __construct ($conditionalPrimary)
+
+    public function __construct($conditionalPrimary)
     {
         $this->conditionalPrimary = $conditionalPrimary;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkConditionalFactor($this);
     }

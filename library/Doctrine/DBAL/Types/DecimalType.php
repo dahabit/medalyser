@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
+
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * Type that maps an SQL DECIMAL to a PHP double.
  *
@@ -25,16 +28,17 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DecimalType extends Type
 {
-    public function getName ()
+    public function getName()
     {
         return Type::DECIMAL;
     }
-    public function getSQLDeclaration (array $fieldDeclaration, 
-    AbstractPlatform $platform)
+
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getDecimalTypeDeclarationSQL($fieldDeclaration);
     }
-    public function convertToPHPValue ($value, AbstractPlatform $platform)
+
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return (null === $value) ? null : $value;
     }

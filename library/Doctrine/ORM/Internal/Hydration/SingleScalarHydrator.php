@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Internal\Hydration;
+
 use Doctrine\DBAL\Connection;
+
 /**
  * Hydrator that hydrates a single scalar value from the result set.
  *
@@ -27,18 +30,20 @@ use Doctrine\DBAL\Connection;
 class SingleScalarHydrator extends AbstractHydrator
 {
     /** @override */
-    protected function _hydrateAll ()
+    protected function _hydrateAll()
     {
         $cache = array();
         $result = $this->_stmt->fetchAll(\PDO::FETCH_ASSOC);
         $num = count($result);
+
         if ($num == 0) {
-            throw new \Doctrine\ORM\NoResultException();
-        } else 
-            if ($num > 1 || count($result[key($result)]) > 1) {
-                throw new \Doctrine\ORM\NonUniqueResultException();
-            }
+            throw new \Doctrine\ORM\NoResultException;
+        } else if ($num > 1 || count($result[key($result)]) > 1) {
+            throw new \Doctrine\ORM\NonUniqueResultException;
+        }
+        
         $result = $this->_gatherScalarRowData($result[key($result)], $cache);
+        
         return array_shift($result);
     }
 }

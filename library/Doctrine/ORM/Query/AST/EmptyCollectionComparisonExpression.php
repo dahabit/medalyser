@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+ 
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * EmptyCollectionComparisonExpression ::= CollectionValuedPathExpression "IS" ["NOT"] "EMPTY"
  *
@@ -34,11 +36,13 @@ class EmptyCollectionComparisonExpression extends Node
 {
     public $expression;
     public $not;
-    public function __construct ($expression)
+
+    public function __construct($expression)
     {
         $this->expression = $expression;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkEmptyCollectionComparisonExpression($this);
     }

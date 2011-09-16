@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\OCI8;
+
 /**
  * OCI8 implementation of the Connection interface.
  *
@@ -25,7 +27,9 @@ namespace Doctrine\DBAL\Driver\OCI8;
 class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
 {
     private $_dbh;
+
     private $_executeMode = OCI_COMMIT_ON_SUCCESS;
+
     /**
      * Create a Connection to an Oracle Database using oci8 extension.
      * 
@@ -33,34 +37,34 @@ class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
      * @param string $password
      * @param string $db
      */
-    public function __construct ($username, $password, $db, $charset = null, 
-    $sessionMode = OCI_DEFAULT)
+    public function __construct($username, $password, $db, $charset = null, $sessionMode = OCI_DEFAULT)
     {
-        if (! defined('OCI_NO_AUTO_COMMIT')) {
+        if (!defined('OCI_NO_AUTO_COMMIT')) {
             define('OCI_NO_AUTO_COMMIT', 0);
         }
-        $this->_dbh = @oci_connect($username, $password, $db, $charset, 
-        $sessionMode);
-        if (! $this->_dbh) {
+
+        $this->_dbh = @oci_connect($username, $password, $db, $charset, $sessionMode);
+        if (!$this->_dbh) {
             throw OCI8Exception::fromErrorInfo(oci_error());
         }
     }
+
     /**
      * Create a non-executed prepared statement.
      * 
      * @param  string $prepareString
      * @return OCI8Statement
      */
-    public function prepare ($prepareString)
+    public function prepare($prepareString)
     {
-        return new OCI8Statement($this->_dbh, $prepareString, 
-        $this->_executeMode);
+        return new OCI8Statement($this->_dbh, $prepareString, $this->_executeMode);
     }
+
     /**
      * @param string $sql
      * @return OCI8Statement
      */
-    public function query ()
+    public function query()
     {
         $args = func_get_args();
         $sql = $args[0];
@@ -69,6 +73,7 @@ class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
         $stmt->execute();
         return $stmt;
     }
+
     /**
      * Quote input value.
      *
@@ -76,25 +81,28 @@ class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
      * @param int $type PDO::PARAM* 
      * @return mixed
      */
-    public function quote ($input, $type = \PDO::PARAM_STR)
+    public function quote($input, $type=\PDO::PARAM_STR)
     {
         return is_numeric($input) ? $input : "'$input'";
     }
+
     /**
      *
      * @param  string $statement
      * @return int
      */
-    public function exec ($statement)
+    public function exec($statement)
     {
         $stmt = $this->prepare($statement);
         $stmt->execute();
         return $stmt->rowCount();
     }
-    public function lastInsertId ($name = null)
+    
+    public function lastInsertId($name = null)
     {
         //TODO: throw exception or support sequences?
     }
+
     /**
      * Start a transactiom
      *
@@ -104,36 +112,39 @@ class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
      *
      * @return bool
      */
-    public function beginTransaction ()
+    public function beginTransaction()
     {
         $this->_executeMode = OCI_NO_AUTO_COMMIT;
         return true;
     }
+
     /**
      * @throws OCI8Exception
      * @return bool
      */
-    public function commit ()
+    public function commit()
     {
-        if (! oci_commit($this->_dbh)) {
+        if (!oci_commit($this->_dbh)) {
             throw OCI8Exception::fromErrorInfo($this->errorInfo());
         }
         $this->_executeMode = OCI_COMMIT_ON_SUCCESS;
         return true;
     }
+
     /**
      * @throws OCI8Exception
      * @return bool
      */
-    public function rollBack ()
+    public function rollBack()
     {
-        if (! oci_rollback($this->_dbh)) {
+        if (!oci_rollback($this->_dbh)) {
             throw OCI8Exception::fromErrorInfo($this->errorInfo());
         }
         $this->_executeMode = OCI_COMMIT_ON_SUCCESS;
         return true;
     }
-    public function errorCode ()
+    
+    public function errorCode()
     {
         $error = oci_error($this->_dbh);
         if ($error !== false) {
@@ -141,7 +152,8 @@ class OCI8Connection implements \Doctrine\DBAL\Driver\Connection
         }
         return $error;
     }
-    public function errorInfo ()
+    
+    public function errorInfo()
     {
         return oci_error($this->_dbh);
     }

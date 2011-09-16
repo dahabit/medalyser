@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Expression class for building DQL Order By parts
  *
@@ -36,25 +38,29 @@ class OrderBy
     protected $_separator = ', ';
     protected $_postSeparator = '';
     protected $_allowedClasses = array();
+
     private $_parts = array();
-    public function __construct ($sort = null, $order = null)
+
+    public function __construct($sort = null, $order = null)
     {
         if ($sort) {
             $this->add($sort, $order);
         }
     }
-    public function add ($sort, $order = null)
+
+    public function add($sort, $order = null)
     {
         $order = ! $order ? 'ASC' : $order;
-        $this->_parts[] = $sort . ' ' . $order;
+        $this->_parts[] = $sort . ' '. $order;
     }
-    public function count ()
+
+    public function count()
     {
         return count($this->_parts);
     }
-    public function __tostring ()
+
+    public function __tostring()
     {
-        return $this->_preSeparator . implode($this->_separator, $this->_parts) .
-         $this->_postSeparator;
+        return $this->_preSeparator . implode($this->_separator, $this->_parts) . $this->_postSeparator;
     }
 }

@@ -18,9 +18,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM\Tools\Event;
+
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
+
 /**
  * Event Args used for the Events::postGenerateSchema event.
  *
@@ -34,28 +37,29 @@ class GenerateSchemaEventArgs extends \Doctrine\Common\EventArgs
 {
     private $_em = null;
     private $_schema = null;
+
     /**
      * @param ClassMetadata $classMetadata
      * @param Schema $schema
      * @param Table $classTable
      */
-    public function __construct (EntityManager $em, Schema $schema)
+    public function __construct(EntityManager $em, Schema $schema)
     {
         $this->_em = $em;
         $this->_schema = $schema;
     }
+
     /**
      * @return EntityManager
      */
-    public function getEntityManager ()
-    {
+    public function getEntityManager() {
         return $this->_em;
     }
+
     /**
      * @return Schema
      */
-    public function getSchema ()
-    {
+    public function getSchema() {
         return $this->_schema;
     }
 }

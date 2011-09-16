@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * Description of GroupByClause
  *
@@ -33,11 +35,13 @@ namespace Doctrine\ORM\Query\AST;
 class GroupByClause extends Node
 {
     public $groupByItems = array();
-    public function __construct (array $groupByItems)
+
+    public function __construct(array $groupByItems)
     {
         $this->groupByItems = $groupByItems;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkGroupByClause($this);
     }

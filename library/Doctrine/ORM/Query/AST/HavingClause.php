@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * Description of HavingClause
  *
@@ -33,11 +35,13 @@ namespace Doctrine\ORM\Query\AST;
 class HavingClause extends Node
 {
     public $conditionalExpression;
-    public function __construct ($conditionalExpression)
+
+    public function __construct($conditionalExpression)
     {
         $this->conditionalExpression = $conditionalExpression;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkHavingClause($this);
     }

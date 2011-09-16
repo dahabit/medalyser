@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * QuantifiedExpression ::= ("ALL" | "ANY" | "SOME") "(" Subselect ")"
  *
@@ -34,26 +36,31 @@ class QuantifiedExpression extends Node
 {
     public $type;
     public $subselect;
-    public function __construct ($subselect)
+
+    public function __construct($subselect)
     {
         $this->subselect = $subselect;
     }
-    public function isAll ()
+
+    public function isAll()
     {
         return strtoupper($this->type) == 'ALL';
     }
-    public function isAny ()
+
+    public function isAny()
     {
         return strtoupper($this->type) == 'ANY';
     }
-    public function isSome ()
+
+    public function isSome()
     {
         return strtoupper($this->type) == 'SOME';
     }
+
     /**
      * @override
      */
-    public function dispatch ($sqlWalker)
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkQuantifiedExpression($this);
     }

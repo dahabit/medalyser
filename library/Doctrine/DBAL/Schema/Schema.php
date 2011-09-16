@@ -18,10 +18,13 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
+
 use Doctrine\DBAL\Schema\Visitor\CreateSchemaSqlCollector;
 use Doctrine\DBAL\Schema\Visitor\DropSchemaSqlCollector;
 use Doctrine\DBAL\Schema\Visitor\Visitor;
+
 /**
  * Object representation of a database schema
  *
@@ -37,14 +40,17 @@ class Schema extends AbstractAsset
      * @var array
      */
     protected $_tables = array();
+    
     /**
      * @var array
      */
     protected $_sequences = array();
+
     /**
      * @var SchemaConfig
      */
     protected $_schemaConfig = false;
+
     /**
      * @param array $tables
      * @param array $sequences
@@ -52,43 +58,47 @@ class Schema extends AbstractAsset
      * @param array $triggers
      * @param SchemaConfig $schemaConfig
      */
-    public function __construct (array $tables = array(), array $sequences = array(), 
-    SchemaConfig $schemaConfig = null)
+    public function __construct(array $tables=array(), array $sequences=array(), SchemaConfig $schemaConfig=null)
     {
         if ($schemaConfig == null) {
             $schemaConfig = new SchemaConfig();
         }
         $this->_schemaConfig = $schemaConfig;
-        foreach ($tables as $table) {
+
+        foreach ($tables AS $table) {
             $this->_addTable($table);
         }
-        foreach ($sequences as $sequence) {
+        foreach ($sequences AS $sequence) {
             $this->_addSequence($sequence);
         }
     }
+
     /**
      * @return bool
      */
-    public function hasExplicitForeignKeyIndexes ()
+    public function hasExplicitForeignKeyIndexes()
     {
         return $this->_schemaConfig->hasExplicitForeignKeyIndexes();
     }
+
     /**
      * @param Table $table
      */
-    protected function _addTable (Table $table)
+    protected function _addTable(Table $table)
     {
         $tableName = strtolower($table->getName());
-        if (isset($this->_tables[$tableName])) {
+        if(isset($this->_tables[$tableName])) {
             throw SchemaException::tableAlreadyExists($tableName);
         }
+
         $this->_tables[$tableName] = $table;
         $table->setSchemaConfig($this->_schemaConfig);
     }
+
     /**
      * @param Sequence $sequence
      */
-    protected function _addSequence (Sequence $sequence)
+    protected function _addSequence(Sequence $sequence)
     {
         $seqName = strtolower($sequence->getName());
         if (isset($this->_sequences[$seqName])) {
@@ -96,79 +106,88 @@ class Schema extends AbstractAsset
         }
         $this->_sequences[$seqName] = $sequence;
     }
+
     /**
      * Get all tables of this schema.
      * 
      * @return array
      */
-    public function getTables ()
+    public function getTables()
     {
         return $this->_tables;
     }
+
     /**
      * @param string $tableName
      * @return Table
      */
-    public function getTable ($tableName)
+    public function getTable($tableName)
     {
         $tableName = strtolower($tableName);
-        if (! isset($this->_tables[$tableName])) {
+        if (!isset($this->_tables[$tableName])) {
             throw SchemaException::tableDoesNotExist($tableName);
         }
+
         return $this->_tables[$tableName];
     }
+
     /**
      * Does this schema have a table with the given name?
      * 
      * @param  string $tableName
      * @return Schema
      */
-    public function hasTable ($tableName)
+    public function hasTable($tableName)
     {
         $tableName = strtolower($tableName);
         return isset($this->_tables[$tableName]);
     }
+
     /**
      * @param  string $sequenceName
      * @return bool
      */
-    public function hasSequence ($sequenceName)
+    public function hasSequence($sequenceName)
     {
         $sequenceName = strtolower($sequenceName);
         return isset($this->_sequences[$sequenceName]);
     }
+
     /**
      * @throws SchemaException
      * @param  string $sequenceName
      * @return Doctrine\DBAL\Schema\Sequence
      */
-    public function getSequence ($sequenceName)
+    public function getSequence($sequenceName)
     {
         $sequenceName = strtolower($sequenceName);
-        if (! $this->hasSequence($sequenceName)) {
+        if(!$this->hasSequence($sequenceName)) {
             throw SchemaException::sequenceDoesNotExist($sequenceName);
         }
         return $this->_sequences[$sequenceName];
     }
+
     /**
      * @return Doctrine\DBAL\Schema\Sequence[]
      */
-    public function getSequences ()
+    public function getSequences()
     {
         return $this->_sequences;
     }
+
     /**
      * Create a new table
      * 
      * @param  string $tableName
      * @return Table
      */
-    public function createTable ($tableName)
+    public function createTable($tableName)
     {
         $table = new Table($tableName);
         $this->_addTable($table);
         return $table;
     }
+
     /**
      * Rename a table
      *
@@ -176,27 +195,30 @@ class Schema extends AbstractAsset
      * @param string $newTableName
      * @return Schema
      */
-    public function renameTable ($oldTableName, $newTableName)
+    public function renameTable($oldTableName, $newTableName)
     {
         $table = $this->getTable($oldTableName);
         $table->_setName($newTableName);
+
         $this->dropTable($oldTableName);
         $this->_addTable($table);
         return $this;
     }
+
     /**
      * Drop a table from the schema.
      *
      * @param string $tableName
      * @return Schema
      */
-    public function dropTable ($tableName)
+    public function dropTable($tableName)
     {
         $tableName = strtolower($tableName);
         $table = $this->getTable($tableName);
         unset($this->_tables[$tableName]);
         return $this;
     }
+
     /**
      * Create a new sequence
      * 
@@ -205,94 +227,100 @@ class Schema extends AbstractAsset
      * @param  int $initialValue
      * @return Sequence
      */
-    public function createSequence ($sequenceName, $allocationSize = 1, 
-    $initialValue = 1)
+    public function createSequence($sequenceName, $allocationSize=1, $initialValue=1)
     {
         $seq = new Sequence($sequenceName, $allocationSize, $initialValue);
         $this->_addSequence($seq);
         return $seq;
     }
+
     /**
      * @param string $sequenceName
      * @return Schema
      */
-    public function dropSequence ($sequenceName)
+    public function dropSequence($sequenceName)
     {
         $sequenceName = strtolower($sequenceName);
         unset($this->_sequences[$sequenceName]);
         return $this;
     }
+
     /**
      * Return an array of necessary sql queries to create the schema on the given platform.
      *
      * @param AbstractPlatform $platform
      * @return array
      */
-    public function toSql (\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function toSql(\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         $sqlCollector = new CreateSchemaSqlCollector($platform);
         $this->visit($sqlCollector);
+
         return $sqlCollector->getQueries();
     }
+
     /**
      * Return an array of necessary sql queries to drop the schema on the given platform.
      *
      * @param AbstractPlatform $platform
      * @return array
      */
-    public function toDropSql (
-    \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function toDropSql(\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         $dropSqlCollector = new DropSchemaSqlCollector($platform);
         $this->visit($dropSqlCollector);
+
         return $dropSqlCollector->getQueries();
     }
+
     /**
      * @param Schema $toSchema
      * @param AbstractPlatform $platform
      */
-    public function getMigrateToSql (Schema $toSchema, 
-    Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function getMigrateToSql(Schema $toSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         $comparator = new Comparator();
         $schemaDiff = $comparator->compare($this, $toSchema);
         return $schemaDiff->toSql($platform);
     }
+
     /**
      * @param Schema $fromSchema
      * @param AbstractPlatform $platform
      */
-    public function getMigrateFromSql (Schema $fromSchema, 
-    Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function getMigrateFromSql(Schema $fromSchema, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         $comparator = new Comparator();
         $schemaDiff = $comparator->compare($fromSchema, $this);
         return $schemaDiff->toSql($platform);
     }
+
     /**
      * @param Visitor $visitor
      */
-    public function visit (Visitor $visitor)
+    public function visit(Visitor $visitor)
     {
         $visitor->acceptSchema($this);
-        foreach ($this->_tables as $table) {
+        
+        foreach ($this->_tables AS $table) {
             $table->visit($visitor);
         }
-        foreach ($this->_sequences as $sequence) {
+        foreach ($this->_sequences AS $sequence) {
             $sequence->visit($visitor);
         }
     }
+
     /**
      * Cloning a Schema triggers a deep clone of all related assets.
      *
      * @return void
      */
-    public function __clone ()
+    public function __clone()
     {
-        foreach ($this->_tables as $k => $table) {
+        foreach ($this->_tables AS $k => $table) {
             $this->_tables[$k] = clone $table;
         }
-        foreach ($this->_sequences as $k => $sequence) {
+        foreach ($this->_sequences AS $k => $sequence) {
             $this->_sequences[$k] = clone $sequence;
         }
     }

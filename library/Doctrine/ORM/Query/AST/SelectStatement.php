@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * SelectStatement = SelectClause FromClause [WhereClause] [GroupByClause] [HavingClause] [OrderByClause]
  *
@@ -38,12 +40,13 @@ class SelectStatement extends Node
     public $groupByClause;
     public $havingClause;
     public $orderByClause;
-    public function __construct ($selectClause, $fromClause)
-    {
+
+    public function __construct($selectClause, $fromClause) {
         $this->selectClause = $selectClause;
         $this->fromClause = $fromClause;
-    }
-    public function dispatch ($sqlWalker)
+    }    
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkSelectStatement($this);
     }

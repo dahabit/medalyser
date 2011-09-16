@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * ConditionalExpression ::= ConditionalTerm {"OR" ConditionalTerm}*
  *
@@ -33,11 +35,13 @@ namespace Doctrine\ORM\Query\AST;
 class ConditionalExpression extends Node
 {
     public $conditionalTerms = array();
-    public function __construct (array $conditionalTerms)
+
+    public function __construct(array $conditionalTerms)
     {
         $this->conditionalTerms = $conditionalTerms;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkConditionalExpression($this);
     }

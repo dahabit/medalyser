@@ -18,8 +18,13 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM\Tools\Console\Command;
-use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console;
+
+use Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console;
+
 /**
  * Validate that the current mapping is valid
  *
@@ -37,50 +42,48 @@ class ValidateSchemaCommand extends Console\Command\Command
     /**
      * @see Console\Command\Command
      */
-    protected function configure ()
+    protected function configure()
     {
-        $this->setName('orm:validate-schema')
-            ->setDescription('Validate that the mapping files.')
-            ->setHelp(
-        <<<EOT
+        $this
+        ->setName('orm:validate-schema')
+        ->setDescription('Validate that the mapping files.')
+        ->setHelp(<<<EOT
 'Validate that the mapping files are correct and in sync with the database.'
-EOT);
+EOT
+        );
     }
+
     /**
      * @see Console\Command\Command
      */
-    protected function execute (Console\Input\InputInterface $input, 
-    Console\Output\OutputInterface $output)
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $em = $this->getHelper('em')->getEntityManager();
+
         $validator = new \Doctrine\ORM\Tools\SchemaValidator($em);
         $errors = $validator->validateMapping();
+
         $exit = 0;
         if ($errors) {
-            foreach ($errors as $className => $errorMessages) {
-                $output->write(
-                "<error>[Mapping]  FAIL - The entity-class '" . $className .
-                 "' mapping is invalid:</error>\n");
-                foreach ($errorMessages as $errorMessage) {
+            foreach ($errors AS $className => $errorMessages) {
+                $output->write("<error>[Mapping]  FAIL - The entity-class '" . $className . "' mapping is invalid:</error>\n");
+                foreach ($errorMessages AS $errorMessage) {
                     $output->write('* ' . $errorMessage . "\n");
                 }
                 $output->write("\n");
             }
             $exit += 1;
         } else {
-            $output->write(
-            '<info>[Mapping]  OK - The mapping files are correct.</info>' . "\n");
+            $output->write('<info>[Mapping]  OK - The mapping files are correct.</info>' . "\n");
         }
-        if (! $validator->schemaInSyncWithMetadata()) {
-            $output->write(
-            '<error>[Database] FAIL - The database schema is not in sync with the current mapping file.</error>' .
-             "\n");
+
+        if (!$validator->schemaInSyncWithMetadata()) {
+            $output->write('<error>[Database] FAIL - The database schema is not in sync with the current mapping file.</error>' . "\n");
             $exit += 2;
         } else {
-            $output->write(
-            '<info>[Database] OK - The database schema is in sync with the mapping files.</info>' .
-             "\n");
+            $output->write('<info>[Database] OK - The database schema is in sync with the mapping files.</info>' . "\n");
         }
+
         exit($exit);
     }
 }

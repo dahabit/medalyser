@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\DBAL;
+
 /**
  * Contains all DBAL LockModes
  *
@@ -35,6 +37,6 @@ class LockMode
     const OPTIMISTIC = 1;
     const PESSIMISTIC_READ = 2;
     const PESSIMISTIC_WRITE = 4;
-    final private function __construct ()
-    {}
+
+    final private function __construct() { }
 }

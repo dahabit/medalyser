@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * SimpleSelectClause  ::= "SELECT" ["DISTINCT"] SimpleSelectExpression
  *
@@ -34,12 +36,14 @@ class SimpleSelectClause extends Node
 {
     public $isDistinct = false;
     public $simpleSelectExpression;
-    public function __construct ($simpleSelectExpression, $isDistinct)
+
+    public function __construct($simpleSelectExpression, $isDistinct)
     {
         $this->simpleSelectExpression = $simpleSelectExpression;
         $this->isDistinct = $isDistinct;
     }
-    public function dispatch ($sqlWalker)
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkSimpleSelectClause($this);
     }

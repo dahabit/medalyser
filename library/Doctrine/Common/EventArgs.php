@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common;
+
 /**
  * EventArgs is the base class for classes containing event data.
  *
@@ -41,6 +43,7 @@ class EventArgs
      * @static
      */
     private static $_emptyEventArgsInstance;
+
     /**
      * Gets the single, empty and immutable EventArgs instance.
      *
@@ -55,11 +58,12 @@ class EventArgs
      * @static
      * @return EventArgs
      */
-    public static function getEmptyInstance ()
+    public static function getEmptyInstance()
     {
-        if (! self::$_emptyEventArgsInstance) {
-            self::$_emptyEventArgsInstance = new EventArgs();
+        if ( ! self::$_emptyEventArgsInstance) {
+            self::$_emptyEventArgsInstance = new EventArgs;
         }
+
         return self::$_emptyEventArgsInstance;
     }
 }

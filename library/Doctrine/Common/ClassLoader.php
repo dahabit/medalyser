@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common;
+
 /**
  * A <tt>ClassLoader</tt> is an autoloader for class files that can be
  * installed on the SPL autoload stack. It is a class loader that either loads only classes
@@ -35,6 +37,7 @@ class ClassLoader
     private $namespace;
     private $includePath;
     private $namespaceSeparator = '\\';
+
     /**
      * Creates a new <tt>ClassLoader</tt> that loads classes of the
      * specified namespace from the specified include path.
@@ -46,97 +49,107 @@ class ClassLoader
      * @param string $ns The namespace of the classes to load.
      * @param string $includePath The base include path to use.
      */
-    public function __construct ($ns = null, $includePath = null)
+    public function __construct($ns = null, $includePath = null)
     {
         $this->namespace = $ns;
         $this->includePath = $includePath;
     }
+
     /**
      * Sets the namespace separator used by classes in the namespace of this ClassLoader.
      * 
      * @param string $sep The separator to use.
      */
-    public function setNamespaceSeparator ($sep)
+    public function setNamespaceSeparator($sep)
     {
         $this->namespaceSeparator = $sep;
     }
+
     /**
      * Gets the namespace separator used by classes in the namespace of this ClassLoader.
      * 
      * @return string
      */
-    public function getNamespaceSeparator ()
+    public function getNamespaceSeparator()
     {
         return $this->namespaceSeparator;
     }
+
     /**
      * Sets the base include path for all class files in the namespace of this ClassLoader.
      * 
      * @param string $includePath
      */
-    public function setIncludePath ($includePath)
+    public function setIncludePath($includePath)
     {
         $this->includePath = $includePath;
     }
+
     /**
      * Gets the base include path for all class files in the namespace of this ClassLoader.
      * 
      * @return string
      */
-    public function getIncludePath ()
+    public function getIncludePath()
     {
         return $this->includePath;
     }
+
     /**
      * Sets the file extension of class files in the namespace of this ClassLoader.
      * 
      * @param string $fileExtension
      */
-    public function setFileExtension ($fileExtension)
+    public function setFileExtension($fileExtension)
     {
         $this->fileExtension = $fileExtension;
     }
+
     /**
      * Gets the file extension of class files in the namespace of this ClassLoader.
      * 
      * @return string
      */
-    public function getFileExtension ()
+    public function getFileExtension()
     {
         return $this->fileExtension;
     }
+
     /**
      * Registers this ClassLoader on the SPL autoload stack.
      */
-    public function register ()
+    public function register()
     {
         spl_autoload_register(array($this, 'loadClass'));
     }
+
     /**
      * Removes this ClassLoader from the SPL autoload stack.
      */
-    public function unregister ()
+    public function unregister()
     {
         spl_autoload_unregister(array($this, 'loadClass'));
     }
+
     /**
      * Loads the given class or interface.
      *
      * @param string $classname The name of the class to load.
      * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
      */
-    public function loadClass ($className)
+    public function loadClass($className)
     {
-        if ($this->namespace !== null &&
-         strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
             return false;
         }
-        require ($this->includePath !== null ? $this->includePath .
-         DIRECTORY_SEPARATOR : '') .
-         str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className) .
-         $this->fileExtension;
+
+        require ($this->includePath !== null ? $this->includePath . DIRECTORY_SEPARATOR : '')
+               . str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className)
+               . $this->fileExtension;
+        
         return true;
     }
+
     /**
      * Asks this ClassLoader whether it can potentially load the class (file) with
      * the given name.
@@ -144,19 +157,21 @@ class ClassLoader
      * @param string $className The fully-qualified name of the class.
      * @return boolean TRUE if this ClassLoader can load the class, FALSE otherwise.
      */
-    public function canLoadClass ($className)
+    public function canLoadClass($className)
     {
-        if ($this->namespace !== null &&
-         strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
             return false;
         }
-        $file = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, 
-        $className) . $this->fileExtension;
+
+        $file = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className) . $this->fileExtension;
+
         if ($this->includePath !== null) {
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
+
         return self::fileExistsInIncludePath($file);
     }
+
     /**
      * Checks whether a class with a given name exists. A class "exists" if it is either
      * already defined in the current request or if there is an autoloader on the SPL
@@ -178,39 +193,37 @@ class ClassLoader
      * @param string $className The fully-qualified name of the class.
      * @return boolean TRUE if the class exists as per the definition given above, FALSE otherwise.
      */
-    public static function classExists ($className)
+    public static function classExists($className)
     {
         if (class_exists($className, false)) {
             return true;
         }
+
         foreach (spl_autoload_functions() as $loader) {
             if (is_array($loader)) { // array(???, ???)
                 if (is_object($loader[0])) {
                     if ($loader[0] instanceof ClassLoader) { // array($obj, 'methodName')
-                        if ($loader[0]->canLoadClass(
-                        $className)) {
+                        if ($loader[0]->canLoadClass($className)) {
                             return true;
                         }
-                    } else 
-                        if ($loader[0]->{$loader[1]}($className)) {
-                            return true;
-                        }
-                } else 
-                    if ($loader[0]::$loader[1]($className)) { // array('ClassName', 'methodName')
+                    } else if ($loader[0]->{$loader[1]}($className)) {
                         return true;
                     }
-            } else 
-                if ($loader instanceof \Closure) { // function($className) {..}
-                    if ($loader($className)) {
-                        return true;
-                    }
-                } else 
-                    if (is_string($loader) && $loader($className)) { // "MyClass::loadClass"
-                        return true;
-                    }
+                } else if ($loader[0]::$loader[1]($className)) { // array('ClassName', 'methodName')
+                    return true;
+                }
+            } else if ($loader instanceof \Closure) { // function($className) {..}
+                if ($loader($className)) {
+                    return true;
+                }
+            } else if (is_string($loader) && $loader($className)) { // "MyClass::loadClass"
+                return true;
+            }
         }
+
         return false;
     }
+
     /**
      * Gets the <tt>ClassLoader</tt> from the SPL autoload stack that is responsible
      * for (and is able to load) the class with the given name.
@@ -218,21 +231,25 @@ class ClassLoader
      * @param string $className The name of the class.
      * @return The <tt>ClassLoader</tt> for the class or NULL if no such <tt>ClassLoader</tt> exists.
      */
-    public static function getClassLoader ($className)
+    public static function getClassLoader($className)
     {
-        foreach (spl_autoload_functions() as $loader) {
-            if (is_array($loader) && $loader[0] instanceof ClassLoader &&
-             $loader[0]->canLoadClass($className)) {
+         foreach (spl_autoload_functions() as $loader) {
+            if (is_array($loader)
+                && $loader[0] instanceof ClassLoader
+                && $loader[0]->canLoadClass($className)
+            ) {
                 return $loader[0];
             }
         }
+
         return null;
     }
+    
     /**
      * @param string $file The file relative path.
      * @return boolean Whether file exists in include_path.
      */
-    public static function fileExistsInIncludePath ($file)
+    public static function fileExistsInIncludePath($file)
     {
         foreach (explode(PATH_SEPARATOR, get_include_path()) as $dir) {
             if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {

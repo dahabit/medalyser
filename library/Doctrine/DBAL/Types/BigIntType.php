@@ -18,8 +18,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
+
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 /**
  * Type that maps a database BIGINT to a PHP string.
  *
@@ -28,16 +31,17 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class BigIntType extends Type
 {
-    public function getName ()
+    public function getName()
     {
         return Type::BIGINT;
     }
-    public function getSQLDeclaration (array $fieldDeclaration, 
-    AbstractPlatform $platform)
+
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getBigIntTypeDeclarationSQL($fieldDeclaration);
     }
-    public function getBindingType ()
+
+    public function getBindingType()
     {
         return \PDO::PARAM_INT;
     }

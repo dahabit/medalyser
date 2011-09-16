@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM;
+
 /**
  * Is thrown when a transaction is required for the current operation, but there is none open.
  *
@@ -31,7 +33,7 @@ namespace Doctrine\ORM;
  */
 class TransactionRequiredException extends ORMException
 {
-    static public function transactionRequired ()
+    static public function transactionRequired()
     {
         return new self('An open transaction is required for this operation.');
     }

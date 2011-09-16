@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * ConditionalPrimary ::= SimpleConditionalExpression | "(" ConditionalExpression ")"
  *
@@ -34,15 +36,18 @@ class ConditionalPrimary extends Node
 {
     public $simpleConditionalExpression;
     public $conditionalExpression;
-    public function isSimpleConditionalExpression ()
+
+    public function isSimpleConditionalExpression()
     {
         return (bool) $this->simpleConditionalExpression;
     }
-    public function isConditionalExpression ()
+
+    public function isConditionalExpression()
     {
         return (bool) $this->conditionalExpression;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkConditionalPrimary($this);
     }

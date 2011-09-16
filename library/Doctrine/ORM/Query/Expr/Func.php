@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Expression class for generating DQL functions
  *
@@ -34,12 +36,14 @@ class Func
 {
     private $_name;
     private $_arguments;
-    public function __construct ($name, $arguments)
+
+    public function __construct($name, $arguments)
     {
         $this->_name = $name;
         $this->_arguments = (array) $arguments;
     }
-    public function __toString ()
+
+    public function __toString()
     {
         return $this->_name . '(' . implode(', ', $this->_arguments) . ')';
     }

@@ -18,8 +18,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\OCI8;
+
 use Doctrine\DBAL\Platforms;
+
 /**
  * A Doctrine DBAL driver for the Oracle OCI8 PHP extensions.
  * 
@@ -28,30 +31,35 @@ use Doctrine\DBAL\Platforms;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-    public function connect (array $params, $username = null, $password = null, 
-    array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        return new OCI8Connection($username, $password, 
-        $this->_constructDsn($params), 
-        isset($params['charset']) ? $params['charset'] : null, 
-        isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT);
+        return new OCI8Connection(
+            $username,
+            $password,
+            $this->_constructDsn($params),
+            isset($params['charset']) ? $params['charset'] : null,
+            isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT
+        );
     }
+
     /**
      * Constructs the Oracle DSN.
      *
      * @return string The DSN.
      */
-    private function _constructDsn (array $params)
+    private function _constructDsn(array $params)
     {
         $dsn = '';
         if (isset($params['host'])) {
             $dsn .= '(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)' .
-             '(HOST=' . $params['host'] . ')';
+                   '(HOST=' . $params['host'] . ')';
+
             if (isset($params['port'])) {
                 $dsn .= '(PORT=' . $params['port'] . ')';
             } else {
                 $dsn .= '(PORT=1521)';
             }
+
             $dsn .= '))';
             if (isset($params['dbname'])) {
                 $dsn .= '(CONNECT_DATA=(SID=' . $params['dbname'] . ')';
@@ -60,21 +68,26 @@ class Driver implements \Doctrine\DBAL\Driver
         } else {
             $dsn .= $params['dbname'];
         }
+
         return $dsn;
     }
-    public function getDatabasePlatform ()
+
+    public function getDatabasePlatform()
     {
         return new \Doctrine\DBAL\Platforms\OraclePlatform();
     }
-    public function getSchemaManager (\Doctrine\DBAL\Connection $conn)
+
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\OracleSchemaManager($conn);
     }
-    public function getName ()
+
+    public function getName()
     {
         return 'oci8';
     }
-    public function getDatabase (\Doctrine\DBAL\Connection $conn)
+
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
         return $params['user'];

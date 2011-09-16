@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * NullIfExpression ::= "NULLIF" "(" ScalarExpression "," ScalarExpression ")"
  *
@@ -31,13 +33,16 @@ namespace Doctrine\ORM\Query\AST;
 class NullIfExpression extends Node
 {
     public $firstExpression;
+    
     public $secondExpression;
-    public function __construct ($firstExpression, $secondExpression)
+
+    public function __construct($firstExpression, $secondExpression)
     {
-        $this->firstExpression = $firstExpression;
+        $this->firstExpression  = $firstExpression;
         $this->secondExpression = $secondExpression;
-    }
-    public function dispatch ($sqlWalker)
+    }    
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkNullIfExpression($this);
     }

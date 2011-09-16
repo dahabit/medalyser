@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * Description of InputParameter
  *
@@ -34,20 +36,22 @@ class InputParameter extends Node
 {
     public $isNamed;
     public $name;
+
     /**
      * @param string $value
      */
-    public function __construct ($value)
+    public function __construct($value)
     {
         if (strlen($value) == 1) {
-            throw \Doctrine\ORM\Query\QueryException::invalidParameterFormat(
-            $value);
+            throw \Doctrine\ORM\Query\QueryException::invalidParameterFormat($value);
         }
+
         $param = substr($value, 1);
         $this->isNamed = ! is_numeric($param);
         $this->name = $param;
     }
-    public function dispatch ($walker)
+
+    public function dispatch($walker)
     {
         return $walker->walkInputParameter($this);
     }

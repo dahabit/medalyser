@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * UpdateClause ::= "UPDATE" AbstractSchemaName [["AS"] AliasIdentificationVariable] "SET" UpdateItem {"," UpdateItem}*
  *
@@ -35,12 +37,14 @@ class UpdateClause extends Node
     public $abstractSchemaName;
     public $aliasIdentificationVariable;
     public $updateItems = array();
-    public function __construct ($abstractSchemaName, array $updateItems)
+
+    public function __construct($abstractSchemaName, array $updateItems)
     {
         $this->abstractSchemaName = $abstractSchemaName;
         $this->updateItems = $updateItems;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkUpdateClause($this);
     }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Symfony package.
  *
@@ -7,7 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Symfony\Component\Console\Input;
+
 /**
  * InputInterface is the interface implemented by all input classes.
  *
@@ -20,7 +23,8 @@ interface InputInterface
      *
      * @return string The value of the first argument or null otherwise
      */
-    function getFirstArgument ();
+    function getFirstArgument();
+
     /**
      * Returns true if the raw parameters (not parsed) contains a value.
      *
@@ -31,7 +35,8 @@ interface InputInterface
      *
      * @return Boolean true if the value is contained in the raw parameters
      */
-    function hasParameterOption ($values);
+    function hasParameterOption($values);
+
     /**
      * Returns the value of a raw option (not parsed).
      *
@@ -43,13 +48,15 @@ interface InputInterface
      *
      * @return mixed The option value
      */
-    function getParameterOption ($values, $default = false);
+    function getParameterOption($values, $default = false);
+
     /**
      * Binds the current Input instance with the given arguments and options.
      *
      * @param InputDefinition $definition A InputDefinition instance
      */
-    function bind (InputDefinition $definition);
+    function bind(InputDefinition $definition);
+
     /**
      * Validate if arguments given are correct.
      *
@@ -57,35 +64,40 @@ interface InputInterface
      *
      * @throws \RuntimeException
      */
-    function validate ();
+    function validate();
+
     /**
      * Returns all the given arguments merged with the default values.
      *
      * @return array
      */
-    function getArguments ();
+    function getArguments();
+
     /**
      * Get argument by name.
      *
      * @param string $name The name of the argument
      * @return mixed
      */
-    function getArgument ($name);
+    function getArgument($name);
+
     /**
      * @return array
      */
-    function getOptions ();
+    function getOptions();
+
     /**
      * Get an option by name.
      *
      * @param string $name The name of the option
      * @return mixed
      */
-    function getOption ($name);
+    function getOption($name);
+
     /**
      * Is this input means interactive?
      *
      * @return Boolean
      */
-    function isInteractive ();
+    function isInteractive();
 }

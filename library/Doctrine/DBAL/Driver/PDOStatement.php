@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver;
+
 /**
  * The PDO implementation of the Statement interface.
  * Used by all PDO-based drivers.
@@ -27,6 +29,5 @@ namespace Doctrine\DBAL\Driver;
  */
 class PDOStatement extends \PDOStatement implements Statement
 {
-    private function __construct ()
-    {}
+    private function __construct() {}
 }

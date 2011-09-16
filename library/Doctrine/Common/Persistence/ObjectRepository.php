@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Persistence;
+
 /**
  * Contract for a Doctrine persistence layer ObjectRepository class to implement.
  *
@@ -34,13 +36,15 @@ interface ObjectRepository
      * @param $id The identifier.
      * @return object The object.
      */
-    public function find ($id);
+    public function find($id);
+
     /**
      * Finds all objects in the repository.
      *
      * @return mixed The objects.
      */
-    public function findAll ();
+    public function findAll();
+
     /**
      * Finds objects by a set of criteria.
      *
@@ -55,13 +59,13 @@ interface ObjectRepository
      * @param int|null $offset
      * @return mixed The objects.
      */
-    public function findBy (array $criteria, array $orderBy = null, $limit = null, 
-    $offset = null);
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+
     /**
      * Finds a single object by a set of criteria.
      *
      * @param array $criteria
      * @return object The object.
      */
-    public function findOneBy (array $criteria);
+    public function findOneBy(array $criteria);
 }

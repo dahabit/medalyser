@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Symfony package.
  *
@@ -7,7 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Symfony\Component\Console\Formatter;
+
 /**
  * Formatter class for console output.
  *
@@ -19,6 +22,7 @@ class OutputFormatter implements OutputFormatterInterface
 {
     private $decorated;
     private $styles = array();
+
     /**
      * Initializes console output formatter.
      *
@@ -27,17 +31,20 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function __construct ($decorated = null, array $styles = array())
+    public function __construct($decorated = null, array $styles = array())
     {
-        $this->decorated = (boolean) $decorated;
-        $this->setStyle('error', new OutputFormatterStyle('white', 'red'));
-        $this->setStyle('info', new OutputFormatterStyle('green'));
-        $this->setStyle('comment', new OutputFormatterStyle('yellow'));
+        $this->decorated = (Boolean) $decorated;
+
+        $this->setStyle('error',    new OutputFormatterStyle('white', 'red'));
+        $this->setStyle('info',     new OutputFormatterStyle('green'));
+        $this->setStyle('comment',  new OutputFormatterStyle('yellow'));
         $this->setStyle('question', new OutputFormatterStyle('black', 'cyan'));
+
         foreach ($styles as $name => $style) {
             $this->setStyle($name, $style);
         }
     }
+
     /**
      * Sets the decorated flag.
      *
@@ -45,10 +52,11 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function setDecorated ($decorated)
+    public function setDecorated($decorated)
     {
-        $this->decorated = (boolean) $decorated;
+        $this->decorated = (Boolean) $decorated;
     }
+
     /**
      * Gets the decorated flag.
      *
@@ -56,10 +64,11 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function isDecorated ()
+    public function isDecorated()
     {
         return $this->decorated;
     }
+
     /**
      * Sets a new style.
      *
@@ -68,10 +77,11 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function setStyle ($name, OutputFormatterStyleInterface $style)
+    public function setStyle($name, OutputFormatterStyleInterface $style)
     {
         $this->styles[strtolower($name)] = $style;
     }
+
     /**
      * Checks if output formatter has style with specified name.
      *
@@ -81,10 +91,11 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function hasStyle ($name)
+    public function hasStyle($name)
     {
         return isset($this->styles[strtolower($name)]);
     }
+
     /**
      * Gets style options from style with specified name.
      *
@@ -94,13 +105,15 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function getStyle ($name)
+    public function getStyle($name)
     {
-        if (! $this->hasStyle($name)) {
+        if (!$this->hasStyle($name)) {
             throw new \InvalidArgumentException('Undefined style: ' . $name);
         }
+
         return $this->styles[strtolower($name)];
     }
+
     /**
      * Formats a message according to the given styles.
      *
@@ -110,11 +123,11 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @api
      */
-    public function format ($message)
+    public function format($message)
     {
-        return preg_replace_callback('#<([a-z][a-z0-9_=;-]+)>(.*?)</\\1?>#i', 
-        array($this, 'replaceStyle'), $message);
+        return preg_replace_callback('#<([a-z][a-z0-9_=;-]+)>(.*?)</\\1?>#i', array($this, 'replaceStyle'), $message);
     }
+
     /**
      * Replaces style of the output.
      *
@@ -122,21 +135,25 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @return string The replaced style
      */
-    private function replaceStyle ($match)
+    private function replaceStyle($match)
     {
-        if (! $this->isDecorated()) {
+        if (!$this->isDecorated()) {
             return $match[2];
         }
+
         if (isset($this->styles[strtolower($match[1])])) {
             $style = $this->styles[strtolower($match[1])];
         } else {
             $style = $this->createStyleFromString($match[1]);
+
             if (false === $style) {
                 return $match[0];
             }
         }
+
         return $style->apply($this->format($match[2]));
     }
+
     /**
      * Tries to create new style instance from string.
      *
@@ -144,15 +161,16 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @return  Symfony\Component\Console\Format\FormatterStyle|Boolean false if string is not format string
      */
-    private function createStyleFromString ($string)
+    private function createStyleFromString($string)
     {
-        if (! preg_match_all('/([^=]+)=([^;]+)(;|$)/', strtolower($string), 
-        $matches, PREG_SET_ORDER)) {
+        if (!preg_match_all('/([^=]+)=([^;]+)(;|$)/', strtolower($string), $matches, PREG_SET_ORDER)) {
             return false;
         }
+
         $style = new OutputFormatterStyle();
         foreach ($matches as $match) {
             array_shift($match);
+
             if ('fg' == $match[0]) {
                 $style->setForeground($match[1]);
             } elseif ('bg' == $match[0]) {
@@ -161,6 +179,7 @@ class OutputFormatter implements OutputFormatterInterface
                 $style->setOption($match[1]);
             }
         }
+
         return $style;
     }
 }

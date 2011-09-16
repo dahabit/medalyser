@@ -18,8 +18,13 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Tools\Console\Command\ClearCache;
-use Symfony\Component\Console\Input\InputArgument, Symfony\Component\Console\Input\InputOption, Symfony\Component\Console;
+
+use Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console;
+
 /**
  * Command to clear the result cache of the various cache drivers.
  *
@@ -37,117 +42,120 @@ class ResultCommand extends Console\Command\Command
     /**
      * @see Console\Command\Command
      */
-    protected function configure ()
+    protected function configure()
     {
-        $this->setName('orm:clear-cache:result')
-            ->setDescription('Clear result cache of the various cache drivers.')
-            ->setDefinition(
-        array(
-        new InputOption('id', null, 
-        InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 
-        'ID(s) of the cache entry to delete (accepts * wildcards).', array()), 
-        new InputOption('regex', null, 
-        InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 
-        'Delete cache entries that match the given regular expression(s).', 
-        array()), 
-        new InputOption('prefix', null, 
-        InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 
-        'Delete cache entries that have the given prefix(es).', array()), 
-        new InputOption('suffix', null, 
-        InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 
-        'Delete cache entries that have the given suffix(es).', array())))
-            ->setHelp(
-        <<<EOT
+        $this
+        ->setName('orm:clear-cache:result')
+        ->setDescription('Clear result cache of the various cache drivers.')
+        ->setDefinition(array(
+            new InputOption(
+                'id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'ID(s) of the cache entry to delete (accepts * wildcards).', array()
+            ),
+            new InputOption(
+                'regex', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Delete cache entries that match the given regular expression(s).', array()
+            ),
+            new InputOption(
+                'prefix', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Delete cache entries that have the given prefix(es).', array()
+            ),
+            new InputOption(
+                'suffix', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Delete cache entries that have the given suffix(es).', array()
+            ),
+        ))
+        ->setHelp(<<<EOT
 Clear result cache of the various cache drivers.
 If none of the options are defined, all cache entries will be removed.
-EOT);
+EOT
+        );
     }
+
     /**
      * @see Console\Command\Command
      */
-    protected function execute (Console\Input\InputInterface $input, 
-    Console\Output\OutputInterface $output)
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $em = $this->getHelper('em')->getEntityManager();
         $cacheDriver = $em->getConfiguration()->getResultCacheImpl();
-        if (! $cacheDriver) {
-            throw new \InvalidArgumentException(
-            'No Result cache driver is configured on given EntityManager.');
+
+        if ( ! $cacheDriver) {
+            throw new \InvalidArgumentException('No Result cache driver is configured on given EntityManager.');
         }
+
         if ($cacheDriver instanceof \Doctrine\Common\Cache\ApcCache) {
-            throw new \LogicException(
-            "Cannot clear APC Cache from Console, its shared in the Webserver memory and not accessible from the CLI.");
+            throw new \LogicException("Cannot clear APC Cache from Console, its shared in the Webserver memory and not accessible from the CLI.");
         }
+
         $outputed = false;
+
         // Removing based on --id
         if (($ids = $input->getOption('id')) !== null && $ids) {
             foreach ($ids as $id) {
                 $output->write($outputed ? PHP_EOL : '');
-                $output->write(
-                sprintf(
-                'Clearing Result cache entries that match the id "<info>%s</info>"', 
-                $id) . PHP_EOL);
+                $output->write(sprintf('Clearing Result cache entries that match the id "<info>%s</info>"', $id) . PHP_EOL);
+
                 $deleted = $cacheDriver->delete($id);
+
                 if (is_array($deleted)) {
                     $this->_printDeleted($output, $deleted);
-                } else 
-                    if (is_bool($deleted) && $deleted) {
-                        $this->_printDeleted($output, array($id));
-                    }
+                } else if (is_bool($deleted) && $deleted) {
+                    $this->_printDeleted($output, array($id));
+                }
+
                 $outputed = true;
             }
         }
+
         // Removing based on --regex
         if (($regexps = $input->getOption('regex')) !== null && $regexps) {
-            foreach ($regexps as $regex) {
+            foreach($regexps as $regex) {
                 $output->write($outputed ? PHP_EOL : '');
-                $output->write(
-                sprintf(
-                'Clearing Result cache entries that match the regular expression "<info>%s</info>"', 
-                $regex) . PHP_EOL);
-                $this->_printDeleted($output, 
-                $cacheDriver->deleteByRegex('/' . $regex . '/'));
+                $output->write(sprintf('Clearing Result cache entries that match the regular expression "<info>%s</info>"', $regex) . PHP_EOL);
+
+                $this->_printDeleted($output, $cacheDriver->deleteByRegex('/' . $regex. '/'));
+
                 $outputed = true;
             }
         }
+
         // Removing based on --prefix
-        if (($prefixes = $input->getOption('prefix')) !== null &
-         $prefixes) {
+        if (($prefixes = $input->getOption('prefix')) !== null & $prefixes) {
             foreach ($prefixes as $prefix) {
                 $output->write($outputed ? PHP_EOL : '');
-                $output->write(
-                sprintf(
-                'Clearing Result cache entries that have the prefix "<info>%s</info>"', 
-                $prefix) . PHP_EOL);
-                $this->_printDeleted($output, 
-                $cacheDriver->deleteByPrefix($prefix));
+                $output->write(sprintf('Clearing Result cache entries that have the prefix "<info>%s</info>"', $prefix) . PHP_EOL);
+
+                $this->_printDeleted($output, $cacheDriver->deleteByPrefix($prefix));
+
                 $outputed = true;
             }
         }
+
         // Removing based on --suffix
-        if (($suffixes = $input->getOption('suffix')) !== null &&
-         $suffixes) {
+        if (($suffixes = $input->getOption('suffix')) !== null && $suffixes) {
             foreach ($suffixes as $suffix) {
                 $output->write($outputed ? PHP_EOL : '');
-                $output->write(
-                sprintf(
-                'Clearing Result cache entries that have the suffix "<info>%s</info>"', 
-                $suffix) . PHP_EOL);
-                $this->_printDeleted($output, 
-                $cacheDriver->deleteBySuffix($suffix));
+                $output->write(sprintf('Clearing Result cache entries that have the suffix "<info>%s</info>"', $suffix) . PHP_EOL);
+
+                $this->_printDeleted($output, $cacheDriver->deleteBySuffix($suffix));
+
                 $outputed = true;
             }
         }
+
         // Removing ALL entries
-        if (! $ids && ! $regexps && ! $prefixes && ! $suffixes) {
+        if ( ! $ids && ! $regexps && ! $prefixes && ! $suffixes) {
             $output->write($outputed ? PHP_EOL : '');
             $output->write('Clearing ALL Result cache entries' . PHP_EOL);
+
             $this->_printDeleted($output, $cacheDriver->deleteAll());
+
             $outputed = true;
         }
     }
-    private function _printDeleted (Console\Output\OutputInterface $output, 
-    array $items)
+
+    private function _printDeleted(Console\Output\OutputInterface $output, array $items)
     {
         if ($items) {
             foreach ($items as $item) {

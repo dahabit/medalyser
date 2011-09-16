@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * OrderByClause ::= "ORDER" "BY" OrderByItem {"," OrderByItem}*
  *
@@ -33,11 +35,13 @@ namespace Doctrine\ORM\Query\AST;
 class OrderByClause extends Node
 {
     public $orderByItems = array();
-    public function __construct (array $orderByItems)
+
+    public function __construct(array $orderByItems)
     {
         $this->orderByItems = $orderByItems;
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkOrderByClause($this);
     }

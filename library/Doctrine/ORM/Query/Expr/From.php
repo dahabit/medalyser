@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Expression class for DQL from
  *
@@ -34,20 +36,24 @@ class From
 {
     private $_from;
     private $_alias;
-    public function __construct ($from, $alias)
+
+    public function __construct($from, $alias)
     {
-        $this->_from = $from;
-        $this->_alias = $alias;
+        $this->_from  = $from;
+        $this->_alias  = $alias;
     }
-    public function getFrom ()
+
+    public function getFrom()
     {
         return $this->_from;
     }
-    public function getAlias ()
+
+    public function getAlias()
     {
         return $this->_alias;
     }
-    public function __toString ()
+
+    public function __toString()
     {
         return $this->_from . ' ' . $this->_alias;
     }

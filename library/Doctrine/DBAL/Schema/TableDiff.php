@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
+
 /**
  * Table Diff
  *
@@ -36,70 +38,82 @@ class TableDiff
      * @var string
      */
     public $name = null;
+
     /**
      * @var string
      */
     public $newName = false;
+
     /**
      * All added fields
      *
      * @var array(string=>Column)
      */
     public $addedColumns;
+
     /**
      * All changed fields
      *
      * @var array(string=>Column)
      */
     public $changedColumns = array();
+
     /**
      * All removed fields
      *
      * @var array(string=>bool)
      */
     public $removedColumns = array();
+
     /**
      * Columns that are only renamed from key to column instance name.
      *
      * @var array(string=>Column)
      */
     public $renamedColumns = array();
+
     /**
      * All added indexes
      *
      * @var array(string=>Index)
      */
     public $addedIndexes = array();
+
     /**
      * All changed indexes
      *
      * @var array(string=>Index)
      */
     public $changedIndexes = array();
+
     /**
      * All removed indexes
      *
      * @var array(string=>bool)
      */
     public $removedIndexes = array();
+
     /**
      * All added foreign key definitions
      *
      * @var array
      */
     public $addedForeignKeys = array();
+
     /**
      * All changed foreign keys
      *
      * @var array
      */
     public $changedForeignKeys = array();
+
     /**
      * All removed foreign keys
      *
      * @var array
      */
     public $removedForeignKeys = array();
+
     /**
      * Constructs an TableDiff object.
      *
@@ -110,9 +124,9 @@ class TableDiff
      * @param array(string=>Index)  $changedIndexes
      * @param array(string=>bool)   $removedIndexes
      */
-    public function __construct ($tableName, $addedColumns = array(), 
-    $changedColumns = array(), $removedColumns = array(), $addedIndexes = array(), 
-    $changedIndexes = array(), $removedIndexes = array())
+    public function __construct($tableName, $addedColumns = array(),
+        $changedColumns = array(), $removedColumns = array(), $addedIndexes = array(),
+        $changedIndexes = array(), $removedIndexes = array())
     {
         $this->name = $tableName;
         $this->addedColumns = $addedColumns;

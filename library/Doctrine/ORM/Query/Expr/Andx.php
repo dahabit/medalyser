@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Expr;
+
 /**
  * Expression class for building DQL and parts
  *
@@ -33,6 +35,9 @@ namespace Doctrine\ORM\Query\Expr;
 class Andx extends Composite
 {
     protected $_separator = ' AND ';
-    protected $_allowedClasses = array('Doctrine\ORM\Query\Expr\Comparison', 
-    'Doctrine\ORM\Query\Expr\Func', 'Doctrine\ORM\Query\Expr\Orx');
+    protected $_allowedClasses = array(
+        'Doctrine\ORM\Query\Expr\Comparison',
+        'Doctrine\ORM\Query\Expr\Func',
+        'Doctrine\ORM\Query\Expr\Orx',
+    );
 }

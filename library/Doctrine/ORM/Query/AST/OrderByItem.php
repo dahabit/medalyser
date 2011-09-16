@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * OrderByItem ::= (ResultVariable | StateFieldPathExpression) ["ASC" | "DESC"]
  *
@@ -34,19 +36,23 @@ class OrderByItem extends Node
 {
     public $expression;
     public $type;
-    public function __construct ($expression)
+    
+    public function __construct($expression)
     {
         $this->expression = $expression;
     }
-    public function isAsc ()
+
+    public function isAsc()
     {
         return strtoupper($this->type) == 'ASC';
     }
-    public function isDesc ()
+
+    public function isDesc()
     {
         return strtoupper($this->type) == 'DESC';
     }
-    public function dispatch ($sqlWalker)
+
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkOrderByItem($this);
     }

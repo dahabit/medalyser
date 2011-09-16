@@ -16,8 +16,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\OCI8;
-use PDO;
+
+use \PDO;
+
 /**
  * The OCI8 implementation of the Statement interface.
  *
@@ -30,23 +33,27 @@ class OCI8Statement implements \Doctrine\DBAL\Driver\Statement
     private $_sth;
     private $_executeMode;
     private static $_PARAM = ':param';
-    private static $fetchStyleMap = array(PDO::FETCH_BOTH => OCI_BOTH, 
-    PDO::FETCH_ASSOC => OCI_ASSOC, PDO::FETCH_NUM => OCI_NUM);
+    private static $fetchStyleMap = array(
+        PDO::FETCH_BOTH => OCI_BOTH,
+        PDO::FETCH_ASSOC => OCI_ASSOC,
+        PDO::FETCH_NUM => OCI_NUM
+    );
     private $_paramMap = array();
+
     /**
      * Creates a new OCI8Statement that uses the given connection handle and SQL statement.
      *
      * @param resource $dbh The connection handle.
      * @param string $statement The SQL statement.
      */
-    public function __construct ($dbh, $statement, $executeMode)
+    public function __construct($dbh, $statement, $executeMode)
     {
-        list ($statement, $paramMap) = self::convertPositionalToNamedPlaceholders(
-        $statement);
+        list($statement, $paramMap) = self::convertPositionalToNamedPlaceholders($statement);
         $this->_sth = oci_parse($dbh, $statement);
         $this->_paramMap = $paramMap;
         $this->_executeMode = $executeMode;
     }
+
     /**
      * Convert positional (?) into named placeholders (:param<num>)
      *
@@ -64,63 +71,69 @@ class OCI8Statement implements \Doctrine\DBAL\Driver\Statement
      * @param string $statement The SQL statement to convert.
      * @return string
      */
-    static public function convertPositionalToNamedPlaceholders ($statement)
-    {
+    static public function convertPositionalToNamedPlaceholders($statement)
+    {   
         $count = 1;
         $inLiteral = false; // a valid query never starts with quotes
         $stmtLen = strlen($statement);
         $paramMap = array();
-        for ($i = 0; $i < $stmtLen; $i ++) {
-            if ($statement[$i] == '?' && ! $inLiteral) {
+        for ($i = 0; $i < $stmtLen; $i++) {
+            if ($statement[$i] == '?' && !$inLiteral) {
                 // real positional parameter detected
                 $paramMap[$count] = ":param$count";
                 $len = strlen($paramMap[$count]);
                 $statement = substr_replace($statement, ":param$count", $i, 1);
-                $i += $len - 1; // jump ahead
+                $i += $len-1; // jump ahead
                 $stmtLen = strlen($statement); // adjust statement length
-                ++ $count;
-            } else 
-                if ($statement[$i] == "'" || $statement[$i] == '"') {
-                    $inLiteral = ! $inLiteral; // switch state!
-                }
+                ++$count;
+            } else if ($statement[$i] == "'" || $statement[$i] == '"') {
+                $inLiteral = ! $inLiteral; // switch state!
+            }
         }
+
         return array($statement, $paramMap);
     }
+
     /**
      * {@inheritdoc}
      */
-    public function bindValue ($param, $value, $type = null)
+    public function bindValue($param, $value, $type = null)
     {
         return $this->bindParam($param, $value, $type);
     }
+
     /**
      * {@inheritdoc}
      */
-    public function bindParam ($column, &$variable, $type = null)
+    public function bindParam($column, &$variable, $type = null)
     {
         $column = isset($this->_paramMap[$column]) ? $this->_paramMap[$column] : $column;
+        
         return oci_bind_by_name($this->_sth, $column, $variable);
     }
+
     /**
      * Closes the cursor, enabling the statement to be executed again.
      *
      * @return boolean              Returns TRUE on success or FALSE on failure.
      */
-    public function closeCursor ()
+    public function closeCursor()
     {
         return oci_free_statement($this->_sth);
     }
+
     /** 
      * {@inheritdoc}
      */
-    public function columnCount ()
+    public function columnCount()
     {
         return oci_num_fields($this->_sth);
     }
+
     /**
      * {@inheritdoc}
      */
-    public function errorCode ()
+    public function errorCode()
     {
         $error = oci_error($this->_sth);
         if ($error !== false) {
@@ -128,17 +141,19 @@ class OCI8Statement implements \Doctrine\DBAL\Driver\Statement
         }
         return $error;
     }
+    
     /**
      * {@inheritdoc}
      */
-    public function errorInfo ()
+    public function errorInfo()
     {
         return oci_error($this->_sth);
     }
+
     /**
      * {@inheritdoc}
      */
-    public function execute ($params = null)
+    public function execute($params = null)
     {
         if ($params) {
             $hasZeroIndex = isset($params[0]);
@@ -150,53 +165,56 @@ class OCI8Statement implements \Doctrine\DBAL\Driver\Statement
                 }
             }
         }
+
         $ret = @oci_execute($this->_sth, $this->_executeMode);
-        if (! $ret) {
+        if ( ! $ret) {
             throw OCI8Exception::fromErrorInfo($this->errorInfo());
         }
         return $ret;
     }
+
     /**
      * {@inheritdoc}
      */
-    public function fetch ($fetchStyle = PDO::FETCH_BOTH)
+    public function fetch($fetchStyle = PDO::FETCH_BOTH)
     {
-        if (! isset(self::$fetchStyleMap[$fetchStyle])) {
-            throw new \InvalidArgumentException(
-            "Invalid fetch style: " . $fetchStyle);
+        if ( ! isset(self::$fetchStyleMap[$fetchStyle])) {
+            throw new \InvalidArgumentException("Invalid fetch style: " . $fetchStyle);
         }
-        return oci_fetch_array($this->_sth, 
-        self::$fetchStyleMap[$fetchStyle] | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
+        
+        return oci_fetch_array($this->_sth, self::$fetchStyleMap[$fetchStyle] | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
     }
+
     /**
      * {@inheritdoc}
      */
-    public function fetchAll ($fetchStyle = PDO::FETCH_BOTH)
+    public function fetchAll($fetchStyle = PDO::FETCH_BOTH)
     {
-        if (! isset(self::$fetchStyleMap[$fetchStyle])) {
-            throw new \InvalidArgumentException(
-            "Invalid fetch style: " . $fetchStyle);
+        if ( ! isset(self::$fetchStyleMap[$fetchStyle])) {
+            throw new \InvalidArgumentException("Invalid fetch style: " . $fetchStyle);
         }
+        
         $result = array();
-        oci_fetch_all($this->_sth, $result, 0, - 1, 
-        self::$fetchStyleMap[$fetchStyle] | OCI_RETURN_NULLS |
-         OCI_FETCHSTATEMENT_BY_ROW | OCI_RETURN_LOBS);
+        oci_fetch_all($this->_sth, $result, 0, -1,
+            self::$fetchStyleMap[$fetchStyle] | OCI_RETURN_NULLS | OCI_FETCHSTATEMENT_BY_ROW | OCI_RETURN_LOBS);
+        
         return $result;
     }
+
     /**
      * {@inheritdoc}
      */
-    public function fetchColumn ($columnIndex = 0)
+    public function fetchColumn($columnIndex = 0)
     {
-        $row = oci_fetch_array($this->_sth, 
-        OCI_NUM | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
+        $row = oci_fetch_array($this->_sth, OCI_NUM | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
         return $row[$columnIndex];
     }
+
     /**
      * {@inheritdoc}
      */
-    public function rowCount ()
+    public function rowCount()
     {
         return oci_num_rows($this->_sth);
-    }
+    }    
 }

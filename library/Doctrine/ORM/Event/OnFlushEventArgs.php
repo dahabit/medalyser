@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM\Event;
+
 /**
  * Provides event arguments for the preFlush event.
  *
@@ -35,19 +37,23 @@ class OnFlushEventArgs extends \Doctrine\Common\EventArgs
      * @var EntityManager
      */
     private $_em;
+    
     //private $_entitiesToPersist = array();
     //private $_entitiesToRemove = array();
-    public function __construct ($em)
+    
+    public function __construct($em)
     {
         $this->_em = $em;
     }
+
     /**
      * @return EntityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->_em;
     }
+    
     /*
     public function addEntityToPersist($entity)
     {

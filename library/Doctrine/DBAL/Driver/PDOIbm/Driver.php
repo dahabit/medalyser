@@ -18,8 +18,11 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\DBAL\Driver\PDOIbm;
+
 use Doctrine\DBAL\Connection;
+
 /**
  * Driver for the PDO IBM extension
  *
@@ -43,19 +46,23 @@ class Driver implements \Doctrine\DBAL\Driver
      * @param array $driverOptions
      * @return Doctrine\DBAL\Driver\Connection
      */
-    public function connect (array $params, $username = null, $password = null, 
-    array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         $conn = new \Doctrine\DBAL\Driver\PDOConnection(
-        $this->_constructPdoDsn($params), $username, $password, $driverOptions);
+            $this->_constructPdoDsn($params),
+            $username,
+            $password,
+            $driverOptions
+        );
         return $conn;
     }
+
     /**
      * Constructs the MySql PDO DSN.
      *
      * @return string  The DSN.
      */
-    private function _constructPdoDsn (array $params)
+    private function _constructPdoDsn(array $params)
     {
         $dsn = 'ibm:';
         if (isset($params['host'])) {
@@ -68,18 +75,21 @@ class Driver implements \Doctrine\DBAL\Driver
         if (isset($params['dbname'])) {
             $dsn .= 'DATABASE=' . $params['dbname'] . ';';
         }
+
         return $dsn;
     }
+
     /**
      * Gets the DatabasePlatform instance that provides all the metadata about
      * the platform this driver connects to.
      *
      * @return Doctrine\DBAL\Platforms\AbstractPlatform The database platform.
      */
-    public function getDatabasePlatform ()
+    public function getDatabasePlatform()
     {
-        return new \Doctrine\DBAL\Platforms\DB2Platform();
+        return new \Doctrine\DBAL\Platforms\DB2Platform;
     }
+
     /**
      * Gets the SchemaManager that can be used to inspect and change the underlying
      * database schema of the platform this driver connects to.
@@ -87,26 +97,28 @@ class Driver implements \Doctrine\DBAL\Driver
      * @param  Doctrine\DBAL\Connection $conn
      * @return Doctrine\DBAL\SchemaManager
      */
-    public function getSchemaManager (Connection $conn)
+    public function getSchemaManager(Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\DB2SchemaManager($conn);
     }
+
     /**
      * Gets the name of the driver.
      *
      * @return string The name of the driver.
      */
-    public function getName ()
+    public function getName()
     {
         return 'pdo_ibm';
     }
+
     /**
      * Get the name of the database connected to for this driver.
      *
      * @param  Doctrine\DBAL\Connection $conn
      * @return string $database
      */
-    public function getDatabase (\Doctrine\DBAL\Connection $conn)
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
         return $params['dbname'];

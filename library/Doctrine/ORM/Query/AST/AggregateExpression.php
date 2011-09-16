@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * Description of AggregateExpression
  *
@@ -35,13 +37,15 @@ class AggregateExpression extends Node
     public $functionName;
     public $pathExpression;
     public $isDistinct = false; // Some aggregate expressions support distinct, eg COUNT
-    public function __construct ($functionName, $pathExpression, $isDistinct)
+
+    public function __construct($functionName, $pathExpression, $isDistinct)
     {
         $this->functionName = $functionName;
         $this->pathExpression = $pathExpression;
         $this->isDistinct = $isDistinct;
     }
-    public function dispatch ($walker)
+
+    public function dispatch($walker)
     {
         return $walker->walkAggregateExpression($this);
     }

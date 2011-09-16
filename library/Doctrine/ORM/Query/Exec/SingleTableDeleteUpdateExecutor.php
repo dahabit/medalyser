@@ -18,8 +18,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Exec;
-use Doctrine\DBAL\Connection, Doctrine\ORM\Query\AST;
+
+use Doctrine\DBAL\Connection,
+    Doctrine\ORM\Query\AST;
+
 /**
  * Executor that executes the SQL statements for DQL DELETE/UPDATE statements on classes
  * that are mapped to a single table.
@@ -33,16 +37,16 @@ use Doctrine\DBAL\Connection, Doctrine\ORM\Query\AST;
  */
 class SingleTableDeleteUpdateExecutor extends AbstractSqlExecutor
 {
-    public function __construct (AST\Node $AST, $sqlWalker)
+    public function __construct(AST\Node $AST, $sqlWalker)
     {
         if ($AST instanceof AST\UpdateStatement) {
             $this->_sqlStatements = $sqlWalker->walkUpdateStatement($AST);
-        } else 
-            if ($AST instanceof AST\DeleteStatement) {
-                $this->_sqlStatements = $sqlWalker->walkDeleteStatement($AST);
-            }
+        } else if ($AST instanceof AST\DeleteStatement) {
+            $this->_sqlStatements = $sqlWalker->walkDeleteStatement($AST);
+        }
     }
-    public function execute (Connection $conn, array $params, array $types)
+    
+    public function execute(Connection $conn, array $params, array $types)
     {
         return $conn->executeUpdate($this->_sqlStatements, $params, $types);
     }

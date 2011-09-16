@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common;
+
 /**
  * Contract for classes that are potential listeners of a <tt>NotifyPropertyChanged</tt>
  * implementor.
@@ -41,6 +43,6 @@ interface PropertyChangedListener
      * @param mixed $oldValue The old value of the property that changed.
      * @param mixed $newValue The new value of the property that changed.
      */
-    function propertyChanged ($sender, $propertyName, $oldValue, $newValue);
+    function propertyChanged($sender, $propertyName, $oldValue, $newValue);
 }
 

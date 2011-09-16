@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * CoalesceExpression ::= "COALESCE" "(" ScalarExpression {"," ScalarExpression}* ")"
  *
@@ -31,11 +33,14 @@ namespace Doctrine\ORM\Query\AST;
 class CoalesceExpression extends Node
 {
     public $scalarExpressions = array();
-    public function __construct (array $scalarExpressions)
+    
+
+    public function __construct(array $scalarExpressions)
     {
-        $this->scalarExpressions = $scalarExpressions;
-    }
-    public function dispatch ($sqlWalker)
+        $this->scalarExpressions  = $scalarExpressions;
+    }    
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkCoalesceExpression($this);
     }

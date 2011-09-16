@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Annotations;
+
 /**
  * Parses a file for namespaces/use/class declarations.
  *
@@ -25,36 +27,39 @@ namespace Doctrine\Common\Annotations;
 final class PhpParser
 {
     private $tokens;
+
     /**
      * Parses a class.
      *
      * @param \ReflectionClass $class
      */
-    public function parseClass (\ReflectionClass $class)
+    public function parseClass(\ReflectionClass $class)
     {
         if (false === $filename = $class->getFilename()) {
             return array();
         }
         $src = file_get_contents($filename);
         $name = $class->getName();
+
         // This is a short-cut for code that follows some conventions:
         // - namespaced
         // - one class per file
-        if (preg_match_all(
-        '#\bnamespace\s+' . str_replace('\\', '\\\\', 
-        $class->getNamespaceName()) . '\s*;.*?\b(?:class|interface)\s+' .
-         $class->getShortName() . '\b#s', $src, $matches)) {
+        if (preg_match_all('#\bnamespace\s+'.str_replace('\\', '\\\\', $class->getNamespaceName()).'\s*;.*?\b(?:class|interface)\s+'.$class->getShortName().'\b#s', $src, $matches)) {
             foreach ($matches[0] as $match) {
-                $classes = $this->parse('<?php ' . $match, $name);
+                $classes = $this->parse('<?php '.$match, $name);
+
                 if (isset($classes[$name])) {
                     return $classes[$name];
                 }
             }
         }
+
         $classes = $this->parse($src, $name);
+
         return $classes[$name];
     }
-    private function parse ($src, $interestedClass = null)
+
+    private function parse($src, $interestedClass = null)
     {
         $this->tokens = token_get_all($src);
         $classes = $uses = array();
@@ -65,24 +70,27 @@ final class PhpParser
                 $uses = array();
             } elseif (T_CLASS === $token[0] || T_INTERFACE === $token[0]) {
                 if ('' !== $namespace) {
-                    $class = $namespace . '\\' . $this->nextValue();
+                    $class = $namespace.'\\'.$this->nextValue();
                 } else {
                     $class = $this->nextValue();
                 }
                 $classes[$class] = $uses;
+
                 if (null !== $interestedClass && $interestedClass === $class) {
                     return $classes;
                 }
             } elseif (T_USE === $token[0]) {
                 foreach ($this->parseUseStatement() as $useStatement) {
-                    list ($alias, $class) = $useStatement;
+                    list($alias, $class) = $useStatement;
                     $uses[strtolower($alias)] = $class;
                 }
             }
         }
+
         return $classes;
     }
-    private function parseNamespace ()
+
+    private function parseNamespace()
     {
         $namespace = '';
         while ($token = $this->next()) {
@@ -93,47 +101,52 @@ final class PhpParser
             }
         }
     }
-    private function parseUseStatement ()
+
+    private function parseUseStatement()
     {
         $statements = $class = array();
         $alias = '';
         while ($token = $this->next()) {
             if (T_NS_SEPARATOR === $token[0] || T_STRING === $token[0]) {
                 $class[] = $token[1];
-            } else 
-                if (T_AS === $token[0]) {
-                    $alias = $this->nextValue();
-                } else 
-                    if (is_string($token)) {
-                        if (',' === $token || ';' === $token) {
-                            $statements[] = array(
-                            $alias ? $alias : $class[count($class) - 1], 
-                            implode('', $class));
-                        }
-                        if (';' === $token) {
-                            return $statements;
-                        }
-                        if (',' === $token) {
-                            $class = array();
-                            $alias = '';
-                            continue;
-                        }
-                    }
+            } else if (T_AS === $token[0]) {
+                $alias = $this->nextValue();
+            } else if (is_string($token)) {
+                if (',' === $token || ';' === $token) {
+                    $statements[] = array(
+                        $alias ? $alias : $class[count($class) - 1],
+                        implode('', $class)
+                    );
+                }
+
+                if (';' === $token) {
+                    return $statements;
+                }
+                if (',' === $token) {
+                    $class = array();
+                    $alias = '';
+
+                    continue;
+                }
+            }
         }
     }
-    private function next ()
+
+    private function next()
     {
         while ($token = array_shift($this->tokens)) {
-            if (in_array($token[0], 
-            array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
+            if (in_array($token[0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
                 continue;
             }
+
             return $token;
         }
     }
-    private function nextValue ()
+
+    private function nextValue()
     {
         $token = $this->next();
+
         return is_array($token) ? $token[1] : $token;
     }
 }

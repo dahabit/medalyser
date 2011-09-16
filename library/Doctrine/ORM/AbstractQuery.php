@@ -16,8 +16,12 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM;
-use Doctrine\DBAL\Types\Type, Doctrine\ORM\Query\QueryException;
+
+use Doctrine\DBAL\Types\Type,
+    Doctrine\ORM\Query\QueryException;
+
 /**
  * Base contract for ORM queries. Base class for Query and NativeQuery.
  *
@@ -50,76 +54,91 @@ abstract class AbstractQuery
      * Hydrates a single scalar value.
      */
     const HYDRATE_SINGLE_SCALAR = 4;
+
     /**
      * Very simple object hydrator (optimized for performance).
      */
     const HYDRATE_SIMPLEOBJECT = 5;
+
     /**
      * @var array The parameter map of this query.
      */
     protected $_params = array();
+
     /**
      * @var array The parameter type map of this query.
      */
     protected $_paramTypes = array();
+
     /**
      * @var ResultSetMapping The user-specified ResultSetMapping to use.
      */
     protected $_resultSetMapping;
+
     /**
      * @var Doctrine\ORM\EntityManager The entity manager used by this query object.
      */
     protected $_em;
+
     /**
      * @var array The map of query hints.
      */
     protected $_hints = array();
+
     /**
      * @var integer The hydration mode.
      */
     protected $_hydrationMode = self::HYDRATE_OBJECT;
+
     /**
      * The locally set cache driver used for caching result sets of this query.
      *
      * @var CacheDriver
      */
     protected $_resultCacheDriver;
+
     /**
      * Boolean flag for whether or not to cache the results of this query.
      *
      * @var boolean
      */
     protected $_useResultCache;
+
     /**
      * @var string The id to store the result cache entry under.
      */
     protected $_resultCacheId;
+
     /**
      * @var boolean Boolean value that indicates whether or not expire the result cache.
      */
     protected $_expireResultCache = false;
+
     /**
      * @var int Result Cache lifetime.
      */
     protected $_resultCacheTTL;
+
     /**
      * Initializes a new instance of a class derived from <tt>AbstractQuery</tt>.
      *
      * @param Doctrine\ORM\EntityManager $entityManager
      */
-    public function __construct (EntityManager $em)
+    public function __construct(EntityManager $em)
     {
         $this->_em = $em;
     }
+
     /**
      * Retrieves the associated EntityManager of this Query instance.
      *
      * @return Doctrine\ORM\EntityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->_em;
     }
+
     /**
      * Frees the resources used by the query object.
      *
@@ -127,31 +146,34 @@ abstract class AbstractQuery
      *
      * @return void
      */
-    public function free ()
+    public function free()
     {
         $this->_params = array();
         $this->_paramTypes = array();
         $this->_hints = array();
     }
+
     /**
      * Get all defined parameters.
      *
      * @return array The defined query parameters.
      */
-    public function getParameters ()
+    public function getParameters()
     {
         return $this->_params;
     }
+
     /**
      * Gets a query parameter.
      *
      * @param mixed $key The key (index or name) of the bound parameter.
      * @return mixed The value of the bound parameter.
      */
-    public function getParameter ($key)
+    public function getParameter($key)
     {
         return isset($this->_params[$key]) ? $this->_params[$key] : null;
     }
+
     /**
      * Gets the SQL query that corresponds to this query object.
      * The returned SQL syntax depends on the connection driver that is used
@@ -159,26 +181,30 @@ abstract class AbstractQuery
      *
      * @return string SQL query
      */
-    abstract public function getSQL ();
+    abstract public function getSQL();
+
     /**
      * Sets a query parameter.
      *
      * @param string|integer $key The parameter position or name.
      * @param mixed $value The parameter value.
      * @param string $type The parameter type. If specified, the given value will be run through
-     * the type conversion of this type. This is usually not needed for
-     * strings and numeric types.
+     *                     the type conversion of this type. This is usually not needed for
+     *                     strings and numeric types.
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function setParameter ($key, $value, $type = null)
+    public function setParameter($key, $value, $type = null)
     {
         if ($type === null) {
             $type = Query\ParameterTypeInferer::inferType($value);
         }
+        
         $this->_paramTypes[$key] = $type;
         $this->_params[$key] = $value;
+        
         return $this;
     }
+
     /**
      * Sets a collection of query parameters.
      *
@@ -186,7 +212,7 @@ abstract class AbstractQuery
      * @param array $types
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function setParameters (array $params, array $types = array())
+    public function setParameters(array $params, array $types = array())
     {
         foreach ($params as $key => $value) {
             if (isset($types[$key])) {
@@ -197,27 +223,28 @@ abstract class AbstractQuery
         }
         return $this;
     }
+
     /**
      * Sets the ResultSetMapping that should be used for hydration.
      *
      * @param ResultSetMapping $rsm
      * @return Doctrine\ORM\AbstractQuery
      */
-    public function setResultSetMapping (Query\ResultSetMapping $rsm)
+    public function setResultSetMapping(Query\ResultSetMapping $rsm)
     {
         $this->_resultSetMapping = $rsm;
         return $this;
     }
+
     /**
      * Defines a cache driver to be used for caching result sets.
      *
      * @param Doctrine\Common\Cache\Cache $driver Cache driver
      * @return Doctrine\ORM\AbstractQuery
      */
-    public function setResultCacheDriver ($resultCacheDriver = null)
+    public function setResultCacheDriver($resultCacheDriver = null)
     {
-        if ($resultCacheDriver !== null &&
-         ! ($resultCacheDriver instanceof \Doctrine\Common\Cache\Cache)) {
+        if ($resultCacheDriver !== null && ! ($resultCacheDriver instanceof \Doctrine\Common\Cache\Cache)) {
             throw ORMException::invalidResultCacheDriver();
         }
         $this->_resultCacheDriver = $resultCacheDriver;
@@ -226,12 +253,13 @@ abstract class AbstractQuery
         }
         return $this;
     }
+
     /**
      * Returns the cache driver used for caching result sets.
      *
      * @return Doctrine\Common\Cache\Cache Cache driver
      */
-    public function getResultCacheDriver ()
+    public function getResultCacheDriver()
     {
         if ($this->_resultCacheDriver) {
             return $this->_resultCacheDriver;
@@ -239,6 +267,7 @@ abstract class AbstractQuery
             return $this->_em->getConfiguration()->getResultCacheImpl();
         }
     }
+
     /**
      * Set whether or not to cache the results of this query and if so, for
      * how long and which ID to use for the cache entry.
@@ -248,7 +277,7 @@ abstract class AbstractQuery
      * @param string $resultCacheId
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function useResultCache ($bool, $timeToLive = null, $resultCacheId = null)
+    public function useResultCache($bool, $timeToLive = null, $resultCacheId = null)
     {
         $this->_useResultCache = $bool;
         if ($timeToLive) {
@@ -259,49 +288,55 @@ abstract class AbstractQuery
         }
         return $this;
     }
+
     /**
      * Defines how long the result cache will be active before expire.
      *
      * @param integer $timeToLive How long the cache entry is valid.
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function setResultCacheLifetime ($timeToLive)
+    public function setResultCacheLifetime($timeToLive)
     {
         if ($timeToLive !== null) {
             $timeToLive = (int) $timeToLive;
         }
+
         $this->_resultCacheTTL = $timeToLive;
         return $this;
     }
+
     /**
      * Retrieves the lifetime of resultset cache.
      *
      * @return integer
      */
-    public function getResultCacheLifetime ()
+    public function getResultCacheLifetime()
     {
         return $this->_resultCacheTTL;
     }
+
     /**
      * Defines if the result cache is active or not.
      *
      * @param boolean $expire Whether or not to force resultset cache expiration.
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function expireResultCache ($expire = true)
+    public function expireResultCache($expire = true)
     {
         $this->_expireResultCache = $expire;
         return $this;
     }
+
     /**
      * Retrieves if the resultset cache is active or not.
      *
      * @return boolean
      */
-    public function getExpireResultCache ()
+    public function getExpireResultCache()
     {
         return $this->_expireResultCache;
     }
+
     /**
      * Change the default fetch mode of an association for this query.
      *
@@ -312,35 +347,39 @@ abstract class AbstractQuery
      * @param  int $fetchMode
      * @return AbstractQuery
      */
-    public function setFetchMode ($class, $assocName, $fetchMode)
+    public function setFetchMode($class, $assocName, $fetchMode)
     {
         if ($fetchMode !== Mapping\ClassMetadata::FETCH_EAGER) {
             $fetchMode = Mapping\ClassMetadata::FETCH_LAZY;
         }
+
         $this->_hints['fetchMode'][$class][$assocName] = $fetchMode;
         return $this;
     }
+
     /**
      * Defines the processing mode to be used during hydration / result set transformation.
      *
      * @param integer $hydrationMode Doctrine processing mode to be used during hydration process.
-     * One of the Query::HYDRATE_* constants.
+     *                               One of the Query::HYDRATE_* constants.
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function setHydrationMode ($hydrationMode)
+    public function setHydrationMode($hydrationMode)
     {
         $this->_hydrationMode = $hydrationMode;
         return $this;
     }
+
     /**
      * Gets the hydration mode currently used by the query.
      *
      * @return integer
      */
-    public function getHydrationMode ()
+    public function getHydrationMode()
     {
         return $this->_hydrationMode;
     }
+
     /**
      * Gets the list of results for the query.
      *
@@ -348,10 +387,11 @@ abstract class AbstractQuery
      *
      * @return array
      */
-    public function getResult ($hydrationMode = self::HYDRATE_OBJECT)
+    public function getResult($hydrationMode = self::HYDRATE_OBJECT)
     {
         return $this->execute(array(), $hydrationMode);
     }
+
     /**
      * Gets the array of results for the query.
      *
@@ -359,10 +399,11 @@ abstract class AbstractQuery
      *
      * @return array
      */
-    public function getArrayResult ()
+    public function getArrayResult()
     {
         return $this->execute(array(), self::HYDRATE_ARRAY);
     }
+
     /**
      * Gets the scalar results for the query.
      *
@@ -370,10 +411,11 @@ abstract class AbstractQuery
      *
      * @return array
      */
-    public function getScalarResult ()
+    public function getScalarResult()
     {
         return $this->execute(array(), self::HYDRATE_SCALAR);
     }
+
     /**
      * Get exactly one result or null.
      *
@@ -381,20 +423,24 @@ abstract class AbstractQuery
      * @param int $hydrationMode
      * @return mixed
      */
-    public function getOneOrNullResult ($hydrationMode = null)
+    public function getOneOrNullResult($hydrationMode = null)
     {
         $result = $this->execute(array(), $hydrationMode);
+
         if ($this->_hydrationMode !== self::HYDRATE_SINGLE_SCALAR && ! $result) {
             return null;
         }
+
         if (is_array($result)) {
             if (count($result) > 1) {
-                throw new NonUniqueResultException();
+                throw new NonUniqueResultException;
             }
             return array_shift($result);
         }
+
         return $result;
     }
+
     /**
      * Gets the single result of the query.
      *
@@ -408,20 +454,24 @@ abstract class AbstractQuery
      * @throws NonUniqueResultException If the query result is not unique.
      * @throws NoResultException If the query returned no result.
      */
-    public function getSingleResult ($hydrationMode = null)
+    public function getSingleResult($hydrationMode = null)
     {
         $result = $this->execute(array(), $hydrationMode);
+
         if ($this->_hydrationMode !== self::HYDRATE_SINGLE_SCALAR && ! $result) {
-            throw new NoResultException();
+            throw new NoResultException;
         }
+
         if (is_array($result)) {
             if (count($result) > 1) {
-                throw new NonUniqueResultException();
+                throw new NonUniqueResultException;
             }
             return array_shift($result);
         }
+
         return $result;
     }
+
     /**
      * Gets the single scalar result of the query.
      *
@@ -430,10 +480,11 @@ abstract class AbstractQuery
      * @return mixed
      * @throws QueryException If the query result is not unique.
      */
-    public function getSingleScalarResult ()
+    public function getSingleScalarResult()
     {
         return $this->getSingleResult(self::HYDRATE_SINGLE_SCALAR);
     }
+
     /**
      * Sets a query hint. If the hint name is not recognized, it is silently ignored.
      *
@@ -441,30 +492,33 @@ abstract class AbstractQuery
      * @param mixed $value The value of the hint.
      * @return Doctrine\ORM\AbstractQuery
      */
-    public function setHint ($name, $value)
+    public function setHint($name, $value)
     {
         $this->_hints[$name] = $value;
         return $this;
     }
+
     /**
      * Gets the value of a query hint. If the hint name is not recognized, FALSE is returned.
      *
      * @param string $name The name of the hint.
      * @return mixed The value of the hint or FALSE, if the hint name is not recognized.
      */
-    public function getHint ($name)
+    public function getHint($name)
     {
         return isset($this->_hints[$name]) ? $this->_hints[$name] : false;
     }
+
     /**
      * Return the key value map of query hints that are currently set.
      * 
      * @return array
      */
-    public function getHints ()
+    public function getHints()
     {
         return $this->_hints;
     }
+
     /**
      * Executes the query and returns an IterableResult that can be used to incrementally
      * iterate over the result.
@@ -473,18 +527,23 @@ abstract class AbstractQuery
      * @param integer $hydrationMode The hydration mode to use.
      * @return IterableResult
      */
-    public function iterate (array $params = array(), $hydrationMode = null)
+    public function iterate(array $params = array(), $hydrationMode = null)
     {
         if ($hydrationMode !== null) {
             $this->setHydrationMode($hydrationMode);
         }
+
         if ($params) {
             $this->setParameters($params);
         }
+
         $stmt = $this->_doExecute();
-        return $this->_em->newHydrator($this->_hydrationMode)->iterate($stmt, 
-        $this->_resultSetMapping, $this->_hints);
+
+        return $this->_em->newHydrator($this->_hydrationMode)->iterate(
+            $stmt, $this->_resultSetMapping, $this->_hints
+        );
     }
+
     /**
      * Executes the query.
      *
@@ -492,40 +551,49 @@ abstract class AbstractQuery
      * @param integer $hydrationMode Processing mode to be used during the hydration process.
      * @return mixed
      */
-    public function execute ($params = array(), $hydrationMode = null)
+    public function execute($params = array(), $hydrationMode = null)
     {
         if ($hydrationMode !== null) {
             $this->setHydrationMode($hydrationMode);
         }
+
         if ($params) {
             $this->setParameters($params);
         }
+
         // Check result cache
-        if ($this->_useResultCache &&
-         $cacheDriver = $this->getResultCacheDriver()) {
-            list ($key, $hash) = $this->getResultCacheId();
-            $cached = $this->_expireResultCache ? false : $cacheDriver->fetch(
-            $hash);
-            if ($cached === false || ! isset($cached[$key])) {
+        if ($this->_useResultCache && $cacheDriver = $this->getResultCacheDriver()) {
+            list($key, $hash) = $this->getResultCacheId();
+            $cached = $this->_expireResultCache ? false : $cacheDriver->fetch($hash);
+
+            if ($cached === false || !isset($cached[$key])) {
                 // Cache miss.
                 $stmt = $this->_doExecute();
+
                 $result = $this->_em->getHydrator($this->_hydrationMode)->hydrateAll(
-                $stmt, $this->_resultSetMapping, $this->_hints);
-                $cacheDriver->save($hash, array($key => $result), 
-                $this->_resultCacheTTL);
+                    $stmt, $this->_resultSetMapping, $this->_hints
+                );
+
+                $cacheDriver->save($hash, array($key => $result), $this->_resultCacheTTL);
+
                 return $result;
             } else {
                 // Cache hit.
                 return $cached[$key];
             }
         }
+
         $stmt = $this->_doExecute();
+
         if (is_numeric($stmt)) {
             return $stmt;
         }
-        return $this->_em->getHydrator($this->_hydrationMode)->hydrateAll($stmt, 
-        $this->_resultSetMapping, $this->_hints);
+
+        return $this->_em->getHydrator($this->_hydrationMode)->hydrateAll(
+                $stmt, $this->_resultSetMapping, $this->_hints
+                );
     }
+
     /**
      * Set the result cache id to use to store the result set cache entry.
      * If this is not explicitely set by the developer then a hash is automatically
@@ -534,11 +602,12 @@ abstract class AbstractQuery
      * @param string $id
      * @return Doctrine\ORM\AbstractQuery This query instance.
      */
-    public function setResultCacheId ($id)
+    public function setResultCacheId($id)
     {
         $this->_resultCacheId = $id;
         return $this;
     }
+
     /**
      * Get the result cache id to use to store the result set cache entry.
      * Will return the configured id if it exists otherwise a hash will be
@@ -546,20 +615,16 @@ abstract class AbstractQuery
      *
      * @return array ($key, $hash)
      */
-    protected function getResultCacheId ()
+    protected function getResultCacheId()
     {
         if ($this->_resultCacheId) {
             return array($this->_resultCacheId, $this->_resultCacheId);
         } else {
             $params = $this->_params;
-            foreach ($params as $key => $value) {
-                if (is_object($value) &&
-                 $this->_em->getMetadataFactory()->hasMetadataFor(
-                get_class($value))) {
-                    if ($this->_em->getUnitOfWork()->getEntityState($value) ==
-                     UnitOfWork::STATE_MANAGED) {
-                        $idValues = $this->_em->getUnitOfWork()->getEntityIdentifier(
-                        $value);
+            foreach ($params AS $key => $value) {
+                if (is_object($value) && $this->_em->getMetadataFactory()->hasMetadataFor(get_class($value))) {
+                    if ($this->_em->getUnitOfWork()->getEntityState($value) == UnitOfWork::STATE_MANAGED) {
+                        $idValues = $this->_em->getUnitOfWork()->getEntityIdentifier($value);
                     } else {
                         $class = $this->_em->getClassMetadata(get_class($value));
                         $idValues = $class->getIdentifierValues($value);
@@ -569,26 +634,28 @@ abstract class AbstractQuery
                     $params[$key] = $value;
                 }
             }
+
             $sql = $this->getSql();
             ksort($this->_hints);
-            $key = implode(";", (array) $sql) . var_export($params, true) .
-             var_export($this->_hints, true) . "&hydrationMode=" .
-             $this->_hydrationMode;
+            $key = implode(";", (array)$sql) . var_export($params, true) .
+                var_export($this->_hints, true)."&hydrationMode=".$this->_hydrationMode;
             return array($key, md5($key));
         }
     }
+
     /**
      * Executes the query and returns a the resulting Statement object.
      *
      * @return Doctrine\DBAL\Driver\Statement The executed database statement that holds the results.
      */
-    abstract protected function _doExecute ();
+    abstract protected function _doExecute();
+
     /**
      * Cleanup Query resource when clone is called.
      *
      * @return void
      */
-    public function __clone ()
+    public function __clone()
     {
         $this->_params = array();
         $this->_paramTypes = array();

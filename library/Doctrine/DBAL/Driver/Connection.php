@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver;
+
 /**
  * Connection interface.
  * Driver connections must implement this interface.
@@ -27,14 +29,14 @@ namespace Doctrine\DBAL\Driver;
  */
 interface Connection
 {
-    function prepare ($prepareString);
-    function query ();
-    function quote ($input, $type = \PDO::PARAM_STR);
-    function exec ($statement);
-    function lastInsertId ($name = null);
-    function beginTransaction ();
-    function commit ();
-    function rollBack ();
-    function errorCode ();
-    function errorInfo ();
+    function prepare($prepareString);
+    function query();
+    function quote($input, $type=\PDO::PARAM_STR);
+    function exec($statement);
+    function lastInsertId($name = null);
+    function beginTransaction();
+    function commit();
+    function rollBack();
+    function errorCode();
+    function errorInfo();
 }

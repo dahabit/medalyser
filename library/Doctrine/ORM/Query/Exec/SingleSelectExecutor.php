@@ -18,8 +18,13 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM\Query\Exec;
-use Doctrine\DBAL\Connection, Doctrine\ORM\Query\AST\SelectStatement, Doctrine\ORM\Query\SqlWalker;
+
+use Doctrine\DBAL\Connection,
+    Doctrine\ORM\Query\AST\SelectStatement,
+    Doctrine\ORM\Query\SqlWalker;
+
 /**
  * Executor that executes the SQL statement for simple DQL SELECT statements.
  *
@@ -31,11 +36,12 @@ use Doctrine\DBAL\Connection, Doctrine\ORM\Query\AST\SelectStatement, Doctrine\O
  */
 class SingleSelectExecutor extends AbstractSqlExecutor
 {
-    public function __construct (SelectStatement $AST, SqlWalker $sqlWalker)
+    public function __construct(SelectStatement $AST, SqlWalker $sqlWalker)
     {
         $this->_sqlStatements = $sqlWalker->walkSelectStatement($AST);
     }
-    public function execute (Connection $conn, array $params, array $types)
+
+    public function execute(Connection $conn, array $params, array $types)
     {
         return $conn->executeQuery($this->_sqlStatements, $params, $types);
     }

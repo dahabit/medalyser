@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\Common\Persistence;
+
 /**
  * Contract for a Doctrine persistence layer ObjectManager class to implement.
  *
@@ -37,7 +39,8 @@ interface ObjectManager
      * @param mixed
      * @return object
      */
-    public function find ($className, $id);
+    public function find($className, $id);
+
     /**
      * Tells the ObjectManager to make an instance managed and persistent.
      *
@@ -48,7 +51,8 @@ interface ObjectManager
      *
      * @param object $object The instance to make managed and persistent.
      */
-    public function persist ($object);
+    public function persist($object);
+
     /**
      * Removes an object instance.
      *
@@ -56,7 +60,8 @@ interface ObjectManager
      *
      * @param object $object The object instance to remove.
      */
-    public function remove ($object);
+    public function remove($object);
+
     /**
      * Merges the state of a detached object into the persistence context
      * of this ObjectManager and returns the managed copy of the object.
@@ -64,7 +69,8 @@ interface ObjectManager
      *
      * @param object $object
      */
-    public function merge ($object);
+    public function merge($object);
+
     /**
      * Detaches an object from the ObjectManager, causing a managed object to
      * become detached. Unflushed changes made to the object if any
@@ -74,27 +80,31 @@ interface ObjectManager
      *
      * @param object $object The object to detach.
      */
-    public function detach ($object);
+    public function detach($object);
+
     /**
      * Refreshes the persistent state of an object from the database,
      * overriding any local changes that have not yet been persisted.
      *
      * @param object $object The object to refresh.
      */
-    public function refresh ($object);
+    public function refresh($object);
+
     /**
      * Flushes all changes to objects that have been queued up to now to the database.
      * This effectively synchronizes the in-memory state of managed objects with the
      * database.
      */
-    public function flush ();
+    public function flush();
+
     /**
      * Gets the repository for a class.
      *
      * @param string $className
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getRepository ($className);
+    public function getRepository($className);
+
     /**
      * Returns the ClassMetadata descriptor for a class.
      *
@@ -104,11 +114,12 @@ interface ObjectManager
      * @param string $className
      * @return \Doctrine\Common\Persistence\Mapping\ClassMetadata
      */
-    public function getClassMetadata ($className);
+    public function getClassMetadata($className);
+
     /**
      * Gets the metadata factory used to gather the metadata of classes.
      *
      * @return Doctrine\Common\Persistence\Mapping\ClassMetadataFactory
      */
-    public function getMetadataFactory ();
+    public function getMetadataFactory();
 }

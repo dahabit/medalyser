@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+ 
 namespace Doctrine\DBAL;
+
 /**
  * Class to store and retrieve the version of Doctrine
  *
@@ -35,17 +37,19 @@ class Version
      * Current Doctrine Version
      */
     const VERSION = '2.1.0-DEV';
+
     /**
      * Compares a Doctrine version with the current one.
      *
      * @param string $version Doctrine version to compare.
      * @return int Returns -1 if older, 0 if it is the same, 1 if version 
-     * passed as argument is newer.
+     *             passed as argument is newer.
      */
-    public static function compare ($version)
+    public static function compare($version)
     {
         $currentVersion = str_replace(' ', '', strtolower(self::VERSION));
         $version = str_replace(' ', '', $version);
+
         return version_compare($version, $currentVersion);
     }
 }

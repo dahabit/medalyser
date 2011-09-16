@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
+
 namespace Doctrine\ORM\Query\AST;
+
 /**
  * JoinVariableDeclaration ::= Join [IndexBy]
  *
@@ -34,12 +36,14 @@ class JoinVariableDeclaration extends Node
 {
     public $join = null;
     public $indexBy = null;
-    public function __construct ($join, $indexBy)
+
+    public function __construct($join, $indexBy)
     {
         $this->join = $join;
         $this->indexBy = $indexBy;
     }
-    public function dispatch ($sqlWalker)
+    
+    public function dispatch($sqlWalker)
     {
         return $sqlWalker->walkJoinVariableDeclaration($this);
     }

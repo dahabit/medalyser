@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Symfony package.
  *
@@ -7,7 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Symfony\Component\Console\Formatter;
+
 /**
  * Formatter interface for console output.
  *
@@ -24,7 +27,8 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function setDecorated ($decorated);
+    function setDecorated($decorated);
+
     /**
      * Gets the decorated flag.
      *
@@ -32,7 +36,8 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function isDecorated ();
+    function isDecorated();
+
     /**
      * Sets a new style.
      *
@@ -41,7 +46,8 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function setStyle ($name, OutputFormatterStyleInterface $style);
+    function setStyle($name, OutputFormatterStyleInterface $style);
+
     /**
      * Checks if output formatter has style with specified name.
      *
@@ -51,7 +57,8 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function hasStyle ($name);
+    function hasStyle($name);
+
     /**
      * Gets style options from style with specified name.
      *
@@ -61,7 +68,8 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function getStyle ($name);
+    function getStyle($name);
+
     /**
      * Formats a message according to the given styles.
      *
@@ -71,5 +79,5 @@ interface OutputFormatterInterface
      *
      * @api
      */
-    function format ($message);
+    function format($message);
 }

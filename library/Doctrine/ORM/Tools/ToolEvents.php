@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
 */
+
 namespace Doctrine\ORM\Tools;
+
 class ToolEvents
 {
     /**
@@ -30,6 +32,7 @@ class ToolEvents
      * @var string
      */
     const postGenerateSchemaTable = 'postGenerateSchemaTable';
+
     /**
      * The postGenerateSchema event is triggered in SchemaTool#getSchemaFromMetadata()
      * after all entity classes have been transformed into the related Schema structure.

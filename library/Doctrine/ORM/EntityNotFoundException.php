@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\ORM;
+
 /**
  * Exception thrown when a Proxy fails to retrieve an Entity result.
  *
@@ -25,7 +27,7 @@ namespace Doctrine\ORM;
  */
 class EntityNotFoundException extends ORMException
 {
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct('Entity was not found.');
     }

@@ -16,7 +16,9 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
+
 /**
  * Schema manager for the MySql RDBMS.
  *
@@ -30,40 +32,49 @@ namespace Doctrine\DBAL\Schema;
  */
 class MySqlSchemaManager extends AbstractSchemaManager
 {
-    protected function _getPortableViewDefinition ($view)
+    protected function _getPortableViewDefinition($view)
     {
         return new View($view['TABLE_NAME'], $view['VIEW_DEFINITION']);
     }
-    protected function _getPortableTableDefinition ($table)
+
+    protected function _getPortableTableDefinition($table)
     {
         return array_shift($table);
     }
-    protected function _getPortableUserDefinition ($user)
+
+    protected function _getPortableUserDefinition($user)
     {
-        return array('user' => $user['User'], 'password' => $user['Password']);
+        return array(
+            'user' => $user['User'],
+            'password' => $user['Password'],
+        );
     }
-    protected function _getPortableTableIndexesList ($tableIndexes, 
-    $tableName = null)
+
+    protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
     {
-        foreach ($tableIndexes as $k => $v) {
+        foreach($tableIndexes AS $k => $v) {
             $v = array_change_key_case($v, CASE_LOWER);
-            if ($v['key_name'] == 'PRIMARY') {
+            if($v['key_name'] == 'PRIMARY') {
                 $v['primary'] = true;
             } else {
                 $v['primary'] = false;
             }
             $tableIndexes[$k] = $v;
         }
+        
         return parent::_getPortableTableIndexesList($tableIndexes, $tableName);
     }
-    protected function _getPortableSequenceDefinition ($sequence)
+
+    protected function _getPortableSequenceDefinition($sequence)
     {
         return end($sequence);
     }
-    protected function _getPortableDatabaseDefinition ($database)
+
+    protected function _getPortableDatabaseDefinition($database)
     {
         return $database['Database'];
     }
+    
     /**
      * Gets a portable column definition.
      * 
@@ -72,9 +83,10 @@ class MySqlSchemaManager extends AbstractSchemaManager
      * @param $tableColumn
      * @return array
      */
-    protected function _getPortableTableColumnDefinition ($tableColumn)
+    protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+
         $dbType = strtolower($tableColumn['type']);
         $dbType = strtok($dbType, '(), ');
         if (isset($tableColumn['length'])) {
@@ -82,20 +94,22 @@ class MySqlSchemaManager extends AbstractSchemaManager
             $decimal = '';
         } else {
             $length = strtok('(), ');
-            $decimal = strtok('(), ') ? strtok('(), ') : null;
+            $decimal = strtok('(), ') ? strtok('(), '):null;
         }
         $type = array();
         $unsigned = $fixed = null;
-        if (! isset($tableColumn['name'])) {
+
+        if ( ! isset($tableColumn['name'])) {
             $tableColumn['name'] = '';
         }
+        
         $scale = null;
         $precision = null;
+        
         $type = $this->_platform->getDoctrineTypeMapping($dbType);
-        $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], 
-        $type);
-        $tableColumn['comment'] = $this->removeDoctrineTypeFromComment(
-        $tableColumn['comment'], $type);
+        $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
+        $tableColumn['comment'] = $this->removeDoctrineTypeFromComment($tableColumn['comment'], $type);
+
         switch ($dbType) {
             case 'char':
                 $fixed = true;
@@ -105,8 +119,7 @@ class MySqlSchemaManager extends AbstractSchemaManager
             case 'real':
             case 'numeric':
             case 'decimal':
-                if (preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', 
-                $tableColumn['type'], $match)) {
+                if(preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match)) {
                     $precision = $match[1];
                     $scale = $match[2];
                     $length = null;
@@ -128,40 +141,55 @@ class MySqlSchemaManager extends AbstractSchemaManager
                 $length = null;
                 break;
         }
+
         $length = ((int) $length == 0) ? null : (int) $length;
-        $def = array('type' => $type, 'length' => $length, 
-        'unsigned' => (bool) $unsigned, 'fixed' => (bool) $fixed);
-        $options = array('length' => $length, 
-        'unsigned' => (bool) $unsigned, 'fixed' => (bool) $fixed, 
-        'default' => $tableColumn['default'], 
-        'notnull' => (bool) ($tableColumn['null'] != 'YES'), 
-        'scale' => null, 'precision' => null, 
-        'autoincrement' => (bool) (strpos($tableColumn['extra'], 
-        'auto_increment') !== false), 
-        'comment' => (isset($tableColumn['comment'])) ? $tableColumn['comment'] : null);
+        $def =  array(
+            'type' => $type,
+            'length' => $length,
+            'unsigned' => (bool) $unsigned,
+            'fixed' => (bool) $fixed
+        );
+
+        $options = array(
+            'length'        => $length,
+            'unsigned'      => (bool)$unsigned,
+            'fixed'         => (bool)$fixed,
+            'default'       => $tableColumn['default'],
+            'notnull'       => (bool) ($tableColumn['null'] != 'YES'),
+            'scale'         => null,
+            'precision'     => null,
+            'autoincrement' => (bool) (strpos($tableColumn['extra'], 'auto_increment') !== false),
+            'comment'       => (isset($tableColumn['comment'])) ? $tableColumn['comment'] : null
+        );
+
         if ($scale !== null && $precision !== null) {
             $options['scale'] = $scale;
             $options['precision'] = $precision;
         }
-        return new Column($tableColumn['field'], 
-        \Doctrine\DBAL\Types\Type::getType($type), $options);
+
+        return new Column($tableColumn['field'], \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
-    public function _getPortableTableForeignKeyDefinition ($tableForeignKey)
+
+    public function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
         $tableForeignKey = array_change_key_case($tableForeignKey, CASE_LOWER);
-        if (! isset($tableForeignKey['delete_rule']) ||
-         $tableForeignKey['delete_rule'] == "RESTRICT") {
+
+        if (!isset($tableForeignKey['delete_rule']) || $tableForeignKey['delete_rule'] == "RESTRICT") {
             $tableForeignKey['delete_rule'] = null;
         }
-        if (! isset($tableForeignKey['update_rule']) ||
-         $tableForeignKey['update_rule'] == "RESTRICT") {
+        if (!isset($tableForeignKey['update_rule']) || $tableForeignKey['update_rule'] == "RESTRICT") {
             $tableForeignKey['update_rule'] = null;
         }
-        return new ForeignKeyConstraint((array) $tableForeignKey['column_name'], 
-        $tableForeignKey['referenced_table_name'], 
-        (array) $tableForeignKey['referenced_column_name'], 
-        $tableForeignKey['constraint_name'], 
-        array('onUpdate' => $tableForeignKey['update_rule'], 
-        'onDelete' => $tableForeignKey['delete_rule']));
+        
+        return new ForeignKeyConstraint(
+            (array)$tableForeignKey['column_name'],
+            $tableForeignKey['referenced_table_name'],
+            (array)$tableForeignKey['referenced_column_name'],
+            $tableForeignKey['constraint_name'],
+            array(
+                'onUpdate' => $tableForeignKey['update_rule'],
+                'onDelete' => $tableForeignKey['delete_rule'],
+            )
+        );
     }
 }
