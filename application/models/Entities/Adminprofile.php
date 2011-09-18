@@ -67,6 +67,8 @@ class Adminprofile
      * @JoinTable(name="ma_admins_addresses")
      */
     private $addresses;
+    /** @Column(type="string", length=255) */
+    private $Setttingsviewallpatients;
     public function __construct ()
     {}
     public function __set ($key, $val)

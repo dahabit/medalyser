@@ -198,14 +198,6 @@ Ext
 							minLengthText : 'Password must be at least 6 characters long.',
 							maxLengthText : 'Maximum Password length is 36 characters.'
 						};
-						var card_0_userpass_email = {
-							xtype : 'textfield',
-							fieldLabel : 'Primary Email',
-							vtype : 'email',
-							name : 'primaryemail',
-							msgTarget : 'under',
-							allowBlank : true
-						};
 						var card_0_userpass_userid = {
 							xtype : 'numberfield',
 							fieldLabel : 'Patient Code',
@@ -218,7 +210,7 @@ Ext
 							maxValue : 999999999,
 							minValue : 100000000,
 							emptyText : 'Leave empty',
-							name:'userid'
+							name : 'userid'
 						};
 						var card_0_userpass_name = {
 							xtype : 'fieldcontainer',
@@ -266,11 +258,11 @@ Ext
 								items : [ {
 									xtype : 'container',
 									flex : 1,
-									items : [ card_0_userpass_email ]
+									items : [card_0_userpass_userid]
 								}, {
 									xtype : 'container',
 									flex : 1,
-									items : [ card_0_userpass_userid ]
+									items : [  ]
 								} ]
 							},
 
@@ -341,8 +333,7 @@ Ext
 							xtype : 'combo',
 							name : 'language',
 							fieldLabel : 'Language',
-							store : Ext
-							.create('MA.store.Languages'),
+							store : Ext.create('MA.store.Languages'),
 							queryMode : 'local',
 							displayField : 'name',
 							valueField : 'id',
@@ -442,8 +433,7 @@ Ext
 
 						var card_1_address_country = {
 							xtype : 'combo',
-							store : Ext
-							.create('MA.store.Countries'),
+							store : Ext.create('MA.store.Countries'),
 							displayField : 'id',
 							valueField : 'id',
 							forceSelection : true,
@@ -562,7 +552,7 @@ Ext
 																					{
 																						xtype : 'combo',
 																						store : Ext
-																						.create('MA.store.Countries'),
+																								.create('MA.store.Countries'),
 																						displayField : 'name',
 																						valueField : 'id',
 																						forceSelection : true,
@@ -662,34 +652,109 @@ Ext
 
 										]
 									} // eof address
-									, {
-										title : 'Phone Numbers',
-										// layout : 'form',
-										defaults : {
-											width : 230
-										},
-										defaultType : 'textfield',
-										items : [ {
-											fieldLabel : 'Home',
-											name : 'homephone',
-											emptyText : 'xxx-xxx-xxxx',
-											maskRe : /[\d\-]/
-										}, {
-											fieldLabel : 'Business',
-											name : 'businessphone',
-											emptyText : 'xxx-xxx-xxxx',
-											maskRe : /[\d\-]/
-										}, {
-											fieldLabel : 'Mobile',
-											name : 'mobilephone',
-											emptyText : 'xxx-xxx-xxxx',
-											maskRe : /[\d\-]/
-										}, {
-											fieldLabel : 'Fax',
-											name : 'faxphone',
-											emptyText : 'xxx-xxx-xxxx',
-											maskRe : /[\d\-]/
-										} ]
+									,
+									{
+											xtype : 'fieldset',
+											 title : 'Contact info',
+											items : [ {
+												xtype : 'container',
+												layout : 'hbox',
+												Align:'top',
+												items : [
+														{
+															xtype : 'container',
+															flex : .3,
+															defaults : {
+																width : 230
+															},
+															defaultType : 'textfield',
+															items : [
+																	{
+																		fieldLabel : 'Home',
+																		name : 'homephone',
+																		emptyText : 'xxx-xxx-xxxx',
+																		maskRe : /[\d\-]/
+																	},
+																	{
+																		fieldLabel : 'Business',
+																		name : 'businessphone',
+																		emptyText : 'xxx-xxx-xxxx',
+																		maskRe : /[\d\-]/
+																	},
+																	{
+																		fieldLabel : 'Mobile',
+																		name : 'mobilephone',
+																		emptyText : 'xxx-xxx-xxxx',
+																		maskRe : /[\d\-]/
+																	},
+																	{
+																		fieldLabel : 'Fax',
+																		name : 'faxphone',
+																		emptyText : 'xxx-xxx-xxxx',
+																		maskRe : /[\d\-]/
+																	},{
+																		fieldLabel : 'Primary Email',
+																		vtype : 'email',
+																		name : 'primaryemail',
+																		allowBlank : true
+																	} ]
+														},
+														{
+															xtype : 'container',
+															flex : 1,
+															items : [
+																		{
+																xtype : 'radio',
+																checked : true,
+																boxLabel : 'Preferred',
+																name : 'prefcontactmethod',
+																inputValue : '0',
+												                style: {
+												                    width: '95%',
+												                    marginBottom: '10px'
+												                }
+
+															},
+															{
+																xtype : 'radio',
+																boxLabel : 'Preferred',
+																name : 'prefcontactmethod',
+																inputValue : '1',
+												                style: {
+												                    width: '95%',
+												                    marginBottom: '9px'
+												                }
+
+															},
+															{
+																xtype : 'radio',
+																boxLabel : 'Preferred',
+																name : 'prefcontactmethod',
+																inputValue : '2',
+												                style: {
+												                    width: '95%',
+												                    marginBottom: '9px'
+												                }
+
+															},
+															{
+																xtype : 'radio',
+																boxLabel : 'Preferred',
+																name : 'prefcontactmethod',
+																inputValue : '3',
+												                style: {
+												                    width: '95%',
+												                    marginBottom: '9px'
+												                }
+															},
+															{
+																xtype : 'radio',
+																boxLabel : 'Preferred',
+																name : 'prefcontactmethod',
+																inputValue : '4'
+															} ]
+														} ]
+											} ]
 									}, {
 										cls : 'x-plain',
 										title : 'Biography',

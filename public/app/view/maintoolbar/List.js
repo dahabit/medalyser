@@ -26,24 +26,6 @@ Ext
 							'Ext.layout.container.Table', 'Ext.button.Split' ],
 					alias : 'widget.maintoolbarlist',
 					id : 'maintoolbarlist',
-					currTime : function() {
-						var date=new Date();
-						var date=Ext.Date.format(date, 'l, F j, Y h:i:s');
-						return date;
-					},
-					realTime:function(){
-						var task = {
-							    run: function(){
-							    	var date=new Date();
-									var date=Ext.Date.format(date, 'l, F j, Y h:i:s');
-							    	Ext.fly('clock').update(date);
-							    	
-							    },
-							    interval: 1000 //1 second
-							};
-							Ext.TaskManager.start(task);
-						
-					},
 					initComponent : function() {
 						this.items = [
 								{
@@ -254,6 +236,7 @@ Ext
 												xtype : 'container',
 												height : 100,
 												width : 500,
+												id:'rightpanelbar1',
 												layout : {
 													align : 'stretch',
 													type : 'hbox'
@@ -263,12 +246,8 @@ Ext
 														{
 															xtype : 'container',
 															width : 250
-														},
-														{
-															xtype : 'container',
-															html : '<div style="float:left;margin-right:10px"><img  id="pic" src="./images/admin/profile/6939.jpg" width="30" height="40" /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome Dr.Kate smith</h5></div><div  style="color:#333" id="clock">'+this.realTime()+'</div>',
-															width : 250
-														} ]
+														}
+														 ]
 											}, {
 												xtype : 'container',
 												height : 120,

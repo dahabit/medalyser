@@ -68,8 +68,14 @@ class NewPatientWizardController extends Zend_Controller_Action
                     $allFormElements = $this->getRequest()->getParams();
                     $account->setNonNestedFormElements($allFormElements);
                     //convert date and time to object so doctrine doesn't echo errors
-                    $account->birthdate = new DateTime(
-                    $this->_request->getParam('birthdate'));
+                    $birthDate = $this->_request->getParam(
+                    'birthdate');
+                    //only new datetime if user$birthDate is submitted
+                    if ($birthDate) {
+                        $account->birthdate = new DateTime($birthDate);
+                    } else {
+                        $account->birthdate = null;
+                    }
                     $account->userid = $this->userId;
                     $account->created = new DateTime("now");
                     $account->profilephoto = $ProfilePhotoUploader->getFileName();
@@ -151,6 +157,8 @@ class NewPatientWizardController extends Zend_Controller_Action
                 if (! $this->em->getRepository(
                 'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
                     $finished = true;
+                
+                
                 
                 
                 

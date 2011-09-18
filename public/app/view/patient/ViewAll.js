@@ -34,9 +34,9 @@ Ext
 					} ],
 					stateId : 'state.ViewAllPatients',
 					initComponent : function() {//new MA.store.Patients();
-						patientsStore = Ext.create('MA.store.Patients');
+						//patientsStore = Ext.create('MA.store.Patients');
 						//patientsStore=Ext.data.StoreManager.lookup('Patients');
-					this.store = patientsStore;
+					//this.store = patientsStore;
 						Ext.apply(this, {
 						    store: 'Patients'
 							}),

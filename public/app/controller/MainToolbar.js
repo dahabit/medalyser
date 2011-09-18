@@ -26,6 +26,28 @@ Ext.define('MA.controller.MainToolbar', {
 
 	views : [ 'maintoolbar.List' ],
 	init : function() {
+		var mystore=new Ext.data.Store({
+			fields : [ {
+				name : 'firstName'
+			}, {
+				name : 'lastName'
+			} ],
+		    storeId:'mystore',
+		    data : [
+		        {firstName: 'Ed',    lastName: 'Spencer'},
+		        {firstName: 'Tommy', lastName: 'Maintz'},
+		        {firstName: 'Aaron', lastName: 'Conran'},
+		        {firstName: 'Jamie', lastName: 'Avins'}
+		    ]
+		});
+		//if (Ext.ClassManager.isCreated('MA.store.AdminSettings')){console.log('class is created')}
+		//Ext.create('MA.store.Patients',{storeId:'Patients'});
+		//console.log(mystore);
+		//Ext.data.StoreManager.register(mystore);
+		//this.stores=
+			//new MA.store.AdminSettings;
+		//if (Ext.ClassManager.isCreated('MA.store.AdminSettings')){console.log('class is created')}else{console.log('class is undefined')}
+		//console.log(Ext.getStore('AdminSettings'));
 	}// eof init function
 
 });

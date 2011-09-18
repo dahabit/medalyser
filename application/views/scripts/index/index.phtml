@@ -106,6 +106,7 @@ echo $this->headScript();
 <script type="text/javascript">
 Ext.onReady(function(){
     function removeLoadMask() {
+        //Remove loading panel and display viewport
       var loading = Ext.get('x-loading-panel');
       var mask = Ext.get('x-loading-mask');
       loading.hide();

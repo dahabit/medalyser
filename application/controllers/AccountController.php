@@ -272,17 +272,35 @@ class AccountController extends Zend_Controller_Action
     public function getadminstoresAction ()
     { //disable view
         $this->_helper->viewRenderer->setNoRender(true);
-        //add adminsettings store to the final store
+        //patients
+        //fetch all patients from database
+        $qb = $this->em->createQueryBuilder();
+        $qb->add('select', 'a')
+            ->add('from', 'Entities\Patientprofile a')
+            ->add('orderBy', 'a.id ASC');
+        $query = $qb->getQuery();
+        $patients = $query->getResult(3);
+        //unset unnecessary and secret patient table columns.
+        // unset($patients['password'],$patients['recovery']);->not working
+        //FIXME:search for a method on  how to disable some columns in doctrine while fetching data
+        //FIXME:unset null and empty values for patients
+        //inject patients into stores array
+        //var_dump($patients);
+        $stores['Patients'] = $patients;
+        
         //select currently logged in admin`s table data
         $adminSettings = $this->em->getRepository(
         'Entities\Adminprofile')->findByUserid(
         Zend_Auth::getInstance()->getIdentity()->userid);
+        $stores['WidgetSettings'] = unserialize(
+        $adminSettings['0']['Setttingsviewallpatients']);
         //unset unnecessary and secret admin table columns.
         unset($adminSettings[0]['password'], 
         $adminSettings[0]['recovery'], $adminSettings[0]['confirmed'], 
         $adminSettings[0]['created'], $adminSettings[0]['updated'], 
-        $adminSettings[0]['id']);
-        $stores['AdminSettings'] = $adminSettings;
+        $adminSettings[0]['id'], $adminSettings['0']['Setttingsviewallpatients']);
+        //adminsettings
+        $stores['AdminSettings'] =$adminSettings;
         //countries
         $countries = Zend_Locale::getTranslationList('Territory', null, 
         2);
@@ -298,7 +316,11 @@ class AccountController extends Zend_Controller_Action
         }
         //add countries store to the final store
         $stores['Languages'] = $languagesStore;
-         $this->getResponse()->appendBody(Zend_Json::encode($stores));
+        $this->getResponse()->appendBody(Zend_Json::encode($stores));
+    }
+    private function _getAdminArray ()
+    {
+        return array('viewallpatients' => array());
     }
 }
 

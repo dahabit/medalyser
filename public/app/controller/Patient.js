@@ -18,7 +18,7 @@
 Ext.define('MA.controller.Patient', {
     extend: 'Ext.app.Controller',
 
-    //stores: ['Users'],
+    //stores: ['Patients'],
     views: ['patient.ViewAll']
 
  /*   ,refs: [

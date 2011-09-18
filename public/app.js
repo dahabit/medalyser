@@ -25,37 +25,31 @@ Ext
 
 			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History',
 					'Settings', 'Patient' ],
+			currTime : function() {
+				var date = new Date();
+				var date = Ext.Date.format(date, 'l, F j, Y h:i:s');
+				return date;
+			},
+			realTime : function() {
+				var task = {
+					run : function() {
+						var date = new Date();
+						var date = Ext.Date.format(date, 'l, F j, Y h:i:s');
+						Ext.fly('clock').update(date);
+
+					},
+					interval : 1000
+				// 1 second
+				};
+				Ext.TaskManager.start(task);
+
+			},
 			launch : function() {
-				Ext.Ajax.request({
-					url : './account/getadminstores',
-					success : function(response) {
-						var json = Ext.decode(response.responseText);
-						var adminStores = new Array();
-						// setup and intitialize on the fly stores
-						for ( var key1 in json) {
-							var storeFields = new Array();
-							for ( var key2 in json[key1]) {// if (i==1){break;}
-								// console.log(key2);
-								for ( var key3 in json[key1][key2]) {
-									storeFields.push(key3);
-								}
-								break;
-							}
-							;
-							Ext.define('MA.store.' + key1, {
-								extend : 'Ext.data.Store',
-								fields : storeFields,
-								data : json[key1]
-							});
-							// adminStores.push(Ext.create('MA.store.' + key1));
-							console.log(storeFields);
-
-						}
-						;
-
-					}
-				});
-
+				// console.log(Ext.getStore('AdminSettings'));
+				// setup the state provider, all state information will be saved
+				// to a cookie
+				Ext.state.Manager.setProvider(Ext
+						.create('Ext.state.CookieProvider'));
 				Ext
 						.create(
 								'Ext.container.Viewport',
@@ -75,7 +69,8 @@ Ext
 												collapsible : true,
 												title : 'Navigation',
 												width : 150,
-												collapsed : true
+												collapsed : true,
+												stateId : 'stateWest'
 											// could use a TreePanel or
 											// AccordionLayout for
 											// navigational items
@@ -85,15 +80,116 @@ Ext
 												xtype : 'tabpanel',
 												activeTab : 1,
 												id : 'centertabpanel',
-												items : [
-														{
-															title : 'Overview',
-															html : 'The first tab\'s content. Others may be added dynamically'
-														},
-														{
-															xtype : 'ViewAllPatients'
-														} ]
+												items : [ {
+													title : 'Overview',
+													html : 'The first tab\'s content. Others may be added dynamically'
+												} /*
+													 * , { xtype :
+													 * 'ViewAllPatients' }
+													 */]
 											} ]
 								});
+				Ext.Ajax
+						.request({
+							url : './account/getadminstores',
+							callback : function(options, success, response) {
+								var json = Ext.decode(response.responseText);
+								var adminStores = new Array();
+								// setup and intitialize on the fly stores
+								for ( var key1 in json) {
+									var storeFields = new Array();
+									for ( var key2 in json[key1]) {// if
+																	// (i==1){break;}
+										// console.log(key2);
+										for ( var key3 in json[key1][key2]) {
+											storeFields.push(key3);
+										}
+										break;
+									}
+									;
+									Ext.define('MA.store.' + key1, {
+										extend : 'Ext.data.Store',
+										fields : storeFields,
+										storeId : key1,
+										data : json[key1]
+									});
+									Ext.create('MA.store.' + key1);
+									// adminStores.push(Ext.create('MA.store.' +
+									// key1));
+									// console.log(storeFields);
+									// xxx=new MA.store.AdminSettings();
+									// console.log(key1);
+								}
+								;
+								Ext
+										.onReady(function() {
+											Ext.getCmp('centertabpanel').add({
+												xtype : 'ViewAllPatients'
+											});
+											Ext.getCmp('centertabpanel')
+													.doLayout();
+											Ext.getCmp('centertabpanel')
+													.setActiveTab(
+															'ViewAllPatients');
+											// render righttoolbar
+											function realTime() {
+												var task = {
+													run : function() {
+														var date = new Date();
+														var date = Ext.Date
+																.format(date,
+																		'l, F j, Y h:i:s');
+														Ext.fly('clock')
+																.update(date);
+
+													},
+													interval : 1000
+												// 1 second
+												};
+												Ext.TaskManager.start(task);
+
+											}
+											;
+											Ext
+													.getCmp('rightpanelbar1')
+													.add(
+															{
+																xtype : 'container',
+																html : '<div style="float:left;margin-right:10px"><img  id="pic" src="./images/admin/profile/6939.jpg" width="30" height="40" /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome  '
+																		+ Ext
+																				.getStore(
+																						'AdminSettings')
+																				.getAt(
+																						'0')
+																				.get(
+																						'firstname')
+																		+ ' '
+																		+ Ext
+																				.getStore(
+																						'AdminSettings')
+																				.getAt(
+																						'0')
+																				.get(
+																						'middlename')
+																		+ ' '
+																		+ Ext
+																				.getStore(
+																						'AdminSettings')
+																				.getAt(
+																						'0')
+																				.get(
+																						'lastname')
+																		+ '</h5></div><div  style="color:#333" id="clock">'
+																		+ realTime()
+																		+ '</div>',
+																width : 250
+															});
+											Ext.getCmp('rightpanelbar1')
+													.doLayout();
+										});
+
+							}
+						});
+
 			}
 		});
