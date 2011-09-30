@@ -71,10 +71,9 @@ if ($this->extjstemplate == 2) {
 }
 //add localization support to extjs
 //get current set local.
-//TODO:add local support to a method in a view helper.
 $locale = Zend_Registry::getInstance()->get('Zend_Translate')->getLocale();
 $locale = str_split($locale, 2);
-if ($locale[0] !== 'en') {
+if ($locale[0] !== 'en' and !empty($locale[0])) {
     $this->headScript()->appendFile(
     './assets/javascript/extjs/locale/ext-lang-' . $locale[0] . '.js');
 }
