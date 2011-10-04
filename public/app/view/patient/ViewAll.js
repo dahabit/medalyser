@@ -25,6 +25,7 @@ Ext
 					id : 'ViewAllPatients',
 					// requires : [],
 					title : 'All Patients',
+					plugins:[Ext.create('Ext.ux.grid.HeaderFilter')],
 					dockedItems : [ {
 						xtype : 'toolbar',
 						dock : 'top',
@@ -45,25 +46,32 @@ Ext
 								{
 									header : 'Patient Id',
 									dataIndex : 'a_userid',
-									flex : .5
-								}/*
+									flex : .5,filter:{
+										  xtype:'numberfield',
+										  emptyText:'ID...'
+								}}/*
 									 * , { header : 'Photo', dataIndex :
 									 * 'a_profilephoto', flex : 1 }
 									 */,
-								{
-									header : 'Name',
-
-									columns : [ {
-										header : 'First',
-										dataIndex : 'a_firstname'
-									}, {
-										header : 'Middle',
-										dataIndex : 'a_middlename'
-									}, {
-										header : 'Last',
-										dataIndex : 'a_lastname'
-									} ]
-								},
+									 {
+											header : 'First',
+											dataIndex : 'a_firstname',filter:{
+												  xtype:'textfield',
+												  emptyText:'First name...'
+											  }
+										}, {
+											header : 'Middle',
+											dataIndex : 'a_middlename',filter:{
+												  xtype:'textfield',
+												  emptyText:'Middle name...'
+											  }
+										}, {
+											header : 'Last',
+											dataIndex : 'a_lastname',filter:{
+												  xtype:'textfield',
+												  emptyText:'Last name...'
+											  }
+										} ,
 								{
 									header : 'Birth Date & Time',
 									dataIndex : 'a_birthdate',
@@ -77,7 +85,10 @@ Ext
 									},
 									// renderer
 									// :Ext.util.Format.dateRenderer('m/d/Y'),
-									flex : 1
+									flex : 1,format:'Y/m/d',filter:{
+										  xtype:'textfield',
+										  emptyText:'Date...'
+									  }
 								},
 								{
 									header : 'Registeration Date & Time',
@@ -90,7 +101,10 @@ Ext
 													'Y-m-d H:i:s')
 										}
 									},
-									flex : 1
+									flex : 1,filter:{
+										  xtype:'datefield',
+										  emptyText:'Date...'
+									  }
 								},
 								{
 									header : 'SS#',
@@ -112,9 +126,6 @@ Ext
 									// TODO: remove preferred contact method and
 									// highlight preferred
 									// contact phone number automatically
-									header : 'Phone',
-									columns : [
-												{
 										header : 'Email',
 										dataIndex : 'a_primaryemail',
 										renderer : function(value,
@@ -180,8 +191,8 @@ Ext
 																+ '</div>';
 													}else {return value;}
 												}
-											} ]
-								} ];
+											} 
+							 ];
 
 						this.callParent(arguments);
 

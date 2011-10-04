@@ -56,6 +56,8 @@ else {
 }
 //add notification plugin
 $this->headScript()->appendFile('./app/plugins/Notification.js');
+//add grid filter plugin
+$this->headScript()->appendFile('./app/plugins/HeaderFilter.js');
 //add user set extjs theme css file
 if ($this->extjstemplate == 0 or ! $this->extjstemplate) {
     $this->headLink()->prependStylesheet(
@@ -80,6 +82,7 @@ if ($locale[0] !== 'en' and !empty($locale[0])) {
 $this->headLink(
 array('rel' => 'favicon', 'href' => './assets/icons/favicon.ico'), 'PREPEND');
 $this->headLink()->appendStylesheet('./assets/icons/icons.css');
+$this->headLink()->appendStylesheet('./assets/css/general.css');
 // Output aggregated headMeta css & js files
 echo $this->headMeta();
 echo $this->headTitle();

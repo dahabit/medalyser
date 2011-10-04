@@ -35,7 +35,9 @@ Ext
 									items : [ {
 										xtype : 'button',
 										text : null,
-										iconCls : 'icon-startbutton',
+										cls : 'startbutton',
+										//icon:'./assets/icons/startbtn.png',
+										style:{height:'60px'},
 										width : 64,
 										height : 64,
 										menu : {

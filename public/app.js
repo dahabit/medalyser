@@ -150,12 +150,36 @@ Ext
 
 											}
 											;
+											//Only load dr`s real photo if already exists in data store
+											if(
+													!Ext
+													.getStore(
+															'AdminSettings')
+													.getAt(
+															'0')
+													.get(
+															'profilephoto')){var profilePhoto='./documents/admins/default/profile.png';}
+											else{
+												var profilePhoto='./documents/admins/'+																 +Ext
+												.getStore(
+												'AdminSettings')
+										.getAt(
+												'0')
+										.get(
+												'userid')+'/images/profile/'+Ext
+												.getStore(
+														'AdminSettings')
+												.getAt(
+														'0')
+												.get(
+														'profilephoto');}
 											Ext
 													.getCmp('rightpanelbar1')
 													.add(
 															{
 																xtype : 'container',
-																html : '<div style="float:left;margin-right:10px"><img  id="pic" src="./images/admin/profile/6939.jpg" width="30" height="40" /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome  '
+																html : '<div style="float:left;margin-right:10px"><img  id="pic" src="'+profilePhoto
+														+'"  /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome  '
 																		+ Ext
 																				.getStore(
 																						'AdminSettings')
