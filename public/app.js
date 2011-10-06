@@ -22,7 +22,7 @@ Ext
 			name : 'MA',
 
 			appFolder : 'app',
-
+			requires : ['Ext.ux.TabScrollerMenu'],
 			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History',
 					'Settings', 'Patient' ],
 			currTime : function() {
@@ -80,6 +80,35 @@ Ext
 												xtype : 'tabpanel',
 												activeTab : 1,
 												id : 'centertabpanel',
+												enableTabScroll: true,
+												resizeTabs: true,
+										        plugins: [{
+									                ptype: 'tabscrollermenu',
+									                maxText  : 15,
+									                pageSize : 5
+									            },Ext.create('Ext.ux.TabCloseMenu', {
+										            extraItemsTail: [
+										                '-',
+										                {
+										                    text: 'Closable',
+										                    checked: true,
+										                    hideOnClick: true,
+										                    handler: function (item) {
+										                        currentItem.tab.setClosable(item.checked);
+										                    }
+										                }
+										            ],
+										            listeners: {
+										                aftermenu: function () {
+										                    currentItem = null;
+										                },
+										                beforemenu: function (menu, item) {
+										                    var menuitem = menu.child('*[text="Closable"]');
+										                    currentItem = item;
+										                    menuitem.setChecked(item.closable);
+										                }
+										            }
+										        })],
 												items : [ {
 													title : 'Overview',
 													html : 'The first tab\'s content. Others may be added dynamically'
