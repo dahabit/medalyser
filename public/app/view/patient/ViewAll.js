@@ -22,7 +22,7 @@ Ext.define('MA.view.patient.ViewAll', {
 	id : 'ViewAllPatients',
 	// requires : [],
 	title : 'All Patients',
-	plugins : [ Ext.create('Ext.ux.grid.HeaderFilter') ],
+	plugins : [ Ext.create('Ext.ux.grid.HeaderFilter'), 'headertooltip' ],
 	dockedItems : [ {
 		xtype : 'toolbar',
 		dock : 'top',
@@ -46,10 +46,14 @@ Ext.define('MA.view.patient.ViewAll', {
 					flex : .5,
 					filter : {
 						xtype : 'numberfield',
-						emptyText : 'ID...',minValue:0,maxValue:999999999,        // Remove spinner buttons, and arrow key and mouse wheel listeners
-				        hideTrigger: true,
-				        keyNavEnabled: false,
-				        mouseWheelEnabled: false
+						emptyText : 'ID...',
+						minValue : 0,
+						maxValue : 999999999, // Remove spinner buttons, and
+												// arrow key and mouse wheel
+												// listeners
+						hideTrigger : true,
+						keyNavEnabled : false,
+						mouseWheelEnabled : false
 					}
 				}/*
 					 * , { header : 'Photo', dataIndex : 'a_profilephoto', flex :
@@ -66,6 +70,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				{
 					header : 'Middle',
 					dataIndex : 'a_middlename',
+					tooltip : 'Some tooltip',
 					filter : {
 						xtype : 'textfield',
 						emptyText : 'Middle name...'
@@ -116,12 +121,14 @@ Ext.define('MA.view.patient.ViewAll', {
 					header : 'SS#',
 					dataIndex : 'a_socialsecurity',
 					flex : 1,
-					filter :{
+					filter : {
 						xtype : 'numberfield',
-						emptyText : 'Social Sec#...',minValue:0,       // Remove spinner buttons, and arrow key and mouse wheel listeners
-				        hideTrigger: true,
-				        keyNavEnabled: false,
-				        mouseWheelEnabled: false
+						emptyText : 'Social Sec#...',
+						minValue : 0, // Remove spinner buttons, and arrow key
+										// and mouse wheel listeners
+						hideTrigger : true,
+						keyNavEnabled : false,
+						mouseWheelEnabled : false
 					}
 				},
 				{
