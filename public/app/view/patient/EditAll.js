@@ -17,12 +17,60 @@
  * @link http://www.MedAlyser.com
  */
 Ext.define('MA.view.patient.EditAll', {
-	extend : 'Ext.container.Container',
+	extend : 'Ext.form.Panel',
 	alias : 'widget.EditAllPatients',
-	// requires : [],
-	stateId : 'state.EditAllPatients',
+	url : 'index.php/editallpatients/submitform',
+	requires : [ 'Ext.ux.tab.VerticalPanel' ],
+	// stateId : 'state.EditAllPatients',
 	initComponent : function() {
-		this.items = [ {} ]
+		this.items = [ {
+			xtype : 'tabpanel',
+			items : [ {
+				title : 'Basic Information'
+			}, {
+				title : 'PH/E',
+				tabConfig : {
+					tooltip : 'History & Physical Examinations'
+				}
+			}, {
+				title : 'PNs & Vitals',
+				tabConfig : {
+					tooltip : 'Progress Notes & Vital Signs'
+				},
+				/*
+				 * There should be a "add a new PN" combo with some templates
+				 * created by the doctor.The PNs should be ordered by date/time
+				 * and in an accordian layout with date/time to the current time
+				 * Vital signs should be added as an editable grid on the second
+				 * tab. vital signs must be demonstrated on a chart like
+				 * this:http://localhost/extjs/ext-4.0.2a/examples/charts/LiveAnimated.js
+				 */
+				items : [ {
+					xtype : 'tabpanel',
+					items : [ {
+						title : 'Progress Notes'
+					}, {
+						title : 'Vital signs'
+					} ]
+				} ]
+			}, {
+				title : 'Lab',
+				/*
+				 * tabConfig: { tooltip: 'Lab' }
+				 */
+				/*
+				 * Display a combo:"Add a new Test" Get current patient's Lab
+				 * Tests And create tabs on a-z order. Every lab test should be
+				 * sorted by date/time.For some tests a grid might be enough but
+				 * for some of them,a form layout might be appropriate.
+				 */
+				items : [],
+				tabConfig : {
+					tooltip : 'History & Physical Examinations'
+				}
+			} // eof Lab tab
+			]
+		} ];
 		this.callParent(arguments);
 	}
 });

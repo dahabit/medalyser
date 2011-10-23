@@ -33,18 +33,22 @@ Ext.define('MA.controller.Patient', {
 
 		// this.counter=this.counter+1;
 		// console.log('Double clicked on ' + record.get('a_firstname'));
-		 console.log(Ext.getCmp('EditAllPatients'+ record.get('a_userid')));
 		// only create a new tab if patient is not created previously
 		if (!Ext.getCmp('EditAllPatients' + record.get('a_userid'))) {
 			Ext.getCmp('centertabpanel').add({
 				xtype : 'EditAllPatients',
 				id : 'EditAllPatients' + record.get('a_userid'),
 				title:record.get('a_firstname')+' '+record.get('a_lastname'),
+		        tabConfig: {
+		            tooltip: 'Enter patient thumb+primitive data here.'
+		        },
 				closable:true
 			});
-		}
+		};//Ext.getCmp('centertabpanel').doLayout();
 		Ext.getCmp('centertabpanel').setActiveTab(
 				'EditAllPatients' + record.get('a_userid'));
+		//uncollapse treepanel
+		Ext.getCmp('mainpaneltree').toggleCollapse();
 		// view.down('form').loadRecord(record);
 	}
 

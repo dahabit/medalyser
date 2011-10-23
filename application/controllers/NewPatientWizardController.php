@@ -142,8 +142,6 @@ class NewPatientWizardController extends Zend_Controller_Action
                 $form->getMessages());
             }
         } else { //Output validation error messagaes as json format
-            $this->_response->appendBody(
-            Zend_Json::encode($validationerror));
             $this->_helper->AjaxResponse(false, 'Invalid request.');
         }
     }

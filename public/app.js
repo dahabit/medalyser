@@ -22,8 +22,8 @@ Ext
 			name : 'MA',
 
 			appFolder : 'app',
-			requires : ['Ext.ux.TabScrollerMenu'],
-			controllers : [ 'MainToolbar', 'NewPatientWizard', 'History',
+			requires : [ 'Ext.ux.TabScrollerMenu' ],
+			controllers : [ 'MainPanel', 'NewPatientWizard', 'History',
 					'Settings', 'Patient' ],
 			currTime : function() {
 				var date = new Date();
@@ -57,20 +57,46 @@ Ext
 									layout : 'border',
 									items : [
 											{
-												xtype : 'maintoolbarlist',
 												region : 'north',
-												autoHeight : true,
+												//xtype : 'maintoolbarlist',
 												border : false,
 												collapsible : true,
-												margins : '0 0 5 0'
+												id: 'region-north',
+												margins : '5 0 5 0',
+												split : true,
+												placeholder: Ext.create('Ext.panel.Panel', {
+													  height: 5,
+													  listeners: {
+													    mouseover : {
+													      element : 'el',
+													      fn : function(){
+													        //Expand the north region on mouseover
+													        Ext.getCmp('region-north').expand();
+													      }
+													    }
+													  }
+													}),
+													
+												  preventHeader: true,
+												  listeners: {
+												    mouseleave: {
+												      element: 'el',
+												      fn: function() {
+												       Ext.getCmp('region-north').collapse();
+												      }
+												    }
+												  }
 											},
 											{
 												region : 'west',
+												xtype : 'mainpaneltree',
 												collapsible : true,
 												title : 'Navigation',
 												width : 150,
 												collapsed : true,
-												stateId : 'stateWest'
+												stateId : 'stateWest',
+												border : false
+
 											// could use a TreePanel or
 											// AccordionLayout for
 											// navigational items
@@ -80,35 +106,45 @@ Ext
 												xtype : 'tabpanel',
 												activeTab : 1,
 												id : 'centertabpanel',
-												enableTabScroll: true,
-												resizeTabs: true,
-										        plugins: [{
-									                ptype: 'tabscrollermenu',
-									                maxText  : 15,
-									                pageSize : 5
-									            },Ext.create('Ext.ux.TabCloseMenu', {
-										            extraItemsTail: [
-										                '-',
-										                {
-										                    text: 'Closable',
-										                    checked: true,
-										                    hideOnClick: true,
-										                    handler: function (item) {
-										                        currentItem.tab.setClosable(item.checked);
-										                    }
-										                }
-										            ],
-										            listeners: {
-										                aftermenu: function () {
-										                    currentItem = null;
-										                },
-										                beforemenu: function (menu, item) {
-										                    var menuitem = menu.child('*[text="Closable"]');
-										                    currentItem = item;
-										                    menuitem.setChecked(item.closable);
-										                }
-										            }
-										        })],
+												enableTabScroll : true,
+												resizeTabs : true,
+												plugins : [
+														{
+															ptype : 'tabscrollermenu',
+															maxText : 15,
+															pageSize : 5
+														},
+														Ext
+																.create(
+																		'Ext.ux.TabCloseMenu',
+																		{
+																			extraItemsTail : [
+																					'-',
+																					{
+																						text : 'Closable',
+																						checked : true,
+																						hideOnClick : true,
+																						handler : function(
+																								item) {
+																							currentItem.tab
+																									.setClosable(item.checked);
+																						}
+																					} ],
+																			listeners : {
+																				aftermenu : function() {
+																					currentItem = null;
+																				},
+																				beforemenu : function(
+																						menu,
+																						item) {
+																					var menuitem = menu
+																							.child('*[text="Closable"]');
+																					currentItem = item;
+																					menuitem
+																							.setChecked(item.closable);
+																				}
+																			}
+																		}) ],
 												items : [ {
 													title : 'Overview',
 													html : 'The first tab\'s content. Others may be added dynamically'
@@ -128,7 +164,7 @@ Ext
 								for ( var key1 in json) {
 									var storeFields = new Array();
 									for ( var key2 in json[key1]) {// if
-																	// (i==1){break;}
+										// (i==1){break;}
 										// console.log(key2);
 										for ( var key3 in json[key1][key2]) {
 											storeFields.push(key3);
@@ -179,36 +215,35 @@ Ext
 
 											}
 											;
-											//Only load dr`s real photo if already exists in data store
-											if(
-													!Ext
-													.getStore(
-															'AdminSettings')
-													.getAt(
-															'0')
-													.get(
-															'profilephoto')){var profilePhoto='./documents/admins/default/profile.png';}
-											else{
-												var profilePhoto='./documents/admins/'+																 +Ext
-												.getStore(
-												'AdminSettings')
-										.getAt(
-												'0')
-										.get(
-												'userid')+'/images/profile/'+Ext
-												.getStore(
-														'AdminSettings')
-												.getAt(
-														'0')
-												.get(
-														'profilephoto');}
+											// Only load dr`s real photo if
+											// already exists in data store
+											if (!Ext.getStore('AdminSettings')
+													.getAt('0').get(
+															'profilephoto')) {
+												var profilePhoto = './documents/admins/default/profile.png';
+											} else {
+												var profilePhoto = './documents/admins/'
+														+ +Ext
+																.getStore(
+																		'AdminSettings')
+																.getAt('0')
+																.get('userid')
+														+ '/images/profile/'
+														+ Ext
+																.getStore(
+																		'AdminSettings')
+																.getAt('0')
+																.get(
+																		'profilephoto');
+											}
 											Ext
 													.getCmp('rightpanelbar1')
 													.add(
 															{
 																xtype : 'container',
-																html : '<div style="float:left;margin-right:10px"><img  id="pic" src="'+profilePhoto
-														+'"  /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome  '
+																html : '<div style="float:left;margin-right:10px"><img  id="pic" src="'
+																		+ profilePhoto
+																		+ '"  /></div><div style="margin-top:3px;margin-left:50px"><h5>Welcome  '
 																		+ Ext
 																				.getStore(
 																						'AdminSettings')
