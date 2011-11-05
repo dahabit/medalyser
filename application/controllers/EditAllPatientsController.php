@@ -1,6 +1,6 @@
 <?php
 /**
-*THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
@@ -26,8 +26,24 @@ class EditAllPatientsController extends Zend_Controller_Action
         $this->_helper->LoginRequired();
         $this->_helper->viewRenderer->setNoRender(true);
     }
-    public function indexAction ()
+    public function getpatientAction ()
+    {
+        if ($this->getRequest()->isPost() and $this->_request->getParam('a_userid')) {
+            $patientId = $this->_request->getParam('a_userid');
+            $patientProfile = $this->em->getRepository(
+            'Entities\Patientprofile')->findOneByUserid($patientId);
+            //check if a patient with this id already exists
+            if ($patientProfile) {
+                $this->getResponse()->appendBody(
+                Zend_Json::encode($patientProfile));
+            } else {
+                //no such patient exists.
+                $this->_helper->AjaxResponse(FALSE, 
+                'No such patient exists.');
+            }
+        }
+    }
+    public function submitformAction ()
     {}
-    public function submitformAction(){}
 }
 ?>

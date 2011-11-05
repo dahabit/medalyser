@@ -25,49 +25,76 @@ Ext.define('MA.view.mainpanel.Tree', {
 	store : Ext.create('Ext.data.TreeStore', {
 		root : {
 			expanded : true,
-			children : [{
+			children : [ {
 				text : "General Profile",
 				expanded : true,
 				children : [ {
 					text : "Basic Information",
-					leaf : true
-				}]
+					leaf : true,
+					id : 'generalprofilebasicinformation'
+				} ]
 			}, {
 				text : "Medical Profile",
 				expanded : true,
-				children : [ {text:'Overview',leaf:true},{
+				children : [ {
+					text : 'Overview',
+					leaf : true,
+					id : 'medicalprofileoverview'
+				}, {
 					text : 'Histories',
-					children: [{text:'Drug History',leaf:true},{text:'Family History',leaf:true},{text:'Past Medical History',leaf:true},{text:'Social History',leaf:true}]
-				}, {//TODO:physical data should be created by sorted dates
+					children : [ {
+						text : 'Drug History',
+						leaf : true,
+						id : 'historiesdrughistory'
+					}, {
+						text : 'Family History',
+						leaf : true,
+						id : 'historiesfamilyhistory'
+					}, {
+						text : 'Past Medical History',
+						leaf : true,
+						id : 'historiespastmedical'
+					}, {
+						text : 'Social History',
+						leaf : true,
+						id : 'historiessocialhistory'
+					} ]
+				}, {// TODO:physical data should be created by sorted dates
 					text : 'ROS & PH/E',
-					children:[{text:'Overview',leaf:true}]
-				},{
+					children : [ {
+						text : 'Overview',
+						leaf : true,
+						id : 'rosoverview'
+					} ]
+				}, {
 					text : 'Progress Notes',
-					leaf : true
+					leaf : true,
+					id : 'rosprogressnotes'
 				}, {
 					text : 'Fluid In/Out',
-					leaf : true
-				} , {
+					leaf : true,
+					id : 'rosfluids'
+				}, {
 					text : 'Lab'
-						//TODO:lab data should be loaded only if they already exist
-				}  ]
-			}]
+				// TODO:lab data should be loaded only if they already exist
+				} ]
+			} ]
 		}
 	}),
-	 dockedItems: [{
-         xtype: 'toolbar',
-         items: [{
-             text: 'Expand All',
-             handler: function(){
-            	 Ext.getCmp('mainpaneltree').expandAll();
-             }
-         }, {
-             text: 'Collapse All',
-             handler: function(){
-                 Ext.getCmp('mainpaneltree').collapseAll();
-             }
-         }]
-     }],
+	dockedItems : [ {
+		xtype : 'toolbar',
+		items : [ {
+			text : 'Expand All',
+			handler : function() {
+				Ext.getCmp('mainpaneltree').expandAll();
+			}
+		}, {
+			text : 'Collapse All',
+			handler : function() {
+				Ext.getCmp('mainpaneltree').collapseAll();
+			}
+		} ]
+	} ],
 	rootVisible : false,
 	initComponent : function() {
 		// this.items = [];

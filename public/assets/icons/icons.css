@@ -1,3 +1,9 @@
 .startbutton {
 	background-image: url(startbtn.png) !important;
 }
+        .add-icon {
+            background: url(add.png) no-repeat 0 0 !important;
+        }
+        .delete-icon {
+            background: url(delete.gif) no-repeat 0 0 !important;
+        }

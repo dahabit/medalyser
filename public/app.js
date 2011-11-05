@@ -58,12 +58,12 @@ Ext
 									items : [
 											{
 												region : 'north',
-												//xtype : 'maintoolbarlist',
+												xtype : 'maintoolbarlist',
 												border : false,
 												collapsible : true,
 												id: 'region-north',
 												margins : '5 0 5 0',
-												split : true,
+												split : true/*,
 												placeholder: Ext.create('Ext.panel.Panel', {
 													  height: 5,
 													  listeners: {
@@ -85,7 +85,7 @@ Ext
 												       Ext.getCmp('region-north').collapse();
 												      }
 												    }
-												  }
+												  }*/
 											},
 											{
 												region : 'west',
@@ -146,8 +146,7 @@ Ext
 																			}
 																		}) ],
 												items : [ {
-													title : 'Overview',
-													html : 'The first tab\'s content. Others may be added dynamically'
+													xtype:'PatientsOverview'
 												} /*
 													 * , { xtype :
 													 * 'ViewAllPatients' }

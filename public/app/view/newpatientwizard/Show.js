@@ -264,7 +264,7 @@ Ext
 									flex : 1,
 									items : [  ]
 								} ]
-							},
+							}
 
 							]
 						};
@@ -488,12 +488,15 @@ Ext
 																						xtype : 'combo',
 																						store : 'AddressType',
 																						displayField : 'name',
-																						valueField : 'name',
+																						valueField : 'id',
 																						fieldLabel : 'Address Type',
 																						id : 'addresstype'
 																								+ counter.no,
 																						name : "Patientaddress[addresstype][]",
-																						value : 'Home'
+																						value : '0',
+																						forceSelection : true,
+																						typeAhead : true,
+																						queryMode : 'local'
 																					},
 																					{
 																						fieldLabel : 'zip',
@@ -755,16 +758,6 @@ Ext
 															} ]
 														} ]
 											} ]
-									}, {
-										cls : 'x-plain',
-										title : 'Biography',
-										layout : 'fit',
-										items : {
-											xtype : 'htmleditor',
-											id : 'bio2',
-											fieldLabel : 'Biography',
-											name : 'bio2'
-										}
 									} ]
 						};
 						// ////////////////CARD2////////////////

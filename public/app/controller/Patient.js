@@ -16,44 +16,84 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-Ext.define('MA.controller.Patient', {
-	extend : 'Ext.app.Controller',
+Ext
+		.define(
+				'MA.controller.Patient',
+				{
+					extend : 'Ext.app.Controller',
 
-	// stores: ['Patients'],
-	views : [ 'patient.ViewAll', 'patient.EditAll' ],
-	init : function() {
-		// this.counter=0;
-		this.control({
-			'ViewAllPatients' : {
-				itemdblclick : this.editUser
-			}
-		});
-	},
-	editUser : function(grid, record) {
+					 stores: ['PatientProfile','Se'],
+					views : [ 'patient.ViewAll', 'patient.EditAll','patient.Overview' ],
+					init : function() {
+						// this.counter=0;
+						this.control({
+							'ViewAllPatients' : {
+								itemdblclick : this.editUser,
+								activate : this.tabActive
+								
+							}
+						});
+						this.control({
+							'EditAllPatients' : {
+								destroy : this.tabDestroy,
+								activate : this.tabActive
+							}
+						});
+						this.control({
+							'PatientsOverview' : {
+								activate : this.tabActive
+							}
+						});
+					},
+					editUser : function(grid, record) {
 
-		// this.counter=this.counter+1;
-		// console.log('Double clicked on ' + record.get('a_firstname'));
-		// only create a new tab if patient is not created previously
-		if (!Ext.getCmp('EditAllPatients' + record.get('a_userid'))) {
-			Ext.getCmp('centertabpanel').add({
-				xtype : 'EditAllPatients',
-				id : 'EditAllPatients' + record.get('a_userid'),
-				title:record.get('a_firstname')+' '+record.get('a_lastname'),
-		        tabConfig: {
-		            tooltip: 'Enter patient thumb+primitive data here.'
-		        },
-				closable:true
-			});
-		};//Ext.getCmp('centertabpanel').doLayout();
-		Ext.getCmp('centertabpanel').setActiveTab(
-				'EditAllPatients' + record.get('a_userid'));
-		//uncollapse treepanel
-		Ext.getCmp('mainpaneltree').toggleCollapse();
-		// view.down('form').loadRecord(record);
-	}
+						// this.counter=this.counter+1;
+						// console.log('Double clicked on ' +
+						// record.get('a_firstname'));
+						// only create a new tab if patient is not created
+						// previously
+						if (!Ext.getCmp('EditAllPatients'
+								+ record.get('a_userid'))) {
+							Ext
+									.getCmp('centertabpanel')
+									.add(
+											{
+												xtype : 'EditAllPatients',
+												id : 'EditAllPatients'
+														+ record
+																.get('a_userid'),
+												title : record
+														.get('a_firstname')
+														+ ' '
+														+ record
+																.get('a_lastname'),
+												tabConfig : {
+													tooltip : 'Enter patient thumb+primitive data here.'
+												},
+												closable : true
+											});
+						}
+						;// Ext.getCmp('centertabpanel').doLayout();
+						Ext.getCmp('centertabpanel').setActiveTab(
+								'EditAllPatients' + record.get('a_userid'));
+						// expand treepanel
+						Ext.getCmp('mainpaneltree').expand();
+						// view.down('form').loadRecord(record);
+					},
+					tabDestroy : function() {
+						//automatically switch to appropriate patient on closing a patients file
+						var tabsCount=Ext.getCmp('centertabpanel').items.getCount();
+						console.log(tabsCount);
+						if (tabsCount < 3) {
+							Ext.getCmp('centertabpanel').setActiveTab(1);
+						}
+						else{Ext.getCmp('centertabpanel').setActiveTab(tabsCount-1);}
 
-/*
- * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
- */
+					},
+					tabActive:function(){console.log('tab is activated')}
 
-});
+				/*
+				 * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
+				 */
+
+				});

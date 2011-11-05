@@ -17,23 +17,15 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-Ext.define('MA.store.AddressType', {
-	extend : 'Ext.data.Store',
-	// model:'NewPatientWizard',
-	fields : [ {
-		name : 'name'
-	}, {
-		name : 'id'
-	} ],
-	data : [ {
-		id : '0',
-		name : 'Home'
-	}, {
-		id : '1',
-		name : 'Work'
-	}, {
-		id : '2',
-
-		name : 'School'
-	} ]
+Ext.define('MA.view.patient.Overview', {
+	extend : 'Ext.form.Panel',
+	alias : 'widget.PatientsOverview',
+	id:'PatientsOverview',
+	title:'Overview',
+	requires : [ 'Ext.ux.tab.VerticalPanel' ],
+	// stateId : 'state.EditAllPatients',
+	initComponent : function() {
+		this.items = [ ];
+		this.callParent(arguments);
+	}
 });

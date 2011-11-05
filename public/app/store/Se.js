@@ -17,23 +17,22 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-Ext.define('MA.store.AddressType', {
+Ext.define('MA.store.Se', {
 	extend : 'Ext.data.Store',
 	// model:'NewPatientWizard',
 	fields : [ {
-		name : 'name'
-	}, {
 		name : 'id'
+	}, {
+		name : 'name'
 	} ],
 	data : [ {
-		id : '0',
-		name : 'Home'
+		name : 'Female',
+		id : '0'
 	}, {
-		id : '1',
-		name : 'Work'
+		name : 'Male',
+		id : '1'
 	}, {
-		id : '2',
-
-		name : 'School'
+		name : 'Ambigous',
+		id : '2'
 	} ]
 });
