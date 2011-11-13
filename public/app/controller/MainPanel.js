@@ -47,35 +47,35 @@ Ext.define('MA.controller.MainPanel', {
 	}// eof init function
 	,
 	selectPanel : function(node, record, item, index, event) {
-		console.log(record.data.id);
+		
 		// get current active tab's child id
-		var e=Ext.getCmp('centertabpanel').getActiveTab().items;
-		Ext.getCmp('centertabpanel').getActiveTab().doLayout();
-		console.log(e);
-	}
-	,
+		var currentCard=record.data.id+Ext.getCmp('centertabpanel').getActiveTab().id;
+		//console.log(node.getId());
+		Ext.getCmp('centertabpanel').getActiveTab().getLayout()
+				.setActiveItem(currentCard);
+	},
 	// get All the child elements or id of a Panel in Extjs 4
-	getAllChilden:function (panel) {
-		  /*
-			 * Get children of passed panel or an empty array if it doesn't have
-			 * thems.
-			 */
-		  var children = panel.items ? panel.items.items : [];
-		  /* For each child get their children and concatenate to result. */
-		  Ext.each(children, function (child) {
-		    children = children.concat(getAllChilden(child));
-		  });
-		  return children;
-		},
-		// This will return ids of children. USES PREVIOUS FUNTCION -
-		// getAllChilden
-		getAllChildenIds : function (panel) {
-			   /* Get all child items. */
-			   var children = getAllChilden(panel);
-			   /* Replace items with their ids. */
-			   for (var i=0, l=children.length; i < l; i++) {
-			     children[i] = children[i].getId();
-			   }
-			   return children;
-			 }
+	getAllChilden : function(panel) {
+		/*
+		 * Get children of passed panel or an empty array if it doesn't have
+		 * thems.
+		 */
+		var children = panel.items ? panel.items.items : [];
+		/* For each child get their children and concatenate to result. */
+		Ext.each(children, function(child) {
+			children = children.concat(getAllChilden(child));
+		});
+		return children;
+	},
+	// This will return ids of children. USES PREVIOUS FUNTCION -
+	// getAllChilden
+	getAllChildenIds : function(panel) {
+		/* Get all child items. */
+		var children = getAllChilden(panel);
+		/* Replace items with their ids. */
+		for ( var i = 0, l = children.length; i < l; i++) {
+			children[i] = children[i].getId();
+		}
+		return children;
+	}
 });

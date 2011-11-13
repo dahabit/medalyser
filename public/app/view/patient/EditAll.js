@@ -20,11 +20,10 @@ Ext
 		.define(
 				'MA.view.patient.EditAll',
 				{
-					extend : 'Ext.form.Panel',
+					extend : 'Ext.container.Container',
 					alias : 'widget.EditAllPatients',
-					url : 'index.php/editallpatients/submitform',
 					requires : [ 'Ext.ux.tab.VerticalPanel' ],
-					autoScroll : true,
+					layout : 'card',
 					// stateId : 'state.EditAllPatients',
 					initComponent : function() {
 						var card_0_userpass_username = {
@@ -42,12 +41,15 @@ Ext
 							maxLength : 32,
 							minLengthText : 'Password must be at least 6 characters long.',
 							maxLengthText : 'Maximum Password length is 36 characters.'
-						};var card_0_userpass_name = [ {
+						};
+						var card_0_userpass_name = [
+								{
 									xtype : 'textfield',
 									name : 'firstname',
 									fieldLabel : 'First Name',
 									msgTarget : 'side',
 									allowBlank : false
+									//,value : Ext.getStore('MA.store.PatientProfile').getAt('0').get('firstname')
 								}, {
 									xtype : 'textfield',
 									flex : .4,
@@ -75,16 +77,16 @@ Ext
 							name : 'userid'
 						};
 						var card_0_sex = {
-								xtype : 'combo',
-								name : 'sex',
-								fieldLabel : 'Sex',
-								store : 'Se',
-								queryMode : 'local',
-								displayField : 'name',
-								valueField : 'id',
-								typeAhead : true,
-								forceSelection : true
-							};
+							xtype : 'combo',
+							name : 'sex',
+							fieldLabel : 'Sex',
+							store : 'Se',
+							queryMode : 'local',
+							displayField : 'name',
+							valueField : 'id',
+							typeAhead : true,
+							forceSelection : true
+						};
 						var card_0_birthdate = {
 							xtype : 'datefield',
 							fieldLabel : 'Birthdate',
@@ -96,40 +98,31 @@ Ext
 						};
 						var card_0_photo = {
 							xtype : 'filefield',
-							//fieldLabel : 'Photo',
+							// fieldLabel : 'Photo',
 							id : 'newPic',
 							name : 'profilephoto',
 							inputType : 'file',
-							buttonOnly: true
+							buttonOnly : true
 						};
 						// Only load patient`s real photo if
 						// already exists in data store
-						if (!Ext.getStore('AdminSettings')
-								.getAt('0').get(
-										'profilephoto')) {
+						if (!Ext.getStore('AdminSettings').getAt('0').get(
+								'profilephoto')) {
 							var profilePhoto = './documents/admins/default/profile.png';
 						} else {
 							var profilePhoto = './documents/admins/'
-									+ +Ext
-											.getStore(
-													'AdminSettings')
-											.getAt('0')
+									+ +Ext.getStore('AdminSettings').getAt('0')
 											.get('userid')
 									+ '/images/profile/'
-									+ Ext
-											.getStore(
-													'AdminSettings')
-											.getAt('0')
-											.get(
-													'profilephoto');
+									+ Ext.getStore('AdminSettings').getAt('0')
+											.get('profilephoto');
 						}
-						var card_0_photo_box = 
-								     {xtype : 'container',
-								       html: '<div><img src="'
-								    	   +profilePhoto
-								    	   + '"  /></div>'
-								          };
-								;
+						var card_0_photo_box = {
+							xtype : 'container',
+							html : '<div><img src="' + profilePhoto
+									+ '"  /></div>'
+						};
+						;
 						var card_0_socialsecnumber = {
 							xtype : 'textfield',
 							fieldLabel : 'Social security #',
@@ -175,43 +168,45 @@ Ext
 						};
 						var card_0 = {
 							layout : 'auto',
-							items : [
-									{
-										xtype : 'fieldset',
-										title : 'Primary Information',
-										items : [ {
-											xtype : 'container',
-											layout : 'hbox',
-											items : [{
+							items : [ {
+								xtype : 'fieldset',
+								title : 'Primary Information',
+								items : [ {
+									xtype : 'container',
+									layout : 'hbox',
+									items : [
+											{
 												xtype : 'container',
 												flex : 1,
 												items : [
-														
-card_0_userpass_name ]
-											} ,
-													{
-														xtype : 'container',
-														flex : 1,
-														items : [
-																card_0_birthdate,
-																card_0_sex,
-																card_0_marital_status,
-																card_0_language,
-																card_0_race ]
-													},
-													{
-														xtype : 'container',
-														flex : 1,
-														items : [
-																card_0_socialsecnumber,
-																card_0_primary_care_doctor,card_0_userpass_userid ]
-													},{
-														xtype : 'container',
-														flex : 1,
-														items : [card_0_photo_box,card_0_photo ]
-													}]
-										} ]
-									} ]
+
+												card_0_userpass_name ]
+											},
+											{
+												xtype : 'container',
+												flex : 1,
+												items : [ card_0_birthdate,
+														card_0_sex,
+														card_0_marital_status,
+														card_0_language,
+														card_0_race ]
+											},
+											{
+												xtype : 'container',
+												flex : 1,
+												items : [
+														card_0_socialsecnumber,
+														card_0_primary_care_doctor,
+														card_0_userpass_userid ]
+											},
+											{
+												xtype : 'container',
+												flex : 1,
+												items : [ card_0_photo_box,
+														card_0_photo ]
+											} ]
+								} ]
+							} ]
 						};// eof CARD 0
 						// ////////////////CARD1////////////////
 
@@ -233,7 +228,7 @@ card_0_userpass_name ]
 									autoScroll : true,
 									defaultType : 'textfield',
 									labelAlign : 'right',
-									xtype:'fieldset',
+									xtype : 'fieldset',
 									items : [ {
 										xtype : 'fieldcontainer',
 										// combineErrors : true,
@@ -241,10 +236,10 @@ card_0_userpass_name ]
 										items : [
 												{
 													xtype : 'button',
-													//text : 'Add address ',
+													// text : 'Add address ',
 													id : 'addpaddress',
 													cls : 'add-icon',
-													tooltip        : 'Add a new address',
+													tooltip : 'Add a new address',
 													handler : function() {
 														counter.no = counter.no + 1;
 														console.log(counter.no);
@@ -254,21 +249,21 @@ card_0_userpass_name ]
 																.add(
 																		[
 																				{
-																						xtype : 'combo',
-																						store : 'AddressType',
-																						displayField : 'name',
-																						valueField : 'id',
-																						fieldLabel : 'Address Type',
-																						id : 'addresstype'
-																								+ counter.no,
-																						name : "Patientaddress[addresstype][]",
-																						value : '0',
-																						forceSelection : true,
-																						typeAhead : true,
-																						queryMode : 'local'
-																					},
+																					xtype : 'combo',
+																					store : 'AddressType',
+																					displayField : 'name',
+																					valueField : 'id',
+																					fieldLabel : 'Address Type',
+																					id : 'addresstype'
+																							+ counter.no,
+																					name : "Patientaddress[addresstype][]",
+																					value : '0',
+																					forceSelection : true,
+																					typeAhead : true,
+																					queryMode : 'local'
+																				},
 																				{
-																					fieldLabel : 'zip',
+																					fieldLabel : 'Zip',
 																					width : 160,
 																					maxLength : 10,
 																					enforceMaxLength : true,
@@ -342,7 +337,7 @@ card_0_userpass_name ]
 																				{
 																					xtype : 'button',
 																					cls : 'delete-icon',
-																					tooltip        : 'Remove Address',
+																					tooltip : 'Remove Address',
 																					id : 'removeaddress'
 																							+ counter.no,
 																					handler : function(
@@ -412,9 +407,7 @@ card_0_userpass_name ]
 																								.doLayout();
 																					}
 																				} ]);
-														Ext
-																.getCmp(
-																		'paddress')
+														Ext.getCmp('paddress')
 																.doLayout();
 
 													}// eof function
@@ -517,7 +510,64 @@ card_0_userpass_name ]
 										} ]
 									} ]
 								} ];
-						this.items = [ card_0, card_1 ];
+						this.items = [
+								// Basic information=Card number 0
+								{
+									xtype : 'form',
+									url : 'index.php/editallpatients/submitform',
+									autoScroll : true,
+									id : 'generalprofilebasicinformation'
+											+ this.getId(),
+									// Reset and Submit buttons
+									buttons : [
+											{
+												text : 'Reset',
+												handler : function() {
+													this.up('form').getForm()
+															.reset();
+												}
+											},
+											{
+												text : 'Apply',
+												formBind : true, // only
+												// enabled
+												// once the
+												// form is
+												// valid
+												disabled : true,
+												handler : function() {
+													var form = this.up('form')
+															.getForm();
+													if (form.isValid()) {
+														form
+																.submit({
+																	success : function(
+																			form,
+																			action) {
+																		Ext.Msg
+																				.alert(
+																						'Success',
+																						action.result.msg);
+																	},
+																	failure : function(
+																			form,
+																			action) {
+																		Ext.Msg
+																				.alert(
+																						'Failed',
+																						action.result.msg);
+																	}
+																});
+													}
+												}
+											} ],
+									items : [ card_0, card_1 ]
+								},
+								{
+									id : 'medicalprofileoverview'
+											+ this.getId(),
+									html : 'hjghjgjhg'
+								} ];
 						this.callParent(arguments);
 					}
 				});

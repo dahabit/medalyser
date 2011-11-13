@@ -26,9 +26,10 @@ class EditAllPatientsController extends Zend_Controller_Action
         $this->_helper->LoginRequired();
         $this->_helper->viewRenderer->setNoRender(true);
     }
-    public function getpatientAction ()
+    public function getpatientprofilestoreAction ()
     {
-        if ($this->getRequest()->isPost() and $this->_request->getParam('a_userid')) {
+        if ($this->getRequest()->isPost() and
+         $this->_request->getParam('a_userid')) {
             $patientId = $this->_request->getParam('a_userid');
             $patientProfile = $this->em->getRepository(
             'Entities\Patientprofile')->findOneByUserid($patientId);

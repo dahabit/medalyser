@@ -22,15 +22,16 @@ Ext
 				{
 					extend : 'Ext.app.Controller',
 
-					 stores: ['PatientProfile','Se'],
-					views : [ 'patient.ViewAll', 'patient.EditAll','patient.Overview' ],
+					stores : [ 'PatientProfile', 'Se' ],
+					views : [ 'patient.ViewAll', 'patient.EditAll',
+							'patient.Overview' ],
 					init : function() {
 						// this.counter=0;
 						this.control({
 							'ViewAllPatients' : {
 								itemdblclick : this.editUser,
 								activate : this.tabActive
-								
+
 							}
 						});
 						this.control({
@@ -46,7 +47,7 @@ Ext
 						});
 					},
 					editUser : function(grid, record) {
-
+						this.PatientProfileStore();
 						// this.counter=this.counter+1;
 						// console.log('Double clicked on ' +
 						// record.get('a_firstname'));
@@ -72,25 +73,35 @@ Ext
 												},
 												closable : true
 											});
-						}
-						;// Ext.getCmp('centertabpanel').doLayout();
+						};
+						// Ext.getCmp('centertabpanel').doLayout();
 						Ext.getCmp('centertabpanel').setActiveTab(
 								'EditAllPatients' + record.get('a_userid'));
 						// expand treepanel
 						Ext.getCmp('mainpaneltree').expand();
 						// view.down('form').loadRecord(record);
 					},
+					PatientProfileStore : function() {
+						Ext.create('MA.store.PatientProfile').load();
+						//Ext.getCmp('MA.store.PatientProfile').load();
+					},
 					tabDestroy : function() {
-						//automatically switch to appropriate patient on closing a patients file
-						var tabsCount=Ext.getCmp('centertabpanel').items.getCount();
-						console.log(tabsCount);
+						// automatically switch to appropriate patient on
+						// closing a patients file
+						var tabsCount = Ext.getCmp('centertabpanel').items
+								.getCount();
+						//console.log(tabsCount);
 						if (tabsCount < 3) {
 							Ext.getCmp('centertabpanel').setActiveTab(1);
+						} else {
+							Ext.getCmp('centertabpanel').setActiveTab(
+									tabsCount - 1);
 						}
-						else{Ext.getCmp('centertabpanel').setActiveTab(tabsCount-1);}
 
 					},
-					tabActive:function(){console.log('tab is activated')}
+					tabActive : function() {
+						
+					}
 
 				/*
 				 * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
