@@ -279,7 +279,7 @@ class AccountController extends Zend_Controller_Action
             ->add('from', 'Entities\Patientprofile a')
             ->add('orderBy', 'a.id ASC');
         $query = $qb->getQuery();
-        $patients = $query->getResult(3);
+        $patients = $query->getArrayResult();
         //unset unnecessary and secret patient table columns.
         // unset($patients['password'],$patients['recovery']);->not working
         //FIXME:search for a method on  how to disable some columns in doctrine while fetching data

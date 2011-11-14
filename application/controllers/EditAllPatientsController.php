@@ -28,14 +28,13 @@ class EditAllPatientsController extends Zend_Controller_Action
     }
     public function getpatientprofilestoreAction ()
     { //validate posted form
-        $userId = $this->_request->getParam('a_userid');
-        $userIdDigitsValidator = new Zend_Validate_Digits();
-        $userIdLengthValidator = new Zend_Validate_StringLength(
+        $patientId = $this->_request->getParam('userid');
+        $patientIdDigitsValidator = new Zend_Validate_Digits();
+        $patientIdLengthValidator = new Zend_Validate_StringLength(
         array('min' => 9, 'max' => 9));
-        if ($this->getRequest()->isPost() and $userId and
-         $userIdDigitsValidator->isValid($userId) and
-         $userIdLengthValidator->isValid($userId)) {
-            $patientId = $this->_request->getParam('a_userid');
+        if ($this->getRequest()->isPost() and $patientId and
+         $patientIdDigitsValidator->isValid($patientId) and
+         $patientIdLengthValidator->isValid($patientId)) {
             $qb = $this->em->createQueryBuilder();
             $qb->add('select', 'a')
                 ->add('from', 'Entities\Patientprofile a')
@@ -43,7 +42,7 @@ class EditAllPatientsController extends Zend_Controller_Action
                 ->setParameter(1, $patientId);
             ;
             $query = $qb->getQuery();
-            $patientProfile = $query->getResult(3);
+            $patientProfile = $query->getArrayResult();
             $store['PatientProfile'] = $patientProfile;
             //var_dump($patientProfile);
             //check if a patient with this id already exists

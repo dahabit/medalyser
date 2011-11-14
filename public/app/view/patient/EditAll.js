@@ -25,12 +25,16 @@ Ext
 					requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
 					// stateId : 'state.EditAllPatients',
-					getFieldValue:function(name){return Ext.getStore('PatientProfile').getAt('0').get(name);},
+					getFieldValue : function(name) {
+						return Ext.getStore('PatientProfile').getAt('0').get(
+								name);
+					},
 					initComponent : function() {
 						var card_0_userpass_username = {
 							xtype : 'textfield',
 							fieldLabel : 'User name',
-							name : 'patientusername'
+							name : 'patientusername',
+							value : this.getFieldValue('patientusername')
 						};
 						var card_0_userpass_pass = {
 							xtype : 'textfield',
@@ -43,28 +47,27 @@ Ext
 							minLengthText : 'Password must be at least 6 characters long.',
 							maxLengthText : 'Maximum Password length is 36 characters.'
 						};
-						var card_0_userpass_name = [
-								{
-									xtype : 'textfield',
-									name : 'firstname',
-									fieldLabel : 'First Name',
-									msgTarget : 'side',
-									allowBlank : false
-									,value : this.getFieldValue('a_firstname')
-								}, {
-									xtype : 'textfield',
-									flex : .4,
-									name : 'middlename',
-									fieldLabel : 'Middle Name'
-									//,value : Ext.getStore('PatientProfile').getAt('0').get('middlename')
-								}, {
-									xtype : 'textfield',
-									name : 'lastname',
-									msgTarget : 'side',
-									fieldLabel : 'Last Name',
-									allowBlank : false
-									//,value : Ext.getStore('PatientProfile').getAt('0').get('lastname')
-								} ];
+						var card_0_userpass_name = [ {
+							xtype : 'textfield',
+							name : 'firstname',
+							fieldLabel : 'First Name',
+							msgTarget : 'side',
+							allowBlank : false,
+							value : this.getFieldValue('firstname')
+						}, {
+							xtype : 'textfield',
+							flex : .4,
+							name : 'middlename',
+							fieldLabel : 'Middle Name',
+							value : this.getFieldValue('middlename')
+						}, {
+							xtype : 'textfield',
+							name : 'lastname',
+							msgTarget : 'side',
+							fieldLabel : 'Last Name',
+							allowBlank : false,
+							value : this.getFieldValue('lastname')
+						} ];
 						var card_0_userpass_userid = {
 							xtype : 'numberfield',
 							fieldLabel : 'Patient Code',
@@ -77,8 +80,8 @@ Ext
 							maxValue : 999999999,
 							minValue : 100000000,
 							emptyText : 'Leave empty',
-							name : 'userid'
-								//,value : Ext.getStore('PatientProfile').getAt('0').get('userid')
+							name : 'userid',
+							value : this.getFieldValue('userid')
 						};
 						var card_0_sex = {
 							xtype : 'combo',
@@ -89,7 +92,8 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true
+							forceSelection : true,
+							value : this.getFieldValue('sex')
 						};
 						var card_0_birthdate = {
 							xtype : 'datefield',
@@ -97,7 +101,8 @@ Ext
 							name : 'birthdate',
 							maxValue : new Date(), // limited to the current
 							// date or prior
-							format : 'Y-m-d'
+							format : 'Y-m-d',
+							value : this.getFieldValue('birthdate')
 
 						};
 						var card_0_photo = {
@@ -110,11 +115,11 @@ Ext
 						};
 						// Only load patient`s real photo if
 						// already exists in data store
-						if (!getFieldValue('profilephoto')) {
+						if (!this.getFieldValue('profilephoto')) {
 							var profilePhoto = './assets/icons/patient/profile.png';
 						} else {
 							var profilePhoto = './documents/patients/'
-									+getFieldValue('userid')
+									+ getFieldValue('userid')
 									+ '/images/profile/'
 									+ getFieldValue('profilephoto');
 						}
@@ -127,7 +132,8 @@ Ext
 						var card_0_socialsecnumber = {
 							xtype : 'textfield',
 							fieldLabel : 'Social security #',
-							name : 'socialsecurity'
+							name : 'socialsecurity',
+							value : this.getFieldValue('socialsecurity')
 						};
 						var card_0_marital_status = {
 							xtype : 'combo',
@@ -138,7 +144,8 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true
+							forceSelection : true,
+							value : this.getFieldValue('maritalstatus')
 						};
 						var card_0_race = {
 							xtype : 'combo',
@@ -149,7 +156,8 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true
+							forceSelection : true,
+							value : this.getFieldValue('race')
 						};
 						var card_0_language = {
 							xtype : 'combo',
@@ -160,12 +168,14 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true
+							forceSelection : true,
+							value : this.getFieldValue('language')
 						};
 						var card_0_primary_care_doctor = {
 							xtype : 'textfield',
 							fieldLabel : 'Primary Care Doctor',
-							name : 'primarydoctor'
+							name : 'primarydoctor',
+							value : this.getFieldValue('primarydoctor')
 						};
 						var card_0 = {
 							layout : 'auto',

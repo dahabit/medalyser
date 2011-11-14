@@ -86,7 +86,7 @@ Ext
 						Ext.Ajax.request({
 							url : './editallpatients/getpatientprofilestore',
 							params : {
-								a_userid : record.get('a_userid')
+								userid : record.get('userid')
 							},
 							scope: this,
 							callback : function(options, success, response) {

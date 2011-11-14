@@ -42,7 +42,7 @@ Ext.define('MA.view.patient.ViewAll', {
 		this.columns = [
 				{
 					header : 'Patient Id',
-					dataIndex : 'a_userid',
+					dataIndex : 'userid',
 					flex : .5,
 					filter : {
 						xtype : 'numberfield',
@@ -56,12 +56,12 @@ Ext.define('MA.view.patient.ViewAll', {
 						mouseWheelEnabled : false
 					}
 				}/*
-					 * , { header : 'Photo', dataIndex : 'a_profilephoto', flex :
+					 * , { header : 'Photo', dataIndex : 'profilephoto', flex :
 					 * 1 }
 					 */,
 				{
 					header : 'First',
-					dataIndex : 'a_firstname',
+					dataIndex : 'firstname',
 					filter : {
 						xtype : 'textfield',
 						emptyText : 'First name...'
@@ -69,7 +69,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Middle',
-					dataIndex : 'a_middlename',
+					dataIndex : 'middlename',
 					tooltip : 'Some tooltip',
 					filter : {
 						xtype : 'textfield',
@@ -78,7 +78,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Last',
-					dataIndex : 'a_lastname',
+					dataIndex : 'lastname',
 					filter : {
 						xtype : 'textfield',
 						emptyText : 'Last name...'
@@ -86,7 +86,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Birth Date & Time',
-					dataIndex : 'a_birthdate',
+					dataIndex : 'birthdate',
 					renderer : function(value) {
 						if (value) {
 							dt = Ext.Date.parse(value.date, "Y-m-d h:i:s");
@@ -104,7 +104,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Registeration Date & Time',
-					dataIndex : 'a_created',
+					dataIndex : 'created',
 					renderer : function(value) {
 						if (value) {
 							dt = Ext.Date.parse(value.date, "Y-m-d h:i:s");
@@ -119,7 +119,7 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'SS#',
-					dataIndex : 'a_socialsecurity',
+					dataIndex : 'socialsecurity',
 					flex : 1,
 					filter : {
 						xtype : 'numberfield',
@@ -133,12 +133,12 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Sex',
-					dataIndex : 'a_sex',
+					dataIndex : 'sex',
 					flex : 1
 				},
 				{
 					header : 'Marital status',
-					dataIndex : 'a_maritalstatus',
+					dataIndex : 'maritalstatus',
 					hidden : true,
 					flex : 1
 				},
@@ -147,10 +147,10 @@ Ext.define('MA.view.patient.ViewAll', {
 					// highlight preferred
 					// contact phone number automatically
 					header : 'Email',
-					dataIndex : 'a_primaryemail',
+					dataIndex : 'primaryemail',
 					renderer : function(value, metaData, record) {
 						var prefcontactmethod = record
-								.get('a_prefcontactmethod');
+								.get('prefcontactmethod');
 						if (prefcontactmethod == 4) {
 							return '<div style="background-color:#f2e8da">'
 									+ value + '</div>';
@@ -165,10 +165,10 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Home',
-					dataIndex : 'a_homephone',
+					dataIndex : 'homephone',
 					renderer : function(value, metaData, record) {
 						var prefcontactmethod = record
-								.get('a_prefcontactmethod');
+								.get('prefcontactmethod');
 						if (prefcontactmethod == 0) {
 							return '<div style="background-color:#f2e8da">'
 									+ value + '</div>';
@@ -184,10 +184,10 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Business',
-					dataIndex : 'a_businessphone',
+					dataIndex : 'businessphone',
 					renderer : function(value, metaData, record) {
 						var prefcontactmethod = record
-								.get('a_prefcontactmethod');
+								.get('prefcontactmethod');
 						if (prefcontactmethod == 1) {
 							return '<div style="background-color:#f2e8da">'
 									+ value + '</div>';
@@ -203,10 +203,10 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Mobile',
-					dataIndex : 'a_mobilephone',
+					dataIndex : 'mobilephone',
 					renderer : function(value, metaData, record) {
 						var prefcontactmethod = record
-								.get('a_prefcontactmethod');
+								.get('prefcontactmethod');
 						if (prefcontactmethod == 2) {
 							return '<div style="background-color:#f2e8da">'
 									+ value + '</div>';
@@ -222,10 +222,10 @@ Ext.define('MA.view.patient.ViewAll', {
 				},
 				{
 					header : 'Fax',
-					dataIndex : 'a_faxphone',
+					dataIndex : 'faxphone',
 					renderer : function(value, metaData, record) {
 						var prefcontactmethod = record
-								.get('a_prefcontactmethod');
+								.get('prefcontactmethod');
 						if (prefcontactmethod == 3) {
 							return '<div style="background-color:#f2e8da">'
 									+ value + '</div>';
