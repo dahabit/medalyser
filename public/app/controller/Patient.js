@@ -22,14 +22,14 @@ Ext
 				{
 					extend : 'Ext.app.Controller',
 
-					stores : [ 'PatientProfile', 'Se' ],
+					stores : [ 'Se' ],
 					views : [ 'patient.ViewAll', 'patient.EditAll',
 							'patient.Overview' ],
 					init : function() {
 						// this.counter=0;
 						this.control({
 							'ViewAllPatients' : {
-								itemdblclick : this.editUser,
+								itemdblclick : this.patientProfileStore,
 								activate : this.tabActive
 
 							}
@@ -47,7 +47,7 @@ Ext
 						});
 					},
 					editUser : function(grid, record) {
-						this.PatientProfileStore();
+						
 						// this.counter=this.counter+1;
 						// console.log('Double clicked on ' +
 						// record.get('a_firstname'));
@@ -73,7 +73,8 @@ Ext
 												},
 												closable : true
 											});
-						};
+						}
+						;
 						// Ext.getCmp('centertabpanel').doLayout();
 						Ext.getCmp('centertabpanel').setActiveTab(
 								'EditAllPatients' + record.get('a_userid'));
@@ -81,16 +82,51 @@ Ext
 						Ext.getCmp('mainpaneltree').expand();
 						// view.down('form').loadRecord(record);
 					},
-					PatientProfileStore : function() {
-						Ext.create('MA.store.PatientProfile').load();
-						//Ext.getCmp('MA.store.PatientProfile').load();
+					patientProfileStore : function(grid, record) {
+						Ext.Ajax.request({
+							url : './editallpatients/getpatientprofilestore',
+							params : {
+								a_userid : record.get('a_userid')
+							},
+							scope: this,
+							callback : function(options, success, response) {
+								var json = Ext.decode(response.responseText);
+								// setup and intitialize on the fly stores
+								for ( var key1 in json) {
+									var storeFields = new Array();
+									for ( var key2 in json[key1]) {// if
+										// (i==1){break;}
+										// console.log(key2);
+										for ( var key3 in json[key1][key2]) {
+											storeFields.push(key3);
+										}
+										break;
+									}
+									;
+									Ext.define('MA.store.' + key1, {
+										extend : 'Ext.data.Store',
+										fields : storeFields,
+										storeId : key1,
+										data : json[key1]
+									});
+									Ext.create('MA.store.' + key1);
+									// adminStores.push(Ext.create('MA.store.' +
+									// key1));
+									// console.log(storeFields);
+									// xxx=new MA.store.AdminSettings();
+									// console.log(key1);
+									
+								}
+								this.editUser(grid, record);
+							}
+						})
 					},
 					tabDestroy : function() {
 						// automatically switch to appropriate patient on
 						// closing a patients file
 						var tabsCount = Ext.getCmp('centertabpanel').items
 								.getCount();
-						//console.log(tabsCount);
+						// console.log(tabsCount);
 						if (tabsCount < 3) {
 							Ext.getCmp('centertabpanel').setActiveTab(1);
 						} else {
@@ -100,7 +136,7 @@ Ext
 
 					},
 					tabActive : function() {
-						
+
 					}
 
 				/*

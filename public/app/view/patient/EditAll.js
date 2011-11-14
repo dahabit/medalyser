@@ -25,6 +25,7 @@ Ext
 					requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
 					// stateId : 'state.EditAllPatients',
+					getFieldValue:function(name){return Ext.getStore('PatientProfile').getAt('0').get(name);},
 					initComponent : function() {
 						var card_0_userpass_username = {
 							xtype : 'textfield',
@@ -49,18 +50,20 @@ Ext
 									fieldLabel : 'First Name',
 									msgTarget : 'side',
 									allowBlank : false
-									//,value : Ext.getStore('MA.store.PatientProfile').getAt('0').get('firstname')
+									,value : this.getFieldValue('a_firstname')
 								}, {
 									xtype : 'textfield',
 									flex : .4,
 									name : 'middlename',
 									fieldLabel : 'Middle Name'
+									//,value : Ext.getStore('PatientProfile').getAt('0').get('middlename')
 								}, {
 									xtype : 'textfield',
 									name : 'lastname',
 									msgTarget : 'side',
 									fieldLabel : 'Last Name',
 									allowBlank : false
+									//,value : Ext.getStore('PatientProfile').getAt('0').get('lastname')
 								} ];
 						var card_0_userpass_userid = {
 							xtype : 'numberfield',
@@ -75,6 +78,7 @@ Ext
 							minValue : 100000000,
 							emptyText : 'Leave empty',
 							name : 'userid'
+								//,value : Ext.getStore('PatientProfile').getAt('0').get('userid')
 						};
 						var card_0_sex = {
 							xtype : 'combo',

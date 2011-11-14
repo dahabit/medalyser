@@ -27,16 +27,28 @@ class EditAllPatientsController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender(true);
     }
     public function getpatientprofilestoreAction ()
-    {
-        if ($this->getRequest()->isPost() and
-         $this->_request->getParam('a_userid')) {
+    { //validate posted form
+        $userId = $this->_request->getParam('a_userid');
+        $userIdDigitsValidator = new Zend_Validate_Digits();
+        $userIdLengthValidator = new Zend_Validate_StringLength(
+        array('min' => 9, 'max' => 9));
+        if ($this->getRequest()->isPost() and $userId and
+         $userIdDigitsValidator->isValid($userId) and
+         $userIdLengthValidator->isValid($userId)) {
             $patientId = $this->_request->getParam('a_userid');
-            $patientProfile = $this->em->getRepository(
-            'Entities\Patientprofile')->findOneByUserid($patientId);
+            $qb = $this->em->createQueryBuilder();
+            $qb->add('select', 'a')
+                ->add('from', 'Entities\Patientprofile a')
+                ->add('where', 'a.userid=?1')
+                ->setParameter(1, $patientId);
+            ;
+            $query = $qb->getQuery();
+            $patientProfile = $query->getResult(3);
+            $store['PatientProfile'] = $patientProfile;
+            //var_dump($patientProfile);
             //check if a patient with this id already exists
             if ($patientProfile) {
-                $this->getResponse()->appendBody(
-                Zend_Json::encode($patientProfile));
+                $this->getResponse()->appendBody(Zend_Json::encode($store));
             } else {
                 //no such patient exists.
                 $this->_helper->AjaxResponse(FALSE, 
