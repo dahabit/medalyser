@@ -219,7 +219,7 @@ Ext
 											if (!Ext.getStore('AdminSettings')
 													.getAt('0').get(
 															'profilephoto')) {
-												var profilePhoto = './documents/admins/default/profile.png';
+												var profilePhoto = './assets/icons/admin/profile.png';
 											} else {
 												var profilePhoto = './documents/admins/'
 														+ +Ext

@@ -110,16 +110,13 @@ Ext
 						};
 						// Only load patient`s real photo if
 						// already exists in data store
-						if (!Ext.getStore('AdminSettings').getAt('0').get(
-								'profilephoto')) {
-							var profilePhoto = './documents/admins/default/profile.png';
+						if (!getFieldValue('profilephoto')) {
+							var profilePhoto = './assets/icons/patient/profile.png';
 						} else {
-							var profilePhoto = './documents/admins/'
-									+ +Ext.getStore('AdminSettings').getAt('0')
-											.get('userid')
+							var profilePhoto = './documents/patients/'
+									+getFieldValue('userid')
 									+ '/images/profile/'
-									+ Ext.getStore('AdminSettings').getAt('0')
-											.get('profilephoto');
+									+ getFieldValue('profilephoto');
 						}
 						var card_0_photo_box = {
 							xtype : 'container',
