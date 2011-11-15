@@ -25,11 +25,17 @@ Ext
 					stores : [ 'Se' ],
 					views : [ 'patient.ViewAll', 'patient.EditAll',
 							'patient.Overview' ],
+/*						    refs: [
+						           {
+						               ref: 'editform',
+						               selector: 'EditAllPatients > form'
+						           }
+						       ],*/
 					init : function() {
 						// this.counter=0;
 						this.control({
 							'ViewAllPatients' : {
-								itemdblclick : this.patientProfileStore,
+								itemdblclick : this.editUser,
 								activate : this.tabActive
 
 							}
@@ -45,16 +51,22 @@ Ext
 								activate : this.tabActive
 							}
 						});
+						//get form`s values from server on form is rendered
+						this.control({
+				            'EditAllPatients > form': {
+				                render: this.getFormJSON
+				            }
+				        });
 					},
 					editUser : function(grid, record) {
-						
+						this.record=record;
 						// this.counter=this.counter+1;
 						// console.log('Double clicked on ' +
-						// record.get('a_firstname'));
+						// record.get('firstname'));
 						// only create a new tab if patient is not created
 						// previously
 						if (!Ext.getCmp('EditAllPatients'
-								+ record.get('a_userid'))) {
+								+ record.get('userid'))) {
 							Ext
 									.getCmp('centertabpanel')
 									.add(
@@ -62,12 +74,12 @@ Ext
 												xtype : 'EditAllPatients',
 												id : 'EditAllPatients'
 														+ record
-																.get('a_userid'),
+																.get('userid'),
 												title : record
-														.get('a_firstname')
+														.get('firstname')
 														+ ' '
 														+ record
-																.get('a_lastname'),
+																.get('lastname'),
 												tabConfig : {
 													tooltip : 'Enter patient thumb+primitive data here.'
 												},
@@ -77,49 +89,23 @@ Ext
 						;
 						// Ext.getCmp('centertabpanel').doLayout();
 						Ext.getCmp('centertabpanel').setActiveTab(
-								'EditAllPatients' + record.get('a_userid'));
+								'EditAllPatients' + record.get('userid'));
 						// expand treepanel
 						Ext.getCmp('mainpaneltree').expand();
 						// view.down('form').loadRecord(record);
+						return this;
 					},
-					patientProfileStore : function(grid, record) {
-						Ext.Ajax.request({
-							url : './editallpatients/getpatientprofilestore',
-							params : {
-								userid : record.get('userid')
-							},
-							scope: this,
-							callback : function(options, success, response) {
-								var json = Ext.decode(response.responseText);
-								// setup and intitialize on the fly stores
-								for ( var key1 in json) {
-									var storeFields = new Array();
-									for ( var key2 in json[key1]) {// if
-										// (i==1){break;}
-										// console.log(key2);
-										for ( var key3 in json[key1][key2]) {
-											storeFields.push(key3);
-										}
-										break;
-									}
-									;
-									Ext.define('MA.store.' + key1, {
-										extend : 'Ext.data.Store',
-										fields : storeFields,
-										storeId : key1,
-										data : json[key1]
-									});
-									Ext.create('MA.store.' + key1);
-									// adminStores.push(Ext.create('MA.store.' +
-									// key1));
-									// console.log(storeFields);
-									// xxx=new MA.store.AdminSettings();
-									// console.log(key1);
-									
-								}
-								this.editUser(grid, record);
-							}
-						})
+					getFormJSON: function(){
+					Ext.getCmp('generalprofilebasicinformation'+'EditAllPatients'
+							+ this.record.get('userid')).load({
+					    url: './editallpatients/getpatientprofilestore',
+					    params: {
+					       userid:this.record.get('userid')
+					    },
+					    failure: function(form, action) {
+					        Ext.Msg.alert("Load failed", action.result.errorMessage);
+					    }
+					});
 					},
 					tabDestroy : function() {
 						// automatically switch to appropriate patient on

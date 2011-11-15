@@ -22,19 +22,14 @@ Ext
 				{
 					extend : 'Ext.container.Container',
 					alias : 'widget.EditAllPatients',
-					requires : [ 'Ext.ux.tab.VerticalPanel' ],
+					// requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
 					// stateId : 'state.EditAllPatients',
-					getFieldValue : function(name) {
-						return Ext.getStore('PatientProfile').getAt('0').get(
-								name);
-					},
 					initComponent : function() {
 						var card_0_userpass_username = {
 							xtype : 'textfield',
 							fieldLabel : 'User name',
-							name : 'patientusername',
-							value : this.getFieldValue('patientusername')
+							name : 'patientusername'
 						};
 						var card_0_userpass_pass = {
 							xtype : 'textfield',
@@ -52,21 +47,18 @@ Ext
 							name : 'firstname',
 							fieldLabel : 'First Name',
 							msgTarget : 'side',
-							allowBlank : false,
-							value : this.getFieldValue('firstname')
+							allowBlank : false
 						}, {
 							xtype : 'textfield',
 							flex : .4,
 							name : 'middlename',
-							fieldLabel : 'Middle Name',
-							value : this.getFieldValue('middlename')
+							fieldLabel : 'Middle Name'
 						}, {
 							xtype : 'textfield',
 							name : 'lastname',
 							msgTarget : 'side',
 							fieldLabel : 'Last Name',
-							allowBlank : false,
-							value : this.getFieldValue('lastname')
+							allowBlank : false
 						} ];
 						var card_0_userpass_userid = {
 							xtype : 'numberfield',
@@ -80,8 +72,7 @@ Ext
 							maxValue : 999999999,
 							minValue : 100000000,
 							emptyText : 'Leave empty',
-							name : 'userid',
-							value : this.getFieldValue('userid')
+							name : 'userid'
 						};
 						var card_0_sex = {
 							xtype : 'combo',
@@ -92,8 +83,7 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true,
-							value : this.getFieldValue('sex')
+							forceSelection : true
 						};
 						var card_0_birthdate = {
 							xtype : 'datefield',
@@ -101,8 +91,7 @@ Ext
 							name : 'birthdate',
 							maxValue : new Date(), // limited to the current
 							// date or prior
-							format : 'Y-m-d',
-							value : this.getFieldValue('birthdate')
+							format : 'Y-m-d'
 
 						};
 						var card_0_photo = {
@@ -115,13 +104,15 @@ Ext
 						};
 						// Only load patient`s real photo if
 						// already exists in data store
-						if (!this.getFieldValue('profilephoto')) {
+						if (! 2==2
+								//!Ext.getStore('PatientProfile').getAt('0').get('profilephoto')
+								) {
 							var profilePhoto = './assets/icons/patient/profile.png';
 						} else {
 							var profilePhoto = './documents/patients/'
-									+ getFieldValue('userid')
+									//+ Ext.getStore('PatientProfile').getAt('0').get('userid')
 									+ '/images/profile/'
-									+ getFieldValue('profilephoto');
+									//+ Ext.getStore('PatientProfile').getAt('0').get('profilephoto');
 						}
 						var card_0_photo_box = {
 							xtype : 'container',
@@ -132,8 +123,7 @@ Ext
 						var card_0_socialsecnumber = {
 							xtype : 'textfield',
 							fieldLabel : 'Social security #',
-							name : 'socialsecurity',
-							value : this.getFieldValue('socialsecurity')
+							name : 'socialsecurity'
 						};
 						var card_0_marital_status = {
 							xtype : 'combo',
@@ -144,8 +134,7 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true,
-							value : this.getFieldValue('maritalstatus')
+							forceSelection : true
 						};
 						var card_0_race = {
 							xtype : 'combo',
@@ -156,8 +145,7 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true,
-							value : this.getFieldValue('race')
+							forceSelection : true
 						};
 						var card_0_language = {
 							xtype : 'combo',
@@ -168,14 +156,12 @@ Ext
 							displayField : 'name',
 							valueField : 'id',
 							typeAhead : true,
-							forceSelection : true,
-							value : this.getFieldValue('language')
+							forceSelection : true
 						};
 						var card_0_primary_care_doctor = {
 							xtype : 'textfield',
 							fieldLabel : 'Primary Care Doctor',
-							name : 'primarydoctor',
-							value : this.getFieldValue('primarydoctor')
+							name : 'primarydoctor'
 						};
 						var card_0 = {
 							layout : 'auto',
@@ -231,7 +217,6 @@ Ext
 						}
 						;
 						var counter = new addressCounter();
-						console.log(counter.no);
 						var card_1 = [
 								{
 									title : 'Address',
@@ -520,7 +505,7 @@ Ext
 											} ]
 										} ]
 									} ]
-								} ];
+								} ]
 						this.items = [
 								// Basic information=Card number 0
 								{
