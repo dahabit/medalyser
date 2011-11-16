@@ -33,80 +33,116 @@ Ext
 						       ],*/
 					init : function() {
 						// this.counter=0;
-						this.control({
-							'ViewAllPatients' : {
-								itemdblclick : this.editUser,
-								activate : this.tabActive
+	this.control({
+			'ViewAllPatients' : {
+				itemdblclick : this.patientProfileStore,
+				itemcontextmenu : this.gridContextMenu,
+				activate : this.tabActive
 
-							}
-						});
-						this.control({
-							'EditAllPatients' : {
-								destroy : this.tabDestroy,
-								activate : this.tabActive
-							}
-						});
-						this.control({
-							'PatientsOverview' : {
-								activate : this.tabActive
-							}
-						});
-						//get form`s values from server on form is rendered
-						this.control({
-				            'EditAllPatients > form': {
-				                render: this.getFormJSON
-				            }
-				        });
-					},
-					editUser : function(grid, record) {
-						this.record=record;
-						// this.counter=this.counter+1;
-						// console.log('Double clicked on ' +
-						// record.get('firstname'));
-						// only create a new tab if patient is not created
-						// previously
-						if (!Ext.getCmp('EditAllPatients'
-								+ record.get('userid'))) {
-							Ext
-									.getCmp('centertabpanel')
-									.add(
-											{
-												xtype : 'EditAllPatients',
-												id : 'EditAllPatients'
-														+ record
-																.get('userid'),
-												title : record
-														.get('firstname')
-														+ ' '
-														+ record
-																.get('lastname'),
-												tabConfig : {
-													tooltip : 'Enter patient thumb+primitive data here.'
-												},
-												closable : true
-											});
+			}
+		});
+		this.control({
+			'EditAllPatients' : {
+				destroy : this.tabDestroy,
+				activate : this.tabActive
+			}
+		});
+		this.control({
+			'PatientsOverview' : {
+				activate : this.tabActive
+			}
+		});
+	},
+	gridContextMenu : function(view, record, item, index, e, options) {
+		e.stopEvent();
+		Ext.create('Ext.menu.Menu', {
+			width : 100,
+			height : 100,
+			// margin: '0 0 10 0',
+			items : [ {
+				text : 'Edit Patient',
+				cls : 'edit-icon'
+			}, {
+				text : 'New Patient',
+				cls : 'add-icon'
+			}, {
+				text : 'New Visit',
+				cls : 'new-icon'
+			} ]
+		}).showAt(e.getXY());
+		console.log('gridContextMenu')
+	},
+	editUser : function(grid, record) {
+		this.rec = record;
+		// this.counter=this.counter+1;
+		// console.log('Double clicked on ' +
+		// record.get('firstname'));
+		// only create a new tab if patient is not created
+		// previously
+		if (!Ext.getCmp('EditAllPatients' + record.get('userid'))) {
+			Ext.getCmp('centertabpanel').add({
+				xtype : 'EditAllPatients',
+				id : 'EditAllPatients' + record.get('userid'),
+				title : record.get('firstname') + ' ' + record.get('lastname'),
+				tabConfig : {
+					tooltip : 'Enter patient thumb+primitive data here.'
+				},
+				closable : true
+			});
+		}
+		;
+		// Ext.getCmp('centertabpanel').doLayout();
+		Ext.getCmp('centertabpanel').setActiveTab(
+				'EditAllPatients' + record.get('userid'));
+		// expand treepanel
+		Ext.getCmp('mainpaneltree').expand();
+		// view.down('form').loadRecord(record);
+		Ext.getCmp(
+				'generalprofilebasicinformation' + 'EditAllPatients'
+						+ record.get('userid')).loadRecord(
+				Ext.getStore('PatientProfile' + record.get('userid'))
+						.getAt('0'));
+		return this;
+	},
+	patientProfileStore : function(grid, record) {
+		Ext.Ajax.request({
+			url : './editallpatients/getpatientprofilestore',
+			params : {
+				userid : record.get('userid')
+			},
+			scope : this,
+			callback : function(options, success, response) {
+				var json = Ext.decode(response.responseText);
+				// setup and intitialize on the fly stores
+				for ( var key1 in json) {
+					var storeFields = new Array();
+					for ( var key2 in json[key1]) {// if
+						// (i==1){break;}
+						// console.log(key2);
+						for ( var key3 in json[key1][key2]) {
+							storeFields.push(key3);
 						}
-						;
-						// Ext.getCmp('centertabpanel').doLayout();
-						Ext.getCmp('centertabpanel').setActiveTab(
-								'EditAllPatients' + record.get('userid'));
-						// expand treepanel
-						Ext.getCmp('mainpaneltree').expand();
-						// view.down('form').loadRecord(record);
-						return this;
-					},
-					getFormJSON: function(){
-					Ext.getCmp('generalprofilebasicinformation'+'EditAllPatients'
-							+ this.record.get('userid')).load({
-					    url: './editallpatients/getpatientprofilestore',
-					    params: {
-					       userid:this.record.get('userid')
-					    },
-					    failure: function(form, action) {
-					        Ext.Msg.alert("Load failed", action.result.errorMessage);
-					    }
+						break;
+					}
+					;
+					Ext.define('MA.store.' + key1, {
+						extend : 'Ext.data.Store',
+						fields : storeFields,
+						storeId : key1,
+						data : json[key1]
 					});
-					},
+					Ext.create('MA.store.' + key1);
+					// adminStores.push(Ext.create('MA.store.' +
+					// key1));
+					// console.log(storeFields);
+					// xxx=new MA.store.AdminSettings();
+					// console.log(key1);
+
+				}
+				this.editUser(grid, record);
+			}
+		})
+	},
 					tabDestroy : function() {
 						// automatically switch to appropriate patient on
 						// closing a patients file
