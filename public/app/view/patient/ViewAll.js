@@ -23,18 +23,15 @@ Ext.define('MA.view.patient.ViewAll', {
 	// requires : [],
 	title : 'All Patients',
 	plugins : [ Ext.create('Ext.ux.grid.HeaderFilter'), 'headertooltip' ],
-	dockedItems : [ {
+/*	dockedItems : [ {
 		xtype : 'toolbar',
 		dock : 'top',
 		items : [ {
 			text : 'Docked to the top'
 		} ]
-	} ],
+	} ],*/
 	stateId : 'state.ViewAllPatients',
-	initComponent : function() {// new MA.store.Patients();
-		// patientsStore = Ext.create('MA.store.Patients');
-		// patientsStore=Ext.data.StoreManager.lookup('Patients');
-		// this.store = patientsStore;
+	initComponent : function() {
 		Ext.apply(this, {
 			store : 'Patients'
 		}),

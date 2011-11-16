@@ -102,17 +102,20 @@ Ext
 							inputType : 'file',
 							buttonOnly : true
 						};
+						// load patientProfile store which is belonged to the
+						// current form
+						var patientProfile = Ext.getStore(
+								'PatientProfile' + this.getId().substring(15))
+								.getAt('0');
 						// Only load patient`s real photo if
 						// already exists in data store
-						if (! 2==2
-								//!Ext.getStore('PatientProfile').getAt('0').get('profilephoto')
-								) {
+						if (!patientProfile.get('profilephoto')) {
 							var profilePhoto = './assets/icons/patient/profile.png';
 						} else {
 							var profilePhoto = './documents/patients/'
-									//+ Ext.getStore('PatientProfile').getAt('0').get('userid')
+									+ patientProfile.get('userid')
 									+ '/images/profile/'
-									//+ Ext.getStore('PatientProfile').getAt('0').get('profilephoto');
+									+ patientProfile.get('profilephoto');
 						}
 						var card_0_photo_box = {
 							xtype : 'container',

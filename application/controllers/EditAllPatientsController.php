@@ -43,9 +43,8 @@ class EditAllPatientsController extends Zend_Controller_Action
             ;
             $query = $qb->getQuery();
             $patientProfile = $query->getArrayResult();
-            $store['success'] = true;
             //move array one level up
-            $store['data'] = $patientProfile[0];
+            $store['PatientProfile'.$patientProfile[0]['userid']] = $patientProfile;
             //check if a patient with this id already exists
             if ($patientProfile) {
                 $this->getResponse()->appendBody(Zend_Json::encode($store));

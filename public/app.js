@@ -195,6 +195,7 @@ Ext
 											Ext.getCmp('centertabpanel')
 													.setActiveTab(
 															'ViewAllPatients');
+											
 											// render righttoolbar
 											function realTime() {
 												var task = {
@@ -234,7 +235,7 @@ Ext
 																.getAt('0')
 																.get(
 																		'profilephoto');
-											}
+											};
 											Ext
 													.getCmp('rightpanelbar1')
 													.add(
@@ -273,6 +274,11 @@ Ext
 															});
 											Ext.getCmp('rightpanelbar1')
 													.doLayout();
+											   //Remove loading panel and display viewport
+										      var loading = Ext.get('x-loading-panel');
+										      var mask = Ext.get('x-loading-mask');
+										      loading.hide();
+										      mask.hide();
 										});
 
 							}

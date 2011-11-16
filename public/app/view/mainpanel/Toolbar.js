@@ -46,6 +46,7 @@ Ext
 													{
 														xtype : 'menuitem',
 														text : 'Settings',
+														cls : 'settings-icon',
 														handler : function() {
 															Ext
 																	.create(
@@ -56,6 +57,7 @@ Ext
 													{
 														xtype : 'menuitem',
 														text : 'Logout',
+														cls : 'logout-icon',
 														handler : function() {
 															Ext.Ajax
 																	.request({
