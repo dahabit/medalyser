@@ -348,11 +348,6 @@ Ext
 																						activeRemoveButtonId = thisButton
 																								.getId()
 																								.split('removeaddress')[1];
-
-																						console
-																								.log(this.getId());
-																						console.log('buttonid:'+thisButton.getId())
-																						console.log('activeRemoveButtonId:'+activeRemoveButtonId)
 																						Ext
 																								.getCmp(
 																										this.getId().substring(15)+'paddress')
