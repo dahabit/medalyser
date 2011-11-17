@@ -16,24 +16,17 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-Ext
-		.define(
-				'MA.controller.Patient',
-				{
-					extend : 'Ext.app.Controller',
+Ext.define('MA.controller.Patient', {
+	extend : 'Ext.app.Controller',
 
-					stores : [ 'Se' ],
-					views : [ 'patient.ViewAll', 'patient.EditAll',
-							'patient.Overview' ],
-/*						    refs: [
-						           {
-						               ref: 'editform',
-						               selector: 'EditAllPatients > form'
-						           }
-						       ],*/
-					init : function() {
-						// this.counter=0;
-	this.control({
+	stores : [ 'Se' ],
+	views : [ 'patient.ViewAll', 'patient.EditAll', 'patient.Overview' ],
+	/*
+	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
+	 */
+	init : function() {
+		// this.counter=0;
+		this.control({
 			'ViewAllPatients' : {
 				itemdblclick : this.patientProfileStore,
 				itemcontextmenu : this.gridContextMenu,
@@ -58,19 +51,26 @@ Ext
 		Ext.create('Ext.menu.Menu', {
 			width : 100,
 			height : 100,
+			scope : this,
 			// margin: '0 0 10 0',
 			items : [ {
 				text : 'Edit Patient',
-				cls : 'edit-icon'
+				cls : 'edit-icon',
+				scope : this,
+				handler : function() {
+					this.patientProfileStore(view, record);
+				}
 			}, {
 				text : 'New Patient',
-				cls : 'add-icon'
+				cls : 'add-icon',
+				handler : function() {
+					Ext.create('MA.view.newpatientwizard.Show').show();
+				}
 			}, {
 				text : 'New Visit',
 				cls : 'new-icon'
 			} ]
 		}).showAt(e.getXY());
-		console.log('gridContextMenu')
 	},
 	editUser : function(grid, record) {
 		this.rec = record;
@@ -143,26 +143,24 @@ Ext
 			}
 		})
 	},
-					tabDestroy : function() {
-						// automatically switch to appropriate patient on
-						// closing a patients file
-						var tabsCount = Ext.getCmp('centertabpanel').items
-								.getCount();
-						// console.log(tabsCount);
-						if (tabsCount < 3) {
-							Ext.getCmp('centertabpanel').setActiveTab(1);
-						} else {
-							Ext.getCmp('centertabpanel').setActiveTab(
-									tabsCount - 1);
-						}
+	tabDestroy : function() {
+		// automatically switch to appropriate patient on
+		// closing a patients file
+		var tabsCount = Ext.getCmp('centertabpanel').items.getCount();
+		// console.log(tabsCount);
+		if (tabsCount < 3) {
+			Ext.getCmp('centertabpanel').setActiveTab(1);
+		} else {
+			Ext.getCmp('centertabpanel').setActiveTab(tabsCount - 1);
+		}
 
-					},
-					tabActive : function() {
+	},
+	tabActive : function() {
 
-					}
+	}
 
-				/*
-				 * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
-				 */
+/*
+ * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
+ */
 
-				});
+});

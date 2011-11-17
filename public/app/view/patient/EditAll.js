@@ -223,7 +223,7 @@ Ext
 						var card_1 = [
 								{
 									title : 'Address',
-									id : 'paddress',
+									id : this.getId().substring(15)+'paddress',
 									autoScroll : true,
 									defaultType : 'textfield',
 									labelAlign : 'right',
@@ -236,15 +236,16 @@ Ext
 												{
 													xtype : 'button',
 													// text : 'Add address ',
-													id : 'addpaddress',
+													id : this.getId().substring(15)+'addpaddress',
 													cls : 'add-icon',
 													tooltip : 'Add a new address',
+													scope:this,
 													handler : function() {
 														counter.no = counter.no + 1;
 														console.log(counter.no);
 														Ext
 																.getCmp(
-																		'paddress')
+																		this.getId().substring(15)+'paddress')
 																.add(
 																		[
 																				{
@@ -253,7 +254,7 @@ Ext
 																					displayField : 'name',
 																					valueField : 'id',
 																					fieldLabel : 'Address Type',
-																					id : 'addresstype'
+																					id : this.getId().substring(15)+'addresstype'
 																							+ counter.no,
 																					name : "Patientaddress[addresstype][]",
 																					value : '0',
@@ -270,25 +271,25 @@ Ext
 																					regex : /^\d{5}(\-\d{4})?$/,
 																					regexText : 'Must be in the format xxxxx or xxxxx-xxxx',
 																					name : "paddress[zip][]",
-																					id : 'zip'
+																					id : this.getId().substring(15)+'zip'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'Address 1',
 																					name : "paddress[address1][]",
-																					id : 'address1'
+																					id : this.getId().substring(15)+'address1'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'Address 2',
 																					name : "paddress[address2][]",
-																					id : 'address2'
+																					id : this.getId().substring(15)+'address2'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'City',
 																					name : "paddress[city][]",
-																					id : 'city'
+																					id : this.getId().substring(15)+'city'
 																							+ counter.no
 																				// TODO:add
 																				// default
@@ -312,7 +313,7 @@ Ext
 																				{
 																					fieldLabel : 'State',
 																					name : "paddress[state][]",
-																					id : 'state'
+																					id : this.getId().substring(15)+'state'
 																							+ counter.no
 																				},
 																				{
@@ -326,87 +327,88 @@ Ext
 																					typeAhead : true,
 																					queryMode : 'local',
 																					name : "paddress[country][]",
-																					id : 'country'
+																					id : this.getId().substring(15)+'country'
 																							+ counter.no
 																				} // eof
 																				// countries;
 																				,
 																				Ext
-																						.getCmp('addpaddress'),
+																						.getCmp(this.getId().substring(15)+'addpaddress'),
 																				{
 																					xtype : 'button',
 																					cls : 'delete-icon',
 																					tooltip : 'Remove Address',
-																					id : 'removeaddress'
+																					id : this.getId().substring(15)+'removeaddress'
 																							+ counter.no,
+																							scope:this,
 																					handler : function(
 																							thisButton,
 																							eventObject) {
 
 																						activeRemoveButtonId = thisButton
 																								.getId()
-																								.split(
-																										'removeaddress')[1];
+																								.split('removeaddress')[1];
 
 																						console
-																								.log('activeRemoveButtonID:'
-																										+ activeRemoveButtonId);
+																								.log(this.getId());
+																						console.log('buttonid:'+thisButton.getId())
+																						console.log('activeRemoveButtonId:'+activeRemoveButtonId)
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'address1'
+																										this.getId().substring(15)+'address1'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'address2'
+																										this.getId().substring(15)+'address2'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'city'
+																										this.getId().substring(15)+'city'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'state'
+																										this.getId().substring(15)+'state'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'country'
+																										this.getId().substring(15)+'country'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'removeaddress'
+																										this.getId().substring(15)+'removeaddress'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'addresstype'
+																										this.getId().substring(15)+'addresstype'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.remove(
-																										'zip'
+																										this.getId().substring(15)+'zip'
 																												+ activeRemoveButtonId);
 
 																						Ext
 																								.getCmp(
-																										'paddress')
+																										this.getId().substring(15)+'paddress')
 																								.doLayout();
 																					}
 																				} ]);
-														Ext.getCmp('paddress')
+														Ext.getCmp(this.getId().substring(15)+'paddress')
 																.doLayout();
 
 													}// eof function
