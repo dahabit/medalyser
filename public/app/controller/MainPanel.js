@@ -53,6 +53,7 @@ Ext.define('MA.controller.MainPanel', {
 		//console.log(node.getId());
 		Ext.getCmp('centertabpanel').getActiveTab().getLayout()
 				.setActiveItem(currentCard);
+		//TODO:if form contains unsubmitted values,display a warning to the user to save patient's data before leaving current tab
 	},
 	// get All the child elements or id of a Panel in Extjs 4
 	getAllChilden : function(panel) {

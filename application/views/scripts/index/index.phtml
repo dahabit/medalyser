@@ -64,10 +64,10 @@ $this->headScript()->appendFile('./app/plugins/TabCloseMenu.js');
 $this->headScript()->appendFile('./app/plugins/TabScrollerMenu.js');
 //add HeaderToolTip plugin
 $this->headScript()->appendFile('./app/plugins/HeaderToolTip.js');
-$this->headLink()->appendStylesheet('./app/plugins/css/TabScrollerMenu.css');
 //add vertical tabpanel plugin(Ext.ux.tot2ivn)
 $this->headScript()->appendFile('./app/plugins/VerticalPanel.js');
-$this->headLink()->appendStylesheet('./app/plugins/css/VerticalTabPanel.css');
+//load plugins css
+$this->headLink()->appendStylesheet('./app/plugins/css/Plugins.css');
 //add user set extjs theme css file
 if ($this->extjstemplate == 0 or ! $this->extjstemplate) {
     $this->headLink()->prependStylesheet(

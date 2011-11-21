@@ -84,21 +84,20 @@ Ext
 											// waitMsg : 'Saving data',
 											success : function(form, action) {
 												// Ext.getCmp('card-wizard-panel').el.unmask();
-												var win = new Ext.ux.Notification(
-														Ext
-																.apply({
-																	// animateTarget:
-																	// 'maintoolbarlist',
-																	// animateFrom:
-																	// this.getTaskbarPosition(),
-																	autoDestroy : true,
-																	hideDelay : 2000,
-																	html : 'Patient data saved to the database successfully.',
-																	title : 'Success'
-																}
-																// , config
-																));
-												win.show();
+												Ext.create('widget.uxNotification', {
+													corner: 'br',
+													manager: 'demo2panel1',
+													cls: 'ux-notification-light',
+													iconCls: 'ux-notification-icon-information',
+													closable: false,
+													title: '',
+													html: 'Patient data saved to the database successfully.',
+													slideInDelay: 800,
+													slideDownDelay: 1500,
+													autoDestroyDelay: 4000,
+													slideInAnimation: 'elasticIn',
+													slideDownAnimation: 'elasticIn'
+												}).show();
 												Ext.getCmp(
 														'newpatientwizardshow')
 														.destroy();

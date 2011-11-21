@@ -34,6 +34,7 @@ class MFAN_Controller_Action_Helper_ProfilePhotoUploader extends Zend_Controller
         //FIXME:create a profile like this:images/patient/id/randomprofilename.jpg
         //FIXME:data are not checked if are valid or not.
         //TODO: add validations and filtering and photo cropping
+        //FIXME:automatically create index.html to created folders to add extra security
         $profilephoto = new Zend_File_Transfer_Adapter_Http();
         // Set a file size with max 2mb and min 10kb
         $profilephoto->addValidator('Size', false, 

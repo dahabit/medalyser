@@ -25,6 +25,78 @@ Ext
 					// requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
 					// stateId : 'state.EditAllPatients',
+					getAge : function() {
+						// load current patient's store's birthdate
+						var birthDate = Ext.getStore(
+								'PatientProfile' + this.getId().substring(15))
+								.getAt('0').get('birthdate').date.substring(0,
+								10);
+						// var age = Ext.getCmp('age-id');
+						var currentTime = new Date();
+						var cmonth = Ext.Date.format(currentTime, 'm');
+						var cdate = Ext.Date.format(currentTime, 'd');
+						var cyear = Ext.Date.format(currentTime, 'Y');
+						// var parseddate = Date.parse(birthDate, 'Y-m-d');
+						parseBirthDate = new Date(birthDate);
+						var month = Ext.Date.format(parseBirthDate, 'm') - 1;
+						
+						var date = Ext.Date.format(parseBirthDate, 'd');
+						var year = Ext.Date.format(parseBirthDate, 'Y');
+						var theYear = cyear - year;
+						var theMonth = cmonth - month;
+						var theDate = cdate - date;
+						var days = "";
+						if (cmonth == 0 || cmonth == 2 || cmonth == 4
+								|| cmonth == 6 || cmonth == 7 || cmonth == 9
+								|| cmonth == 11)
+							days = 31;
+						if (cmonth == 3 || cmonth == 5 || cmonth == 8
+								|| cmonth == 10)
+							days = 30;
+						if (cmonth == 1)
+							days = 28;
+
+						if (month < cmonth && date > cdate) {
+							theYear = theYear + 1;
+						} else if (month > cmonth && date <= cdate) {
+							theYear = theYear - 1;
+							theMonth = ((12 - -(theMonth)) + 1);
+						} else if (month > cmonth && date > cdate) {
+							theMonth = ((12 - -(theMonth)));
+						}
+						if (date < cdate) {
+							theDate = theDate;
+						} else if (date == cdate) {
+							theDate = 0;
+						} else {
+							theYear = theYear - 1;
+						}
+						// age.setValue(theYear);
+						return theYear;
+
+					},
+					getSex : function() {
+						var sexStore = Ext.getStore(
+								'PatientProfile' + this.getId().substring(15))
+								.getAt('0').get('sex');
+						switch (sexStore) {
+
+						case 0:
+							var sex = 'Female';
+
+							break;
+						case 1:
+							var sex = 'Male';
+							break;
+						case 2:
+							var sex = 'Ambigous';
+							break;
+						case null:
+							var sex = '';
+							break;
+						}
+						return sex;
+					},
 					initComponent : function() {
 						var card_0_userpass_username = {
 							xtype : 'textfield',
@@ -73,7 +145,7 @@ Ext
 							minValue : 100000000,
 							emptyText : 'Leave empty',
 							name : 'userid'
-						};
+						};//FIXME: patient sex is not loaded into combobox
 						var card_0_sex = {
 							xtype : 'combo',
 							name : 'sex',
@@ -208,7 +280,6 @@ Ext
 								} ]
 							} ]
 						};// eof CARD 0
-						// ////////////////CARD1////////////////
 
 						function addressCounter(incr) {
 							if (!this.no) {
@@ -223,7 +294,8 @@ Ext
 						var card_1 = [
 								{
 									title : 'Address',
-									id : this.getId().substring(15)+'paddress',
+									id : this.getId().substring(15)
+											+ 'paddress',
 									autoScroll : true,
 									defaultType : 'textfield',
 									labelAlign : 'right',
@@ -236,16 +308,23 @@ Ext
 												{
 													xtype : 'button',
 													// text : 'Add address ',
-													id : this.getId().substring(15)+'addpaddress',
+													id : this.getId()
+															.substring(15)
+															+ 'addpaddress',
 													cls : 'add-icon',
 													tooltip : 'Add a new address',
-													scope:this,
+													scope : this,
 													handler : function() {
-														counter.no = counter.no + 1;
+														// counter.no =
+														// counter.no + 1;
 														console.log(counter.no);
 														Ext
 																.getCmp(
-																		this.getId().substring(15)+'paddress')
+																		this
+																				.getId()
+																				.substring(
+																						15)
+																				+ 'paddress')
 																.add(
 																		[
 																				{
@@ -254,7 +333,11 @@ Ext
 																					displayField : 'name',
 																					valueField : 'id',
 																					fieldLabel : 'Address Type',
-																					id : this.getId().substring(15)+'addresstype'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'addresstype'
 																							+ counter.no,
 																					name : "Patientaddress[addresstype][]",
 																					value : '0',
@@ -271,25 +354,41 @@ Ext
 																					regex : /^\d{5}(\-\d{4})?$/,
 																					regexText : 'Must be in the format xxxxx or xxxxx-xxxx',
 																					name : "paddress[zip][]",
-																					id : this.getId().substring(15)+'zip'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'zip'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'Address 1',
 																					name : "paddress[address1][]",
-																					id : this.getId().substring(15)+'address1'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'address1'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'Address 2',
 																					name : "paddress[address2][]",
-																					id : this.getId().substring(15)+'address2'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'address2'
 																							+ counter.no
 																				},
 																				{
 																					fieldLabel : 'City',
 																					name : "paddress[city][]",
-																					id : this.getId().substring(15)+'city'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'city'
 																							+ counter.no
 																				// TODO:add
 																				// default
@@ -313,7 +412,11 @@ Ext
 																				{
 																					fieldLabel : 'State',
 																					name : "paddress[state][]",
-																					id : this.getId().substring(15)+'state'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'state'
 																							+ counter.no
 																				},
 																				{
@@ -327,83 +430,170 @@ Ext
 																					typeAhead : true,
 																					queryMode : 'local',
 																					name : "paddress[country][]",
-																					id : this.getId().substring(15)+'country'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'country'
 																							+ counter.no
 																				} // eof
 																				// countries;
 																				,
 																				Ext
-																						.getCmp(this.getId().substring(15)+'addpaddress'),
+																						.getCmp(this
+																								.getId()
+																								.substring(
+																										15)
+																								+ 'addpaddress'),
 																				{
 																					xtype : 'button',
 																					cls : 'delete-icon',
 																					tooltip : 'Remove Address',
-																					id : this.getId().substring(15)+'removeaddress'
+																					id : this
+																							.getId()
+																							.substring(
+																									15)
+																							+ 'removeaddress'
 																							+ counter.no,
-																							scope:this,
+																					scope : this,
 																					handler : function(
 																							thisButton,
 																							eventObject) {
 
 																						activeRemoveButtonId = thisButton
 																								.getId()
-																								.split('removeaddress')[1];
+																								.split(
+																										'removeaddress')[1];
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'address1'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'address1'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'address2'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'address2'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'city'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'city'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'state'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'state'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'country'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'country'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'removeaddress'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'removeaddress'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'addresstype'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'addresstype'
 																												+ activeRemoveButtonId);
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.remove(
-																										this.getId().substring(15)+'zip'
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'zip'
 																												+ activeRemoveButtonId);
 
 																						Ext
 																								.getCmp(
-																										this.getId().substring(15)+'paddress')
+																										this
+																												.getId()
+																												.substring(
+																														15)
+																												+ 'paddress')
 																								.doLayout();
 																					}
 																				} ]);
-														Ext.getCmp(this.getId().substring(15)+'paddress')
+														Ext
+																.getCmp(
+																		this
+																				.getId()
+																				.substring(
+																						15)
+																				+ 'paddress')
 																.doLayout();
 
 													}// eof function
@@ -505,7 +695,24 @@ Ext
 											} ]
 										} ]
 									} ]
-								} ]
+								} ];
+						var patientSummaryTag = {
+							xtype : 'container',
+							html : '<div style="float:left;margin-right:10px"><img  id="pic" src="'
+									+ profilePhoto
+									+ '"  /></div><div style="margin-top:3px;margin-left:50px"><h4>'
+									+ Ext.getStore('AdminSettings').getAt('0')
+											.get('firstname')
+									+ ' '
+									+ Ext.getStore('AdminSettings').getAt('0')
+											.get('middlename')
+									+ ' '
+									+ Ext.getStore('AdminSettings').getAt('0')
+											.get('lastname')
+									+ '</h4><h5>'
+									+ this.getAge() + ' Y  '+this.getSex()+'</h5>' + '</div>',
+							width : 250
+						};
 						this.items = [
 								// Basic information=Card number 0
 								{
@@ -562,7 +769,7 @@ Ext
 								{
 									id : 'medicalprofileoverview'
 											+ this.getId(),
-									html : 'hjghjgjhg'
+									items : [ patientSummaryTag ]
 								} ];
 						this.callParent(arguments);
 					}
