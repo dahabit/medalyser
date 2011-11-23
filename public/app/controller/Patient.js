@@ -19,10 +19,9 @@
 Ext.define('MA.controller.Patient', {
 	extend : 'Ext.app.Controller',
 
-	stores : [ 'Se','MarriageStatus', 'AddressType', 'Race' ],
-	views : [ 'patient.ViewAll',
-	          'patient.Edit', 
-	          'patient.Overview', 'patient.New' ],
+	stores : [ 'Se', 'MarriageStatus', 'AddressType', 'Race' ],
+	views : [ 'patient.ViewAll', 'patient.Edit', 'patient.Overview',
+			'patient.New' ],
 	/*
 	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
 	 */
@@ -102,49 +101,51 @@ Ext.define('MA.controller.Patient', {
 		Ext.getCmp(
 				'generalprofilebasicinformation' + 'EditPatient'
 						+ record.get('userid')).loadRecord(
-				Ext.getStore('PatientProfile' + record.get('userid')+'Store')
+				Ext.getStore('PatientProfile' + record.get('userid') + 'Store')
 						.getAt('0'));
 		return this;
 	},
 	patientProfileStore : function(grid, record) {
-		Ext.Ajax.request({
-			url : './editallpatients/getpatientprofilestore',
-			params : {
-				userid : record.get('userid')
-			},
-			scope : this,
-			callback : function(options, success, response) {
-				var json = Ext.decode(response.responseText);
-				// setup and intitialize on the fly stores
-				for ( var key1 in json) {
-					var storeFields = new Array();
-					for ( var key2 in json[key1]) {// if
-						// (i==1){break;}
-						// console.log(key2);
-						for ( var key3 in json[key1][key2]) {
-							storeFields.push(key3);
+		// Only create store if it doesnt already exist
+		if (!Ext.getStore('PatientProfile' + record.get('userid')
+				+ 'Store')) {
+			Ext.Ajax.request({
+				url : './editallpatients/getpatientprofilestore',
+				params : {
+					userid : record.get('userid')
+				},
+				scope : this,
+				callback : function(options, success, response) {
+					var json = Ext.decode(response.responseText);
+					// setup and intitialize on the fly stores
+					for ( var key1 in json) {
+						var storeFields = new Array();
+						for ( var key2 in json[key1]) {// if
+							// (i==1){break;}
+							// console.log(key2);
+							for ( var key3 in json[key1][key2]) {
+								storeFields.push(key3);
+							}
+							break;
 						}
-						break;
-					}
-					;
-					Ext.define('MA.store.' + key1, {
-						extend : 'Ext.data.Store',
-						fields : storeFields,
-						storeId : key1+'Store',
-						data : json[key1]
-					});
-					Ext.create('MA.store.' + key1);
-					// adminStores.push(Ext.create('MA.store.' +
-					// key1));
-					// console.log(storeFields);
-					// xxx=new MA.store.AdminSettings();
-					 console.log('created store id :' +key1);
-					 console.log(Ext.getStore(key1+'Store'))
+						;
+						Ext.define('MA.store.' + key1, {
+							extend : 'Ext.data.Store',
+							fields : storeFields,
+							storeId : key1 + 'Store',
+							data : json[key1]
+						});
+						Ext.create('MA.store.' + key1);
+						// adminStores.push(Ext.create('MA.store.' +
+						// key1));
+						// console.log(storeFields);
+						// xxx=new MA.store.AdminSettings();
 
+					}
+					this.editUser(grid, record);
 				}
-				this.editUser(grid, record);
-			}
-		})
+			})
+		}else{this.editUser(grid, record);}
 	},
 	tabDestroy : function() {
 		// automatically switch to appropriate patient on
