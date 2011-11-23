@@ -20,7 +20,9 @@ Ext.define('MA.controller.Patient', {
 	extend : 'Ext.app.Controller',
 
 	stores : [ 'Se','MarriageStatus', 'AddressType', 'Race' ],
-	views : [ 'patient.ViewAll', 'patient.EditAll', 'patient.Overview', 'patient.New' ],
+	views : [ 'patient.ViewAll',
+	          'patient.Edit', 
+	          'patient.Overview', 'patient.New' ],
 	/*
 	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
 	 */
@@ -35,7 +37,7 @@ Ext.define('MA.controller.Patient', {
 			}
 		});
 		this.control({
-			'EditAllPatients' : {
+			'EditPatient' : {
 				destroy : this.tabDestroy,
 				activate : this.tabActive
 			}
@@ -79,10 +81,10 @@ Ext.define('MA.controller.Patient', {
 		// record.get('firstname'));
 		// only create a new tab if patient is not created
 		// previously
-		if (!Ext.getCmp('EditAllPatients' + record.get('userid'))) {
+		if (!Ext.getCmp('EditPatient' + record.get('userid'))) {
 			Ext.getCmp('centertabpanel').add({
-				xtype : 'EditAllPatients',
-				id : 'EditAllPatients' + record.get('userid'),
+				xtype : 'EditPatient',
+				id : 'EditPatient' + record.get('userid'),
 				title : record.get('firstname') + ' ' + record.get('lastname'),
 				tabConfig : {
 					tooltip : 'Enter patient thumb+primitive data here.'
@@ -93,14 +95,14 @@ Ext.define('MA.controller.Patient', {
 		;
 		// Ext.getCmp('centertabpanel').doLayout();
 		Ext.getCmp('centertabpanel').setActiveTab(
-				'EditAllPatients' + record.get('userid'));
+				'EditPatient' + record.get('userid'));
 		// expand treepanel
 		Ext.getCmp('mainpaneltree').expand();
 		// view.down('form').loadRecord(record);
 		Ext.getCmp(
-				'generalprofilebasicinformation' + 'EditAllPatients'
+				'generalprofilebasicinformation' + 'EditPatient'
 						+ record.get('userid')).loadRecord(
-				Ext.getStore('PatientProfile' + record.get('userid'))
+				Ext.getStore('PatientProfile' + record.get('userid')+'Store')
 						.getAt('0'));
 		return this;
 	},
@@ -128,7 +130,7 @@ Ext.define('MA.controller.Patient', {
 					Ext.define('MA.store.' + key1, {
 						extend : 'Ext.data.Store',
 						fields : storeFields,
-						storeId : key1,
+						storeId : key1+'Store',
 						data : json[key1]
 					});
 					Ext.create('MA.store.' + key1);
@@ -136,7 +138,8 @@ Ext.define('MA.controller.Patient', {
 					// key1));
 					// console.log(storeFields);
 					// xxx=new MA.store.AdminSettings();
-					// console.log(key1);
+					 console.log('created store id :' +key1);
+					 console.log(Ext.getStore(key1+'Store'))
 
 				}
 				this.editUser(grid, record);

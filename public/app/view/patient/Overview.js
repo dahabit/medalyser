@@ -23,7 +23,7 @@ Ext.define('MA.view.patient.Overview', {
 	id:'PatientsOverview',
 	title:'Overview',
 	requires : [ 'Ext.ux.tab.VerticalPanel' ],
-	// stateId : 'state.EditAllPatients',
+	// stateId : 'state.EditPatient',
 	initComponent : function() {
 		this.items = [ ];
 		this.callParent(arguments);

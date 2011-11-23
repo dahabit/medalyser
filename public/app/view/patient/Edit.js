@@ -18,22 +18,22 @@
  */
 Ext
 		.define(
-				'MA.view.patient.EditAll',
+				'MA.view.patient.Edit',
 				{
 					extend : 'Ext.container.Container',
-					alias : 'widget.EditAllPatients',
+					alias : 'widget.EditPatient',
 					// requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
-					// stateId : 'state.EditAllPatients',
+					// stateId : 'state.EditPatient',
 					getStore : function(fieldName) {
 						return Ext.getStore(
-								'PatientProfile' + this.getId().substring(15))
+								'PatientProfile' + this.getId().substring(11)+'Store')
 								.getAt('0').get(fieldName);
 					},
 					getAge : function() {
 						// load current patient's store's birthdate
 						var birthDate = Ext.getStore(
-								'PatientProfile' + this.getId().substring(15))
+								'PatientProfile' + this.getId().substring(11)+'Store')
 								.getAt('0').get('birthdate').date.substring(0,
 								10);
 						// var age = Ext.getCmp('age-id');
@@ -82,7 +82,7 @@ Ext
 					},
 					getSex : function() {
 						var sexStore = Ext.getStore(
-								'PatientProfile' + this.getId().substring(15))
+								'PatientProfile' + this.getId().substring(11)+'Store')
 								.getAt('0').get('sex');
 						switch (sexStore) {
 
@@ -182,8 +182,9 @@ Ext
 						// load patientProfile store which is belonged to the
 						// current form
 						var patientProfile = Ext.getStore(
-								'PatientProfile' + this.getId().substring(15))
+								'PatientProfile' + this.getId().substring(11)+'Store')
 								.getAt('0');
+						
 						// Only load patient`s real photo if
 						// already exists in data store
 						if (!patientProfile.get('profilephoto')) {
