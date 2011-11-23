@@ -25,6 +25,11 @@ Ext
 					// requires : [ 'Ext.ux.tab.VerticalPanel' ],
 					layout : 'card',
 					// stateId : 'state.EditAllPatients',
+					getStore : function(fieldName) {
+						return Ext.getStore(
+								'PatientProfile' + this.getId().substring(15))
+								.getAt('0').get(fieldName);
+					},
 					getAge : function() {
 						// load current patient's store's birthdate
 						var birthDate = Ext.getStore(
@@ -39,7 +44,7 @@ Ext
 						// var parseddate = Date.parse(birthDate, 'Y-m-d');
 						parseBirthDate = new Date(birthDate);
 						var month = Ext.Date.format(parseBirthDate, 'm') - 1;
-						
+
 						var date = Ext.Date.format(parseBirthDate, 'd');
 						var year = Ext.Date.format(parseBirthDate, 'Y');
 						var theYear = cyear - year;
@@ -145,7 +150,7 @@ Ext
 							minValue : 100000000,
 							emptyText : 'Leave empty',
 							name : 'userid'
-						};//FIXME: patient sex is not loaded into combobox
+						};// FIXME: patient sex is not loaded into combobox
 						var card_0_sex = {
 							xtype : 'combo',
 							name : 'sex',
@@ -698,20 +703,22 @@ Ext
 								} ];
 						var patientSummaryTag = {
 							xtype : 'container',
-							html : '<div style="float:left;margin-right:10px"><img  id="pic" src="'
+							html : '<div style="background-color:#FFC;border-bottom:dotted;border-bottom:dotted; border-bottom-color:#666;border-right:dotted;border-right:dotted; border-right-color:#666; padding-bottom:10px"><div style="float:left;margin-right:10px"><img  id="pic" src="'
 									+ profilePhoto
-									+ '"  /></div><div style="margin-top:3px;margin-left:50px"><h4>'
-									+ Ext.getStore('AdminSettings').getAt('0')
-											.get('firstname')
+									+ '"  /></div><div style="font-family:Geneva;float:left;margin-top:15px;margin-left:5px;margin-right:50px;color:#66AB16; font-size: medium">'
+									+ this.getStore('firstname')
 									+ ' '
-									+ Ext.getStore('AdminSettings').getAt('0')
-											.get('middlename')
+									+ this.getStore('middlename')
 									+ ' '
-									+ Ext.getStore('AdminSettings').getAt('0')
-											.get('lastname')
-									+ '</h4><h5>'
-									+ this.getAge() + ' Y  '+this.getSex()+'</h5>' + '</div>',
-							width : 250
+									+ this.getStore('lastname')
+									+ '</div><div style="padding-top:10px;font-family: cursive;color:#929292; font-size: small">'
+									+ this.getAge()
+									+ ' Y,  '
+									+ this.getSex()
+									+ '   ,   Patient Id:'
+									+ this.getStore('userid')
+									+ '</div></div>',
+							width : 900
 						};
 						this.items = [
 								// Basic information=Card number 0

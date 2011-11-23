@@ -23,7 +23,7 @@ Ext
 
 			appFolder : 'app',
 			requires : [ 'Ext.ux.TabScrollerMenu' ],
-			controllers : [ 'MainPanel', 'NewPatientWizard', 'History',
+			controllers : [ 'MainPanel','History',
 					'Settings', 'Patient' ],
 			currTime : function() {
 				var date = new Date();

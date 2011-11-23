@@ -156,7 +156,7 @@ Ext
 																			handler : function() {
 																				Ext
 																						.create(
-																								'MA.view.newpatientwizard.Show')
+																								'MA.view.patient.New')
 																						.show();
 																			}
 																		},

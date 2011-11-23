@@ -19,7 +19,7 @@
  */
 Ext
 		.define(
-				'MA.view.newpatientwizard.Show',
+				'MA.view.patient.New',
 				{
 					extend : 'Ext.window.Window',
 					requires : [ 'Ext.form.Panel',
@@ -27,8 +27,8 @@ Ext
 							'Ext.form.field.HtmlEditor', 'Ext.form.FieldSet',
 							'Ext.form.field.Date', 'Ext.form.RadioGroup',
 							'Ext.form.field.ComboBox', 'Ext.form.field.Radio' ],
-					alias : 'widget.newpatientwizardshow',
-					id : 'newpatientwizardshow',
+					alias : 'widget.newpatient',
+					id : 'newpatient',
 					title : 'New Patient Registration Wizard',
 					layout : 'fit',
 					initComponent : function() {
@@ -99,7 +99,7 @@ Ext
 													slideDownAnimation: 'elasticIn'
 												}).show();
 												Ext.getCmp(
-														'newpatientwizardshow')
+														'newpatient')
 														.destroy();
 
 												// TODO:addautoclosefunctionality

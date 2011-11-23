@@ -19,8 +19,8 @@
 Ext.define('MA.controller.Patient', {
 	extend : 'Ext.app.Controller',
 
-	stores : [ 'Se' ],
-	views : [ 'patient.ViewAll', 'patient.EditAll', 'patient.Overview' ],
+	stores : [ 'Se','MarriageStatus', 'AddressType', 'Race' ],
+	views : [ 'patient.ViewAll', 'patient.EditAll', 'patient.Overview', 'patient.New' ],
 	/*
 	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
 	 */
@@ -64,7 +64,7 @@ Ext.define('MA.controller.Patient', {
 				text : 'New Patient',
 				cls : 'add-icon',
 				handler : function() {
-					Ext.create('MA.view.newpatientwizard.Show').show();
+					Ext.create('MA.view.patient.New').show();
 				}
 			}, {
 				text : 'New Visit',
