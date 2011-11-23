@@ -170,7 +170,7 @@ Ext
 																						.getCmp(
 																								'centertabpanel')
 																						.setActiveTab(
-																								'ViewAllPatients');
+																								'ListPatients');
 																			}
 																		} ]
 															},

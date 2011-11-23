@@ -20,7 +20,7 @@ Ext.define('MA.controller.Patient', {
 	extend : 'Ext.app.Controller',
 
 	stores : [ 'Se', 'MarriageStatus', 'AddressType', 'Race' ],
-	views : [ 'patient.ViewAll', 'patient.Edit', 'patient.Overview',
+	views : [ 'patient.List', 'patient.Edit', 'patient.Overview',
 			'patient.New' ],
 	/*
 	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
@@ -28,7 +28,7 @@ Ext.define('MA.controller.Patient', {
 	init : function() {
 		// this.counter=0;
 		this.control({
-			'ViewAllPatients' : {
+			'ListPatients' : {
 				itemdblclick : this.patientProfileStore,
 				itemcontextmenu : this.gridContextMenu,
 				activate : this.tabActive

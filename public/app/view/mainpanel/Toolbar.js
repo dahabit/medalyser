@@ -168,14 +168,14 @@ Ext
 																			xtype : 'button',
 																			text : 'View all patients',
 																			handler : function() {
-/*																				if (!Ext.getCmp('ViewAllPatients')){											Ext.getCmp('centertabpanel').add({
-																					xtype : 'ViewAllPatients'
+/*																				if (!Ext.getCmp('ListPatients')){											Ext.getCmp('centertabpanel').add({
+																					xtype : 'ListPatients'
 																				});}*/
 																				Ext
 																						.getCmp(
 																								'centertabpanel')
 																						.setActiveTab(
-																								'ViewAllPatients');
+																								'ListPatients');
 																			}
 																		} ]
 															},

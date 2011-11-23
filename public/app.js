@@ -23,8 +23,7 @@ Ext
 
 			appFolder : 'app',
 			requires : [ 'Ext.ux.TabScrollerMenu' ],
-			controllers : [ 'MainPanel','History',
-					'Settings', 'Patient' ],
+			controllers : [ 'MainPanel', 'Settings', 'Patient' ],
 			currTime : function() {
 				var date = new Date();
 				var date = Ext.Date.format(date, 'l, F j, Y h:i:s');
@@ -61,31 +60,24 @@ Ext
 												xtype : 'maintoolbarlist',
 												border : false,
 												collapsible : true,
-												id: 'region-north',
+												id : 'region-north',
 												margins : '5 0 5 0',
-												split : true/*,
-												placeholder: Ext.create('Ext.panel.Panel', {
-													  height: 5,
-													  listeners: {
-													    mouseover : {
-													      element : 'el',
-													      fn : function(){
-													        //Expand the north region on mouseover
-													        Ext.getCmp('region-north').expand();
-													      }
-													    }
-													  }
-													}),
-													
-												  preventHeader: true,
-												  listeners: {
-												    mouseleave: {
-												      element: 'el',
-												      fn: function() {
-												       Ext.getCmp('region-north').collapse();
-												      }
-												    }
-												  }*/
+												split : true
+											/*
+											 * , placeholder:
+											 * Ext.create('Ext.panel.Panel', {
+											 * height: 5, listeners: { mouseover : {
+											 * element : 'el', fn : function(){
+											 * //Expand the north region on
+											 * mouseover
+											 * Ext.getCmp('region-north').expand(); } } }
+											 * }),
+											 * 
+											 * preventHeader: true, listeners: {
+											 * mouseleave: { element: 'el', fn:
+											 * function() {
+											 * Ext.getCmp('region-north').collapse(); } } }
+											 */
 											},
 											{
 												region : 'west',
@@ -146,10 +138,10 @@ Ext
 																			}
 																		}) ],
 												items : [ {
-													xtype:'PatientsOverview'
+													xtype : 'PatientsOverview'
 												} /*
 													 * , { xtype :
-													 * 'ViewAllPatients' }
+													 * 'ListPatients' }
 													 */]
 											} ]
 								});
@@ -188,14 +180,14 @@ Ext
 								Ext
 										.onReady(function() {
 											Ext.getCmp('centertabpanel').add({
-												xtype : 'ViewAllPatients'
+												xtype : 'ListPatients'
 											});
 											Ext.getCmp('centertabpanel')
 													.doLayout();
 											Ext.getCmp('centertabpanel')
 													.setActiveTab(
-															'ViewAllPatients');
-											
+															'ListPatients');
+
 											// render righttoolbar
 											function realTime() {
 												var task = {
@@ -235,7 +227,8 @@ Ext
 																.getAt('0')
 																.get(
 																		'profilephoto');
-											};
+											}
+											;
 											Ext
 													.getCmp('rightpanelbar1')
 													.add(
@@ -274,11 +267,14 @@ Ext
 															});
 											Ext.getCmp('rightpanelbar1')
 													.doLayout();
-											   //Remove loading panel and display viewport
-										      var loading = Ext.get('x-loading-panel');
-										      var mask = Ext.get('x-loading-mask');
-										      loading.hide();
-										      mask.hide();
+											// Remove loading panel and display
+											// viewport
+											var loading = Ext
+													.get('x-loading-panel');
+											var mask = Ext
+													.get('x-loading-mask');
+											loading.hide();
+											mask.hide();
 										});
 
 							}

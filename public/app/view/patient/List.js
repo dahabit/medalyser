@@ -18,11 +18,11 @@
  */
 Ext
 		.define(
-				'MA.view.patient.ViewAll',
+				'MA.view.patient.List',
 				{
 					extend : 'Ext.grid.Panel',
-					alias : 'widget.ViewAllPatients',
-					id : 'ViewAllPatients',
+					alias : 'widget.ListPatients',
+					id : 'ListPatients',
 					// requires : [],
 					title : 'All Patients',
 					plugins : [ Ext.create('Ext.ux.grid.HeaderFilter'),
@@ -31,7 +31,7 @@ Ext
 					 * dockedItems : [ { xtype : 'toolbar', dock : 'top', items : [ {
 					 * text : 'Docked to the top' } ] } ],
 					 */
-					stateId : 'state.ViewAllPatients',
+					stateId : 'state.ListPatients',
 					getSex : function(sexStore) {
 						switch (sexStore) {
 
