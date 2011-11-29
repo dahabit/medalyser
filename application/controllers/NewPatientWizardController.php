@@ -38,7 +38,17 @@ class NewPatientWizardController extends Zend_Controller_Action
         }
         $this->_response->appendBody(Zend_Json::encode($languages));
     }
-    public function submitformAction ()
+	public function submitformAction(){
+		 $allFormElements = $this->getRequest()->getParams();
+		// unset ZF array elements
+		 unset($allFormElements['controller'],$allFormElements['action'],$allFormElements['module']);
+		$entityUtil= new Cob\Doctrine\ORM\EntityUtil($this->em);
+		$firstEntityObject = new \Entities\Patientprofile();
+		$patientEntity=$entityUtil->createEntity($firstEntityObject,$allFormElements);
+		//var_dump($patientEntity);
+		
+		}
+    public function submiitformAction ()
     {
         // Instantiate the registration form model
         $form = new Application_Form_NewPatientWizard();
@@ -53,6 +63,7 @@ class NewPatientWizardController extends Zend_Controller_Action
                 $ProfilePhotoUploader = new MFAN_Controller_Action_Helper_ProfilePhotoUploader();
                 $ProfilePhotoUploader->upload('patient', $this->userId);
                 // Does an account associated with this email already exist?
+				//TODO: If email field is empty then every time,doctor clicks on submit buttton a new patient is created with the same name
                 $primaryemail = $this->_request->getParam(
                 'primaryemail');
                 if (! empty($primaryemail)) {
@@ -126,16 +137,15 @@ class NewPatientWizardController extends Zend_Controller_Action
                         // Save the account to the database
                         $this->em->persist($account);
                         $this->em->flush();
-                        $this->em = $this->_helper->AjaxResponse(true, 
+                        $this->_helper->AjaxResponse(TRUE, 
                         'New patient successfully created');
                     } catch (Exception $e) {
                         $this->_helper->getHelper('AjaxResponse')->logFlushErrors(
                         $e->getMessage());
                     }
                 } else {
-                    $this->_helper->AjaxResponse(TRUE, 
-                    'The desired useremail has already been taken, or
-              the provided e-mail address is already associated with a registered user.');
+                    $this->_helper->AjaxResponse(FALSE, 
+                    'This patient has already been registered with the  email entered.');
                 }
             } else { //Output validation error messagaes to firebug
                 $this->_helper->getHelper('AjaxResponse')->logValidationErrors(
@@ -146,20 +156,15 @@ class NewPatientWizardController extends Zend_Controller_Action
         }
     }
     private function _generateUserId ()
-    {
+    {$userid=$this->getRequest()->getParam('userid');
         //generate random userid only if no user id is submitted
-        if (! $this->getRequest()->getParam('userid')) {
+        if (! $userid) {
             $finished = false; // we're not finished yet (we just started)
             while (! $finished) : // while not finished
                 $this->userId = mt_rand(100000000, 999999999); // random number
                 if (! $this->em->getRepository(
                 'Entities\Patientprofile')->findOneByUserid($userid)) : // if User DOES NOT exist...
                     $finished = true;
-                
-                
-                
-                
-                
                     // ...we are finished
    endif;
             endwhile

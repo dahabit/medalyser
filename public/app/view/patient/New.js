@@ -342,7 +342,8 @@ Ext
 						var card_0_primary_care_doctor = {
 							xtype : 'textfield',
 							fieldLabel : 'Primary Care Doctor',
-							name : 'primarydoctor'
+							name : 'primarydoctor',
+							disabled:true
 						};
 						var card_0 = {
 							id : 'card-0',
@@ -915,7 +916,9 @@ Ext
 												this, [ 1 ])
 									} ] // ef bbar
 							,
-							items : [ card_0, card_1, card_2, card_3 ]
+							items : [ card_0, card_1, 
+							//card_2, 
+							card_3 ]
 						} // eof form
 						]; // eof this.items
 						this.maximized = true;

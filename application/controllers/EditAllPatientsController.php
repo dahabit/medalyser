@@ -32,28 +32,34 @@ class EditAllPatientsController extends Zend_Controller_Action
         $patientIdDigitsValidator = new Zend_Validate_Digits();
         $patientIdLengthValidator = new Zend_Validate_StringLength(
         array('min' => 9, 'max' => 9));
-        if ($this->getRequest()->isPost() and $patientId and
-         $patientIdDigitsValidator->isValid($patientId) and
-         $patientIdLengthValidator->isValid($patientId)) {
-            $qb = $this->em->createQueryBuilder();
+        if (
+		$this->getRequest()->isPost() 
+	and $patientId 
+	and $patientIdDigitsValidator->isValid($patientId) 
+and $patientIdLengthValidator->isValid($patientId)
+//Check if patientId exists? 
+and $patientProfile = $this->em->getRepository('Entities\Patientprofile')->findOneByUserid($patientId)
+		 
+		 
+		 ) {
+   /*         $qb = $this->em->createQueryBuilder();
             $qb->add('select', 'a')
                 ->add('from', 'Entities\Patientprofile a')
                 ->add('where', 'a.userid=?1')
                 ->setParameter(1, $patientId);
             ;
             $query = $qb->getQuery();
-            $patientProfile = $query->getArrayResult();
-            //move array one level up
-            $store['PatientProfile'.$patientProfile[0]['userid']] = $patientProfile;
+            $patientProfile = $query->getArrayResult();*/
+						$entitySerializer=new Bgy\Doctrine\EntitySerializer($this->em);
+						
+						$patientProfile=$entitySerializer->toArray($patientProfile);
+            //Create correct arroy to be readable on Extjs Json reader
+           $store['PatientProfile'.$patientProfile['userid']] = array($patientProfile);
             //check if a patient with this id already exists
-            if ($patientProfile) {
                 $this->getResponse()->appendBody(Zend_Json::encode($store));
-            } else {
-                //no such patient exists.
+        }else{                //no such patient exists.
                 $this->_helper->AjaxResponse(FALSE, 
-                'No such patient exists.');
-            }
-        }
+                'No such patient exists.');}
     }
     public function submitformAction ()
     {}
