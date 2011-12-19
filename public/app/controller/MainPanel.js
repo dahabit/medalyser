@@ -24,7 +24,7 @@ Ext.define('MA.controller.MainPanel', {
 
 	models : [ 'MainToolbar' ],
 
-	views : [ 'mainpanel.Toolbar', 'mainpanel.Tree' ],
+	views : [ 'mainpanel.Toolbar' ],
 	init : function() {
 		this.control({
 			'mainpaneltree' : {

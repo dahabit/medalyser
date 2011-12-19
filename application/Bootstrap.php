@@ -17,9 +17,8 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
-{
-    /*
+class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
+	/*
 	 * Access Configuration Parameters Globally Using Zend_Registry
 	 *Desc:With the configuration object now residing in a registry variable, you'll be able to retrieve it within
 	 *any controller action simply by calling the Zend_Registry component's static  get method. This
@@ -28,32 +27,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 *$this->view->supportEmail = Zend_Registry::get('config')->company->email->support;
 	 */
-    protected function _initConfig ()
-    {
-        $config = new Zend_Config($this->getOptions());
-        Zend_Registry::set('config', $config);
-        $globalSettings = new Zend_Config_Ini(
-        APPLICATION_PATH . '/configs/globalsettings.ini', 'staging');
-        Zend_Registry::set('globalsettings', $globalSettings);
-    }
-    protected function _initDoctrine ()
-    {
-        require_once ('Doctrine/Common/ClassLoader.php');
-        $autoloader = Zend_Loader_Autoloader::getInstance();
-        $classLoader = new \Doctrine\Common\ClassLoader('Entities', 
-        realpath(
-        Zend_Registry::get('config')->resources->entityManager->connection->entities), 
-        'loadClass');
-        $autoloader->pushAutoloader(array($classLoader, 'loadClass'), 
-        'Entities');
-        $classLoader = new \Doctrine\Common\ClassLoader('Repositories', 
-        realpath(
-        Zend_Registry::get('config')->resources->entityManager->connection->entities), 
-        'loadClass');
-        $autoloader->pushAutoloader(array($classLoader, 'loadClass'), 
-        'Repositories');
-    }
-    /*	Firebug Console.Log for PHP using Zend Framework
+	protected function _initConfig() {
+		$config = new Zend_Config ( $this->getOptions () );
+		Zend_Registry::set ( 'config', $config );
+		$globalSettings = new Zend_Config_Ini ( APPLICATION_PATH . '/configs/globalsettings.ini', 'staging' );
+		Zend_Registry::set ( 'globalsettings', $globalSettings );
+	}
+	protected function _initDoctrine() {
+		require_once ('Doctrine/Common/ClassLoader.php');
+		$autoloader = Zend_Loader_Autoloader::getInstance ();
+		$classLoader = new \Doctrine\Common\ClassLoader ( 'Entities', realpath ( Zend_Registry::get ( 'config' )->resources->entityManager->connection->entities ), 'loadClass' );
+		$autoloader->pushAutoloader ( array ($classLoader, 'loadClass' ), 'Entities' );
+		$classLoader = new \Doctrine\Common\ClassLoader ( 'Repositories', realpath ( Zend_Registry::get ( 'config' )->resources->entityManager->connection->entities ), 'loadClass' );
+		$autoloader->pushAutoloader ( array ($classLoader, 'loadClass' ), 'Repositories' );
+	}
+	/*	Firebug Console.Log for PHP using Zend Framework
 	Source: http://www.websitefactors.co.uk/zend-framework/2011/05/firebug-console-log-for-php-using-zend-framework/
 	Usage:
 	Zend_Registry::get('logger')->emerg('Emergency firebug message');
@@ -65,47 +53,40 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     Zend_Registry::get('logger')->info('Info firebug message');
     Zend_Registry::get('logger')->debug('Debug firebug message');
     */
-    protected function _initLogging ()
-    {
-        $this->bootstrap('frontController');
-        $logger = new Zend_Log();
-        $env = $this->getEnvironment();
-        $writer = 'production' == $env ? new Zend_Log_Writer_Stream(
-        APPLICATION_PATH . "/data/logs/application.log") : new Zend_Log_Writer_Firebug();
-        $logger->addWriter($writer);
-        if ('production' == $env) {
-            $writer->setEnabled(false);
-        }
-        Zend_Registry::set('logger', $logger);
-    }
-    /**
-     * Server-side translation boostrap method for MA.
-     */
-    protected function _initTranslate ()
-    {
-        $defaultLocale = Zend_Registry::get('globalsettings')->site->language;
-        //In the case that no locale can be detected, automatically the locale de will be used. Otherwise, the detected locale will be used.
-        Zend_Locale::setDefault($defaultLocale);
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $userLocale = Zend_Auth::getInstance()->getIdentity()->language;
-        }
-        if (isset($userLocale)) {
-            $locale = new Zend_Locale($userLocale);
-        } else {
-            $locale = new Zend_Locale($defaultLocale);
-        }
-        /**
-         * Set up and load the translations (all of them!)
-         * resources.translate.options.disableNotices = true
-         * resources.translate.options.logUntranslated = true
-         */
-        $translate = new Zend_Translate('gettext', 
-        APPLICATION_PATH . DIRECTORY_SEPARATOR . 'languages', $locale, 
-        array('scan' => Zend_Translate::LOCALE_FILENAME, 
-        'disableNotices' => Zend_Registry::get('config')->resources->translate->options->disableNotices, 
-        'logUntranslated' => Zend_Registry::get('config')->resources->translate->options->logUntranslated));
-        Zend_Registry::set('Zend_Locale', $locale);
-        Zend_Registry::set('Zend_Translate', $translate);
-    }
+	protected function _initLogging() {
+		$this->bootstrap ( 'frontController' );
+		$logger = new Zend_Log ();
+		$env = $this->getEnvironment ();
+		$writer = 'production' == $env ? new Zend_Log_Writer_Stream ( APPLICATION_PATH . "/data/logs/application.log" ) : new Zend_Log_Writer_Firebug ();
+		$logger->addWriter ( $writer );
+		if ('production' == $env) {
+			$writer->setEnabled ( false );
+		}
+		Zend_Registry::set ( 'logger', $logger );
+	}
+	/**
+	 * Server-side translation boostrap method for MA.
+	 */
+	protected function _initTranslate() {
+		$defaultLocale = Zend_Registry::get ( 'globalsettings' )->site->language;
+		//In the case that no locale can be detected, automatically the locale de will be used. Otherwise, the detected locale will be used.
+		Zend_Locale::setDefault ( $defaultLocale );
+		if (Zend_Auth::getInstance ()->hasIdentity ()) {
+			$userLocale = Zend_Auth::getInstance ()->getIdentity ()->language;
+		}
+		if (isset ( $userLocale )) {
+			$locale = new Zend_Locale ( $userLocale );
+		} else {
+			$locale = new Zend_Locale ( $defaultLocale );
+		}
+		/**
+		 * Set up and load the translations (all of them!)
+		 * resources.translate.options.disableNotices = true
+		 * resources.translate.options.logUntranslated = true
+		 */
+		$translate = new Zend_Translate ( 'gettext', APPLICATION_PATH . DIRECTORY_SEPARATOR . 'languages', $locale, array ('scan' => Zend_Translate::LOCALE_FILENAME, 'disableNotices' => Zend_Registry::get ( 'config' )->resources->translate->options->disableNotices, 'logUntranslated' => Zend_Registry::get ( 'config' )->resources->translate->options->logUntranslated ) );
+		Zend_Registry::set ( 'Zend_Locale', $locale );
+		Zend_Registry::set ( 'Zend_Translate', $translate );
+	}
 }
 

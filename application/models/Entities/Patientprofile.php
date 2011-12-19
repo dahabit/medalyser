@@ -74,31 +74,24 @@ class Patientprofile
     private $registered;
     /** @Column(type="datetime", nullable=true) */
     private $updated;
-    /**
-     * @ManyToMany(targetEntity="Patientaddress", inversedBy="patients")
-     * @JoinTable(name="ma_patients_addresses")
-     */
-    private $addresses;
     /** @Column(type="string", length=20, nullable=true) */
     private $race;
     /** @Column(type="string", length=20, nullable=true) */
     private $language;
-    // Schools for less than 18 years students
     /**
-     * @ManyToMany(targetEntity="Patientaddress", inversedBy="patients")
-     * @JoinTable(name="ma_patients_schools")
+     * @ManyToMany(targetEntity="Patientaddress", inversedBy="patients", cascade={"all"})
+     * @JoinTable(name="ma_patients_addresses")
      */
-    private $schools;
+    private $Patientaddress;
     /**
-     * @ManyToMany(targetEntity="Patientinsurance", inversedBy="patients")
-     * @JoinTable(name="ma_patients_insurances")
+     * @OneToMany(targetEntity="Patientbilling", mappedBy="billings")
      */
-    private $insurances;
+    private $Patientbilling;
     public function __construct ()
     {
-        $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Patientaddress = new ArrayCollection();
         $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->insurances = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->billings = new \Doctrine\Common\Collections\ArrayCollection();
     }
     public function __set ($key, $val)
     {
@@ -112,26 +105,12 @@ class Patientprofile
             return $this->$name;
         }
     }
-    public function getAddresses ()
+    public function getPatientaddress ()
     {
-        return $this->addresses;
-    }
-    public function getInsurances ()
+        return $this->Patientaddress;
+    } 
+    public function getPatientbilling ()
     {
-        return $this->insurances;
-    }
-    /**
-     * Set all submitted form values at the same time.
-     * @param field_type $nonNestedFormElements
-     */
-    public function setNonNestedFormElements ($nonNestedFormElements)
-    {
-        foreach ($nonNestedFormElements as $name => $value1) {
-            if (! is_array($value1)) {
-                if (property_exists($this, $name)) {
-                    $this->$name = $value1;
-                }
-            }
-        }
+        return $this->Patientbilling;
     }
 }

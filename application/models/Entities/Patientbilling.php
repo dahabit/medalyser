@@ -20,10 +20,10 @@
 namespace Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 /** 
- * @Entity (repositoryClass="Repositories\PatientaddressRepository")
- * @Table(name="ma_patient_address") 
+ * @Entity (repositoryClass="Repositories\PatientbillingRepository") 
+ * @Table(name="ma_patient_billing") 
  */
-class Patientaddress
+class Patientbilling
 {
     /**
      * @Id @Column(type="integer")
@@ -31,26 +31,42 @@ class Patientaddress
      */
     private $id;
     /**
-     * @ManyToMany(targetEntity="Patientprofile", mappedBy="Patientaddress")
+     * @ManyToOne(targetEntity="Patientprofile", inversedBy="billings")
+     * @JoinColumn(name="patientprofile_id", referencedColumnName="id")
      */
     private $patients;
+    /** @Column(type="integer", length=30) */
+    private $insuredcode;
+    /** @Column(type="smallint", length=1) */
+    private $enabled;
     /** @Column(type="integer", length=1) */
-    private $addresstype;
-    /** @Column(type="string", length=255, nullable=true) */
-    private $address1;
-    /** @Column(type="string", length=255, nullable=true) */
-    private $address2;
-    /** @Column(type="string", length=20, nullable=true) */
-    private $city;
-    /** @Column(type="string", length=20, nullable=true) */
-    private $state;
-    /** @Column(type="string", length=2, nullable=true) */
-    private $country;
-    /** @Column(type="integer", length=10, nullable=true) */
-    private $zip;
+    private $insuredrel;
+    /** @Column(type="string", length=30) */
+    private $programname;
+    /** @Column(type="integer", length=30) */
+    private $idno;
+    /** @Column(type="integer", length=30) */
+    private $groupno;
+    /** @Column(type="integer", length=1) */
+    private $insurancetype;
+    /** @Column(type="integer", length=1) */
+    private $contracttype;
+    //(in an insurance policy) A specified amount of money that the insured must pay before an insurance company will pay a claim 
+    //The annual deductible is the fixed dollar amount you pay each calendar year before certain services are covered.
+    /** @Column(type="integer", length=30) */
+    private $annualdedtuctible;
+    // private $deductiblepaid;
+    /** @Column(type="date", nullable=true) */
+    private $effectivedate;
+    /** @Column(type="date", nullable=true) */
+    private $expiredate;
+    /** @Column(type="integer", length=10) */
+    private $copay;
     public function __construct ()
     {
-        $this->patients = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->schools = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->insurancecompanies = new \Doctrine\Common\Collections\ArrayCollection();
     }
     public function __set ($key, $val)
     {
@@ -64,5 +80,4 @@ class Patientaddress
             return $this->$name;
         }
     }
-
 }

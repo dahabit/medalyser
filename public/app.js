@@ -81,9 +81,9 @@ Ext
 											},
 											{
 												region : 'west',
-												xtype : 'mainpaneltree',
+												id:'lefttreepanel',
 												collapsible : true,
-												title : 'Navigation',
+												title : 'Patient',
 												width : 150,
 												collapsed : true,
 												stateId : 'stateWest',
@@ -139,10 +139,7 @@ Ext
 																		}) ],
 												items : [ {
 													xtype : 'PatientsOverview'
-												} /*
-													 * , { xtype :
-													 * 'ListPatients' }
-													 */]
+												} ]
 											} ]
 								});
 				Ext.Ajax
@@ -167,7 +164,17 @@ Ext
 										extend : 'Ext.data.Store',
 										fields : storeFields,
 										storeId : key1,
-										data : json[key1]
+										id : 'MA.store.' + key1,
+										data : json[key1],
+								    proxy: {
+								        type: 'ajax',
+								        url : './account/getadminstores',
+								        reader: {
+								            type: 'json',
+								            root: key1
+								        }
+								    },
+								    autoLoad: true
 									});
 									Ext.create('MA.store.' + key1);
 									// adminStores.push(Ext.create('MA.store.' +

@@ -26,7 +26,8 @@ Ext
 							'Ext.layout.container.Column',
 							'Ext.form.field.HtmlEditor', 'Ext.form.FieldSet',
 							'Ext.form.field.Date', 'Ext.form.RadioGroup',
-							'Ext.form.field.ComboBox', 'Ext.form.field.Radio' ],
+							'Ext.form.field.ComboBox', 'Ext.form.field.Radio',
+							'app.view.microviews.container.PatientBilling' ],
 					alias : 'widget.newpatient',
 					id : 'newpatient',
 					title : 'New Patient Registration Wizard',
@@ -84,28 +85,32 @@ Ext
 											// waitMsg : 'Saving data',
 											success : function(form, action) {
 												// Ext.getCmp('card-wizard-panel').el.unmask();
-												Ext.create('widget.uxNotification', {
-													corner: 'br',
-													manager: 'demo2panel1',
-													cls: 'ux-notification-light',
-													iconCls: 'ux-notification-icon-information',
-													closable: false,
-													title: '',
-													html: 'Patient data saved to the database successfully.',
-													slideInDelay: 800,
-													slideDownDelay: 1500,
-													autoDestroyDelay: 4000,
-													slideInAnimation: 'elasticIn',
-													slideDownAnimation: 'elasticIn'
-												}).show();
-												Ext.getCmp(
-														'newpatient')
+												Ext
+														.create(
+																'widget.uxNotification',
+																{
+																	corner : 'br',
+																	manager : 'demo2panel1',
+																	cls : 'ux-notification-light',
+																	iconCls : 'ux-notification-icon-information',
+																	closable : false,
+																	title : '',
+																	html : 'Patient data saved to the database successfully.',
+																	slideInDelay : 800,
+																	slideDownDelay : 1500,
+																	autoDestroyDelay : 4000,
+																	slideInAnimation : 'elasticIn',
+																	slideDownAnimation : 'elasticIn'
+																}).show();
+// Reload Patient store to reflect changes to the store
+												Ext.getStore('Patients').removeAll();
+												Ext.getStore('Patients').load({
+												    scope   : this,
+												    callback: function(records, operation, success) {
+												    }});
+												Ext.getCmp('newpatient')
 														.destroy();
 
-												// TODO:addautoclosefunctionality
-												// so when success,close
-												// the window and
-												// destroyit.//Ext.getCmp('MA.view.newpatientwizard.Show').destroy();
 											},
 											failure : function(form, action) {
 												// Ext.getCmp('card-wizard-panel').el.unmask();
@@ -181,686 +186,21 @@ Ext
 						 * =======================
 						 */
 						// ////////////////CARD0////////////////
-						var card_0_userpass_username = {
-							xtype : 'textfield',
-							fieldLabel : 'User name',
-							name : 'patientusername'
-						};
-						var card_0_userpass_pass = {
-							xtype : 'textfield',
-							fieldLabel : 'Password',
-							inputType : 'password',
-							id : 'password',
-							name : 'patientpassword',
-							minLength : 6,
-							maxLength : 32,
-							minLengthText : 'Password must be at least 6 characters long.',
-							maxLengthText : 'Maximum Password length is 36 characters.'
-						};
-						var card_0_userpass_userid = {
-							xtype : 'numberfield',
-							fieldLabel : 'Patient Code',
-							// Remove spinner buttons, and arrow key and mouse
-							// wheel listeners
-							hideTrigger : true,
-							keyNavEnabled : false,
-							mouseWheelEnabled : false,
-							allowBlank : true,
-							maxValue : 999999999,
-							minValue : 100000000,
-							emptyText : 'Leave empty',
-							name : 'userid'
-						};
-						var card_0_userpass_name = {
-							xtype : 'fieldcontainer',
-							layout : {
-								type : 'hbox'
-							/*
-							 * ,defaultMargins : { top : 0, right : 5, bottom :
-							 * 0, left : 0 }
-							 */
-							},
-							fieldLabel : 'Name',
-							items : [ {
-								xtype : 'textfield',
-								flex : 1,
-								name : 'firstname',
-								emptyText : 'First',
-								msgTarget : 'side',
-								allowBlank : false
-							}, {
-								xtype : 'textfield',
-								flex : .4,
-								name : 'middlename',
-								emptyText : 'Middle'
-							}, {
-								xtype : 'textfield',
-								flex : 1,
-								name : 'lastname',
-								msgTarget : 'side',
-								emptyText : 'Last',
-								allowBlank : false
-							} ]
-						};
-						var card_0_userpass = {
-							xtype : 'fieldset',
-							title : 'Patient Login Data',
-							defaults : {
-								allowBlank : false
-							},
-							items : [ card_0_userpass_name, {
-								xtype : 'container',
-								layout : {
-									align : 'spaced',
-									type : 'hbox'
-								},
-								items : [ {
-									xtype : 'container',
-									flex : 1,
-									items : [card_0_userpass_userid]
-								}, {
-									xtype : 'container',
-									flex : 1,
-									items : [  ]
-								} ]
-							}
-
-							]
-						};
-						var card_0_sex = {
-							xtype : 'radiogroup',
-							fieldLabel : "Sex",
-							id : 'sex',
-							items : [ {
-								boxLabel : 'Female',
-								name : 'sex',
-								inputValue : '0'
-							}, {
-								boxLabel : 'Male',
-								name : 'sex',
-								inputValue : '1'
-							}, {
-								boxLabel : 'Ambigous',
-								name : 'sex',
-								inputValue : '2'
-							} ]
-						};
-						var card_0_birthdate = {
-							xtype : 'datefield',
-							fieldLabel : 'Birthdate',
-							name : 'birthdate',
-							maxValue : new Date(), // limited to the current
-							// date or prior
-							format : 'Y-m-d'
-
-						};
-						var card_0_photo = {
-							xtype : 'textfield',
-							fieldLabel : 'profile photo',
-							id : 'newPic',
-							name : 'profilephoto',
-							inputType : 'file'
-						};
-						var card_0_socialsecnumber = {
-							xtype : 'textfield',
-							fieldLabel : 'Social security #',
-							name : 'socialsecurity'
-						};
-						var card_0_marital_status = {
-							xtype : 'combo',
-							name : 'maritalstatus',
-							fieldLabel : 'Marital Status',
-							store : 'MarriageStatus',
-							queryMode : 'local',
-							displayField : 'name',
-							valueField : 'id',
-							typeAhead : true,
-							forceSelection : true
-						};
-						var card_0_race = {
-							xtype : 'combo',
-							name : 'race',
-							fieldLabel : 'Race',
-							store : 'Race',
-							queryMode : 'local',
-							displayField : 'name',
-							valueField : 'id',
-							typeAhead : true,
-							forceSelection : true
-						};
-						var card_0_language = {
-							xtype : 'combo',
-							name : 'language',
-							fieldLabel : 'Language',
-							store : Ext.create('MA.store.Languages'),
-							queryMode : 'local',
-							displayField : 'name',
-							valueField : 'id',
-							typeAhead : true,
-							forceSelection : true
-						};
-						var card_0_primary_care_doctor = {
-							xtype : 'textfield',
-							fieldLabel : 'Primary Care Doctor',
-							name : 'primarydoctor',
-							disabled:true
-						};
 						var card_0 = {
+							xtype : 'primarypatientinformation',
 							id : 'card-0',
 							html : '<h1>Welcome to the New Patient Wizard!</h1><p>Step 1 of 4</p><p>Please click the "Next" button to continue...</p>',
-							title : 'Step 1',
-							layout : 'auto',
-							items : [
-									{
-										xtype : 'fieldset',
-										title : 'Primary Information',
-										items : [ {
-											xtype : 'container',
-											layout : 'hbox',
-											items : [
-													{
-														xtype : 'container',
-														flex : 1,
-														items : [
-																card_0_birthdate,
-																card_0_sex,
-																card_0_marital_status,
-																card_0_language,
-																card_0_race ]
-													},
-													{
-														xtype : 'container',
-														flex : 1,
-														items : [
-																card_0_photo,
-																card_0_socialsecnumber,
-																card_0_primary_care_doctor ]
-													} ]
-										} ]
-									}, {
-										border : false,
-										items : [ card_0_userpass ]
-									} ]
+							title : 'Step 1'
 						};// eof CARD 0
 
 						// ////////////////CARD1////////////////
 
-						function addressCounter(incr) {
-							if (!this.no) {
-								this.no = 0;
-							} else {
-								this.no = this.no + 1;
-							}
-							;
-						}
-						;
-						var counter = new addressCounter();
-						console.log(counter.no);
-						var card_1_address_address1 = {
-							fieldLabel : 'Address 1',
-							name : 'address1',
-							id : 'address1' + counter.no
-						};
-
-						var card_1_address_address2 = {
-							fieldLabel : 'Address 2',
-							name : 'address2',
-							id : 'address2' + counter.no
-						};
-
-						var card_1_address_city = {
-							fieldLabel : 'City',
-							name : 'city',
-							id : 'city' + counter.no
-						// TODO:add default city,state and country
-						// to
-						// user settings form and then load default
-						// value here.
-						// ,value: 'Ext JS'
-						};
-						var card_1_address_state = {
-							fieldLabel : 'State',
-							name : 'state',
-							id : 'state' + counter.no
-						};
-
-						var removeButton = {
-							xtype : 'button',
-							text : 'Remove address',
-							handler : function() {
-							}
-						};
-
-						var card_1_address_country = {
-							xtype : 'combo',
-							store : Ext.create('MA.store.Countries'),
-							displayField : 'id',
-							valueField : 'id',
-							forceSelection : true,
-							fieldLabel : 'Country',
-							typeAhead : true,
-							queryMode : 'local',
-							id : 'country' + counter.no
-						}; // eof countries;
-
-						var card_1_address = {
-							xtype : 'tabpanel',
-							plain : true,
-							activeTab : 0,
-							height : 300,
-							/*
-							 * By turning off deferred rendering we are
-							 * guaranteeing that the form fields within tabs
-							 * that are not activated will still be rendered.
-							 * This is often important when creating
-							 * multi-tabbed forms.
-							 */
-							deferredRender : false,
-							defaults : {
-								bodyStyle : 'padding:10px'
-							},
-							items : [
-									{
-										title : 'Addresses',
-										id : 'patientaddress',
-										autoScroll : true,
-										defaultType : 'textfield',
-										labelAlign : 'right',
-										items : [ {
-											xtype : 'fieldcontainer',
-											// combineErrors : true,
-											msgTarget : 'side',
-											items : [
-													{
-														xtype : 'button',
-														text : 'Add address ',
-														id : 'addaddress',
-														handler : function() {
-															counter.no = counter.no + 1;
-															console
-																	.log(counter.no);
-															Ext
-																	.getCmp(
-																			'patientaddress')
-																	.add(
-																			[
-																					{
-																						xtype : 'combo',
-																						store : 'AddressType',
-																						displayField : 'name',
-																						valueField : 'id',
-																						fieldLabel : 'Address Type',
-																						id : 'addresstype'
-																								+ counter.no,
-																						name : "Patientaddress[addresstype][]",
-																						value : '0',
-																						forceSelection : true,
-																						typeAhead : true,
-																						queryMode : 'local'
-																					},
-																					{
-																						fieldLabel : 'zip',
-																						width : 160,
-																						maxLength : 10,
-																						enforceMaxLength : true,
-																						maskRe : /[\d\-]/,
-																						regex : /^\d{5}(\-\d{4})?$/,
-																						regexText : 'Must be in the format xxxxx or xxxxx-xxxx',
-																						name : "Patientaddress[zip][]",
-																						id : 'zip'
-																								+ counter.no
-																					},
-																					{
-																						fieldLabel : 'Address 1',
-																						name : "Patientaddress[address1][]",
-																						id : 'address1'
-																								+ counter.no
-																					},
-																					{
-																						fieldLabel : 'Address 2',
-																						name : "Patientaddress[address2][]",
-																						id : 'address2'
-																								+ counter.no
-																					},
-																					{
-																						fieldLabel : 'City',
-																						name : "Patientaddress[city][]",
-																						id : 'city'
-																								+ counter.no
-																					// TODO:add
-																					// default
-																					// city,state
-																					// and
-																					// country
-																					// to
-																					// user
-																					// settings
-																					// form
-																					// and
-																					// then
-																					// load
-																					// default
-																					// value
-																					// here.
-																					// ,value:
-																					// 'Ext
-																					// JS'
-																					},
-																					{
-																						fieldLabel : 'State',
-																						name : "Patientaddress[state][]",
-																						id : 'state'
-																								+ counter.no
-																					},
-																					{
-																						xtype : 'combo',
-																						store : Ext
-																								.create('MA.store.Countries'),
-																						displayField : 'name',
-																						valueField : 'id',
-																						forceSelection : true,
-																						fieldLabel : 'Country',
-																						typeAhead : true,
-																						queryMode : 'local',
-																						name : "Patientaddress[country][]",
-																						id : 'country'
-																								+ counter.no
-																					} // eof
-																					// countries;
-																					,
-																					Ext
-																							.getCmp('addaddress'),
-																					{
-																						xtype : 'button',
-																						text : 'Remove address',
-																						id : 'removeaddress'
-																								+ counter.no,
-																						handler : function(
-																								thisButton,
-																								eventObject) {
-
-																							activeRemoveButtonId = thisButton
-																									.getId()
-																									.split(
-																											'removeaddress')[1];
-
-																							console
-																									.log('activeRemoveButtonID:'
-																											+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'address1'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'address2'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'city'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'state'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'country'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'removeaddress'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'addresstype'
-																													+ activeRemoveButtonId);
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.remove(
-																											'zip'
-																													+ activeRemoveButtonId);
-
-																							Ext
-																									.getCmp(
-																											'patientaddress')
-																									.doLayout();
-																						}
-																					} ]);
-															Ext
-																	.getCmp(
-																			'patientaddress')
-																	.doLayout();
-
-														}// eof function
-													}, // eof Add button
-											]
-										// eof items
-										} // eof fieldcontainer
-
-										]
-									} // eof address
-									,
-									{
-											xtype : 'fieldset',
-											 title : 'Contact info',
-											items : [ {
-												xtype : 'container',
-												layout : 'hbox',
-												Align:'top',
-												items : [
-														{
-															xtype : 'container',
-															flex : .3,
-															defaults : {
-																width : 230
-															},
-															defaultType : 'textfield',
-															items : [
-																	{
-																		fieldLabel : 'Home',
-																		name : 'homephone',
-																		emptyText : 'xxx-xxx-xxxx',
-																		maskRe : /[\d\-]/
-																	},
-																	{
-																		fieldLabel : 'Business',
-																		name : 'businessphone',
-																		emptyText : 'xxx-xxx-xxxx',
-																		maskRe : /[\d\-]/
-																	},
-																	{
-																		fieldLabel : 'Mobile',
-																		name : 'mobilephone',
-																		emptyText : 'xxx-xxx-xxxx',
-																		maskRe : /[\d\-]/
-																	},
-																	{
-																		fieldLabel : 'Fax',
-																		name : 'faxphone',
-																		emptyText : 'xxx-xxx-xxxx',
-																		maskRe : /[\d\-]/
-																	},{
-																		fieldLabel : 'Primary Email',
-																		vtype : 'email',
-																		name : 'primaryemail',
-																		allowBlank : true
-																	} ]
-														},
-														{
-															xtype : 'container',
-															flex : 1,
-															items : [
-																		{
-																xtype : 'radio',
-																checked : true,
-																boxLabel : 'Preferred',
-																name : 'prefcontactmethod',
-																inputValue : '0',
-												                style: {
-												                    width: '95%',
-												                    marginBottom: '10px'
-												                }
-
-															},
-															{
-																xtype : 'radio',
-																boxLabel : 'Preferred',
-																name : 'prefcontactmethod',
-																inputValue : '1',
-												                style: {
-												                    width: '95%',
-												                    marginBottom: '9px'
-												                }
-
-															},
-															{
-																xtype : 'radio',
-																boxLabel : 'Preferred',
-																name : 'prefcontactmethod',
-																inputValue : '2',
-												                style: {
-												                    width: '95%',
-												                    marginBottom: '9px'
-												                }
-
-															},
-															{
-																xtype : 'radio',
-																boxLabel : 'Preferred',
-																name : 'prefcontactmethod',
-																inputValue : '3',
-												                style: {
-												                    width: '95%',
-												                    marginBottom: '9px'
-												                }
-															},
-															{
-																xtype : 'radio',
-																boxLabel : 'Preferred',
-																name : 'prefcontactmethod',
-																inputValue : '4'
-															} ]
-														} ]
-											} ]
-									} ]
-						};
+					
 						// ////////////////CARD2////////////////
-						var card_2_billing = {
-							xtype : 'container',
-							height : 290,
-							layout : {
-								align : 'stretch',
-								type : 'hbox'
-							},
-							items : [ {
-								xtype : 'fieldset',
-								flex : 1,
-								items : [ {
-									xtype : 'combo',
-									name : 'insurancecompany',
-									fieldLabel : 'Insurance Company',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Insured Code',
-									name : 'insuredcode'
-								}, {
-									xtype : 'combo',
-									name : 'insuredrel',
-									fieldLabel : 'Insured relationship',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Program Name',
-									name : 'programname'
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Id Number',
-									name : 'idno'
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Group Number',
-									name : 'groupno'
-								}, {
-									xtype : 'combo',
-									name : 'insurancetype',
-									fieldLabel : 'Insurance Type',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								}, {
-									xtype : 'combo',
-									name : 'contracttype',
-									fieldLabel : 'Contract type',
-									store : 'MarriageStatus',
-									queryMode : 'local',
-									displayField : 'name',
-									valueField : 'id',
-									typeAhead : true,
-									forceSelection : true
-								} ]
-							}, {
-								xtype : 'fieldset',
-								flex : 1,
-								items : [ {
-									xtype : 'textfield',
-									fieldLabel : 'Annual Deductible',
-									name : 'annualdedtuctible'
-								}, {
-									xtype : 'datefield',
-									fieldLabel : 'Effective Date',
-									name : 'effectivedate',
-									maxValue : new Date(), // limited to the
-									// current
-									// date or prior
-									format : 'Y-m-d'
-
-								}, {
-									xtype : 'datefield',
-									fieldLabel : 'Expire Date',
-									name : 'expiredate',
-									maxValue : new Date(), // limited to the
-									// current
-									// date or prior
-									format : 'Y-m-d'
-
-								}, {
-									xtype : 'textfield',
-									fieldLabel : 'Co-pay per visit',
-									name : 'copay'
-								} ]
-							} ]
+						var card_1_billing = {
+							xtype : 'patientbilling'
 						};
-						var card_2_billing0 = {
+						var card_1_billing0 = {
 							layout : 'fit',
 							items : [ {
 								xtype : 'fieldset',
@@ -873,14 +213,14 @@ Ext
 						// ////////////////CARD3////////////////
 						var card_1 = {
 							id : 'card-1',
-							html : '<p>Step 2 of 4</p><p>Almost there.  Please click the "Next" button to continue...</p>',
-							items : [ card_1_address ]
+							html : '<p>Step 3 of 4</p><p> Enter patient\'s primary insurance and billing data and then click  "Next" to continue...</p>',
+							items : [ card_1_billing ]
 						};
 
 						var card_2 = {
 							id : 'card-2',
-							html : '<p>Step 3 of 4</p><p> Please enter patient insurance data and the click the "Next" button to continue...</p>',
-							items : [ card_2_billing ]
+							html : '<p>Step 3 of 4</p><p> click  "Next" to continue...</p>',
+							items : []
 						};
 
 						var card_3 = {
@@ -916,9 +256,7 @@ Ext
 												this, [ 1 ])
 									} ] // ef bbar
 							,
-							items : [ card_0, card_1, 
-							//card_2, 
-							card_3 ]
+							items : [ card_0, card_1, card_2, card_3 ]
 						} // eof form
 						]; // eof this.items
 						this.maximized = true;

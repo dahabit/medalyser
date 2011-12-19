@@ -19,9 +19,9 @@
 Ext.define('MA.controller.Patient', {
 	extend : 'Ext.app.Controller',
 
-	stores : [ 'Se', 'MarriageStatus', 'AddressType', 'Race' ],
+	stores : [ 'Se', 'MarriageStatus', 'AddressType', 'Race','Tree','Insurancerel' ],
 	views : [ 'patient.List', 'patient.Edit', 'patient.Overview',
-			'patient.New' ],
+			'patient.New','patient.Tree' ],
 	/*
 	 * refs: [ { ref: 'editform', selector: 'EditAllPatients > form' } ],
 	 */
@@ -38,7 +38,7 @@ Ext.define('MA.controller.Patient', {
 		this.control({
 			'EditPatient' : {
 				destroy : this.tabDestroy,
-				activate : this.tabActive
+				activate : this.editActive
 			}
 		});
 		this.control({
@@ -61,23 +61,23 @@ Ext.define('MA.controller.Patient', {
 				handler : function() {
 					this.patientProfileStore(view, record);
 				}
-			}, {
+			}/*, {
 				text : 'New Patient',
 				cls : 'add-icon',
 				handler : function() {
 					Ext.create('MA.view.patient.New').show();
 				}
-			}, {
+			}*/, {
 				text : 'New Visit',
 				cls : 'new-icon'
-			} ]
+			}, {
+				text : 'Remove Patient',
+				cls : 'delete-icon'
+			}  ]
 		}).showAt(e.getXY());
 	},
 	editUser : function(grid, record) {
 		this.rec = record;
-		// this.counter=this.counter+1;
-		// console.log('Double clicked on ' +
-		// record.get('firstname'));
 		// only create a new tab if patient is not created
 		// previously
 		if (!Ext.getCmp('EditPatient' + record.get('userid'))) {
@@ -90,6 +90,8 @@ Ext.define('MA.controller.Patient', {
 				},
 				closable : true
 			});
+			Ext.getCmp('lefttreepanel').add({xtype:'EditPatientTree',id:'EditPatientTree'+record.get('userid')});
+			//Ext.getCmp('lefttreepanel').doLayout();
 		}
 		;
 		// Ext.getCmp('centertabpanel').doLayout();
@@ -144,7 +146,7 @@ Ext.define('MA.controller.Patient', {
 					}
 					this.editUser(grid, record);
 				}
-			})
+			});
 		}else{this.editUser(grid, record);}
 	},
 	tabDestroy : function() {
@@ -160,7 +162,15 @@ Ext.define('MA.controller.Patient', {
 
 	},
 	tabActive : function() {
-
+//disable left panel if not editing a patient
+		var tree=Ext.getCmp('mainpaneltree');
+		if (tree){tree.collapse();}
+	},
+	editActive: function(){
+		
+		var tree=Ext.getCmp('mainpaneltree');
+		tree.store.load(Ext.getStore('mainpaneltree'));
+		tree.expand();
 	}
 
 /*

@@ -17,51 +17,55 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
-class EditAllPatientsController extends Zend_Controller_Action
-{
-    public function init ()
-    {
-        $this->em = $this->_helper->EntityManager();
-        // Make sure the user is logged-in
-        $this->_helper->LoginRequired();
-        $this->_helper->viewRenderer->setNoRender(true);
-    }
-    public function getpatientprofilestoreAction ()
-    { //validate posted form
-        $patientId = $this->_request->getParam('userid');
-        $patientIdDigitsValidator = new Zend_Validate_Digits();
-        $patientIdLengthValidator = new Zend_Validate_StringLength(
-        array('min' => 9, 'max' => 9));
-        if (
-		$this->getRequest()->isPost() 
-	and $patientId 
-	and $patientIdDigitsValidator->isValid($patientId) 
-and $patientIdLengthValidator->isValid($patientId)
-//Check if patientId exists? 
-and $patientProfile = $this->em->getRepository('Entities\Patientprofile')->findOneByUserid($patientId)
-		 
-		 
-		 ) {
-   /*         $qb = $this->em->createQueryBuilder();
-            $qb->add('select', 'a')
-                ->add('from', 'Entities\Patientprofile a')
-                ->add('where', 'a.userid=?1')
-                ->setParameter(1, $patientId);
-            ;
-            $query = $qb->getQuery();
-            $patientProfile = $query->getArrayResult();*/
-						$entitySerializer=new Bgy\Doctrine\EntitySerializer($this->em);
-						
-						$patientProfile=$entitySerializer->toArray($patientProfile);
-            //Create correct arroy to be readable on Extjs Json reader
-           $store['PatientProfile'.$patientProfile['userid']] = array($patientProfile);
-            //check if a patient with this id already exists
-                $this->getResponse()->appendBody(Zend_Json::encode($store));
-        }else{                //no such patient exists.
-                $this->_helper->AjaxResponse(FALSE, 
-                'No such patient exists.');}
-    }
-    public function submitformAction ()
-    {}
+use Doctrine\ORM\Query\Expr;
+class EditAllPatientsController extends Zend_Controller_Action {
+	public function init() {
+		$this->em = $this->_helper->EntityManager ();
+		// Make sure the user is logged-in
+		$this->_helper->LoginRequired ();
+		$this->_helper->viewRenderer->setNoRender ( true );
+	}
+	public function getpatientprofilestoreAction() { //validate posted form
+		
+
+		$patientId = $this->_request->getParam ( 'userid' );
+		$patientIdDigitsValidator = new Zend_Validate_Digits ();
+		$patientIdLengthValidator = new Zend_Validate_StringLength ( array ('min' => 9, 'max' => 9 ) );
+		//check if userid exists and is valid
+		if ($this->getRequest ()->isPost () and $patientId and $patientIdDigitsValidator->isValid ( $patientId ) and $patientIdLengthValidator->isValid ( $patientId )) {
+			//$q = $this->em->createQuery ( "SELECT p, f FROM Entities\Patientprofile p JOIN p.Patientaddress f WHERE p.userid = ?1" );
+			$qb = $this->em->createQueryBuilder ();
+			//left join:Each item in the left table will show up in a MySQL result, even if there isn't a match with the other table that it is being joined to.
+			$qb->from ( 'Entities\Patientprofile', 'p' )->select ( 'p', 'e' )->where ( 'p.userid= ?1' )->leftJoin ( 'p.Patientaddress', 'e' )->setParameter ( 1, $patientId );
+			$query = $qb->getQuery ();
+			$patientProfile = $query->getArrayResult ();
+			//check if such patient exists
+			if ($patientProfile) {
+				/*         $qb = $this->em->createQueryBuilder();
+				 $qb->add('select', 'a')
+				->add('from', 'Entities\Patientprofile a')
+				->add('where', 'a.userid=?1')
+				->setParameter(1, $patientId);
+				;
+				$query = $qb->getQuery();
+				$patientProfile = $query->getArrayResult();*/
+				/* 			$entitySerializer = new Bgy\Doctrine\EntitySerializer ( $this->em );
+				
+				$patientProfile = $entitySerializer->toArray ( $patientProfile ); */
+				//Create correct arroy to be readable on Extjs Json reader
+				$store ['PatientProfile' . $patientProfile [0] ['userid']] = array ($patientProfile [0] );
+				//check if a patient with this id already exists
+				$this->getResponse ()->appendBody ( Zend_Json::encode ( $store ) );
+			} else {
+				$this->_helper->AjaxResponse ( FALSE, 'No such patient exists.' );
+			}
+		
+		} else { //no such patient exists.
+			//TODO:logout user
+			$this->_helper->AjaxResponse ( FALSE, 'Invalid user id' );
+		}
+	}
+	public function submitformAction() {
+	}
 }
 ?>

@@ -63,10 +63,15 @@ class Adminprofile
     /** @Column(type="string", length=5) */
     private $language;
     /**
-     * @ManyToMany(targetEntity="Adminaddress", inversedBy="admins")
+     * @ManyToMany(targetEntity="Adminaddress", inversedBy="admins", cascade={"all"})
      * @JoinTable(name="ma_admins_addresses")
      */
     private $addresses;
+    /**
+     * @ManyToMany(targetEntity="Insurancecompany", inversedBy="admins", cascade={"all"})
+     * @JoinTable(name="ma_admins_insurancecompanies")
+     */
+    private $insurances;
     /** @Column(type="string", length=255) */
     private $Setttingsviewallpatients;
     public function __construct ()
