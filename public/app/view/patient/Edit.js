@@ -23,7 +23,7 @@ Ext
 					extend : 'Ext.container.Container',
 					alias : 'widget.EditPatient',
 					requires : [ 'app.view.microviews.container.PrimaryPatientInformation' ],
-					layout : 'card',
+					layout : 'border',
 					// stateId : 'state.EditPatient',
 					getStore : function(fieldName) {
 						return Ext.getStore(
@@ -139,66 +139,81 @@ Ext
 									+ '</div></div>',
 							width : 900
 						};
-						this.items = [
-								// Basic information=Card number 0
-								{
-									xtype : 'form',
-									url : 'index.php/editallpatients/submitform',
-									autoScroll : true,
-									id : 'generalprofilebasicinformation'
-											+ this.getId(),
-									// Reset and Submit buttons
-									buttons : [
-											{
-												text : 'Reset',
-												handler : function() {
-													this.up('form').getForm()
-															.reset();
-												}
-											},
-											{
-												text : 'Apply',
-												formBind : true, // only
-												// enabled
-												// once the
-												// form is
-												// valid
-												disabled : true,
-												handler : function() {
-													var form = this.up('form')
-															.getForm();
-													if (form.isValid()) {
-														form
-																.submit({
-																	success : function(
-																			form,
-																			action) {
-																		Ext.Msg
-																				.alert(
-																						'Success',
-																						action.result.msg);
-																	},
-																	failure : function(
-																			form,
-																			action) {
-																		Ext.Msg
-																				.alert(
-																						'Failed',
-																						action.result.msg);
-																	}
-																});
+						this.items = [ {
+							layout : 'card',
+							collapsible : false,
+							region : 'center',
+							margins : '5 0 0 0',
+							items : [
+									// Basic information=Card number 0
+									{
+										xtype : 'form',
+										url : 'index.php/editallpatients/submitform',
+										autoScroll : true,
+										id : 'generalprofilebasicinformation'
+												+ this.getId(),
+										// Reset and Submit buttons
+										buttons : [
+												{
+													text : 'Reset',
+													handler : function() {
+														this.up('form')
+																.getForm()
+																.reset();
 													}
-												}
-											} ],
-									items : [ {
-										xtype : 'primarypatientinformation'
+												},
+												{
+													text : 'Apply',
+													formBind : true, // only
+													// enabled
+													// once the
+													// form is
+													// valid
+													disabled : true,
+													handler : function() {
+														var form = this.up(
+																'form')
+																.getForm();
+														if (form.isValid()) {
+															form
+																	.submit({
+																		success : function(
+																				form,
+																				action) {
+																			Ext.Msg
+																					.alert(
+																							'Success',
+																							action.result.msg);
+																		},
+																		failure : function(
+																				form,
+																				action) {
+																			Ext.Msg
+																					.alert(
+																							'Failed',
+																							action.result.msg);
+																		}
+																	});
+														}
+													}
+												} ],
+										items : [ {
+											xtype : 'primarypatientinformation'
+										} ]
+									},
+									{
+										id : 'medicalprofileoverview'
+												+ this.getId(),
+										items : [ patientSummaryTag ]
 									} ]
-								},
-								{
-									id : 'medicalprofileoverview'
-											+ this.getId(),
-									items : [ patientSummaryTag ]
-								} ];
+						},{xtype:'EditPatientTree',id:'EditPatientTree'
+												+ this.getId().substring(11),    region:'west',
+											    margins: '5 0 0 0',
+											    cmargins: '5 5 0 0',
+											    width: 175,
+											    minSize: 100,
+											    maxSize: 250,
+											    title:'Manage Patient',collapsible : true,} ];
 						this.callParent(arguments);
 					}
 				});

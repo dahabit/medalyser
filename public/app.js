@@ -78,7 +78,7 @@ Ext
 											 * function() {
 											 * Ext.getCmp('region-north').collapse(); } } }
 											 */
-											},
+											}/*,
 											{
 												region : 'west',
 												id:'lefttreepanel',
@@ -92,7 +92,7 @@ Ext
 											// could use a TreePanel or
 											// AccordionLayout for
 											// navigational items
-											},
+											}*/,
 											{
 												region : 'center',
 												xtype : 'tabpanel',

@@ -90,7 +90,8 @@ Ext.define('MA.controller.Patient', {
 				},
 				closable : true
 			});
-			Ext.getCmp('lefttreepanel').add({xtype:'EditPatientTree',id:'EditPatientTree'+record.get('userid')});
+			//Method to dynamically add items to left panel(which left panel is useless for now)
+			//Ext.getCmp('lefttreepanel').add({xtype:'EditPatientTree',id:'EditPatientTree'+record.get('userid')});
 			//Ext.getCmp('lefttreepanel').doLayout();
 		}
 		;
@@ -98,7 +99,8 @@ Ext.define('MA.controller.Patient', {
 		Ext.getCmp('centertabpanel').setActiveTab(
 				'EditPatient' + record.get('userid'));
 		// expand treepanel
-		Ext.getCmp('mainpaneltree').expand();
+		Ext.getCmp('EditPatientTree'
+				+ record.get('userid')).expand();
 		// view.down('form').loadRecord(record);
 		Ext.getCmp(
 				'generalprofilebasicinformation' + 'EditPatient'
@@ -168,9 +170,9 @@ Ext.define('MA.controller.Patient', {
 	},
 	editActive: function(){
 		
-		var tree=Ext.getCmp('mainpaneltree');
+/*		var tree=Ext.getCmp('mainpaneltree');
 		tree.store.load(Ext.getStore('mainpaneltree'));
-		tree.expand();
+		tree.expand();*/
 	}
 
 /*
