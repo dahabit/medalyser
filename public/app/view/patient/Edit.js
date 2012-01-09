@@ -210,9 +210,9 @@ Ext
 												+ this.getId().substring(11),    region:'west',
 											    margins: '5 0 0 0',
 											    cmargins: '5 5 0 0',
-											    width: 175,
+											    width: 150,
 											    minSize: 100,
-											    maxSize: 250,
+											    maxSize: 150,
 											    title:'Manage Patient',collapsible : true,} ];
 						this.callParent(arguments);
 					}

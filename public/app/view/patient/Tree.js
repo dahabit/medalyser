@@ -27,15 +27,15 @@ Ext.define('MA.view.patient.Tree', {
 		xtype : 'toolbar',
 		items : [ {
 			text : 'Expand All',
-			scope: this,
-			handler : function() {
-				console.log(this);
-				Ext.getCmp(this.getId()).expandAll();
+			handler : function(button, event) {
+				var toolbar = button.up('toolbar'), treePanel = toolbar.up('treepanel');
+				treePanel.expandAll();
 			}
 		}, {
 			text : 'Collapse All',
-			handler : function() {
-				this.collapseAll();
+			handler : function(button, event) {
+				var toolbar = button.up('toolbar'), treePanel = toolbar.up('treepanel');
+				treePanel.collapseAll();
 			}
 		} ]
 	} ],
