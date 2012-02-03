@@ -139,81 +139,139 @@ Ext
 									+ '</div></div>',
 							width : 900
 						};
-						this.items = [ {
-							layout : 'card',
-							collapsible : false,
-							region : 'center',
-							margins : '5 0 0 0',
-							items : [
-									// Basic information=Card number 0
-									{
-										xtype : 'form',
-										url : 'index.php/editallpatients/submitform',
-										autoScroll : true,
-										id : 'generalprofilebasicinformation'
-												+ this.getId(),
-										// Reset and Submit buttons
-										buttons : [
-												{
-													text : 'Reset',
-													handler : function() {
-														this.up('form')
-																.getForm()
-																.reset();
-													}
-												},
-												{
-													text : 'Apply',
-													formBind : true, // only
-													// enabled
-													// once the
-													// form is
-													// valid
-													disabled : true,
-													handler : function() {
-														var form = this.up(
-																'form')
-																.getForm();
-														if (form.isValid()) {
-															form
-																	.submit({
-																		success : function(
-																				form,
-																				action) {
-																			Ext.Msg
-																					.alert(
-																							'Success',
-																							action.result.msg);
-																		},
-																		failure : function(
-																				form,
-																				action) {
-																			Ext.Msg
-																					.alert(
-																							'Failed',
-																							action.result.msg);
-																		}
-																	});
+						this.items = [
+								{
+									layout : 'card',
+									collapsible : false,
+									region : 'center',
+									margins : '5 0 0 0',
+									items : [
+											// Basic information=Card number 0
+											{
+												xtype : 'form',
+												url : 'index.php/editallpatients/submitform',
+												autoScroll : true,
+												trackResetOnLoad : true,
+												id : 'generalprofilebasicinformation'
+														+ this.getId(),
+												listeners : {
+													//is fired when the form is dirty(field values are modified)
+													dirtychange : {
+														scope : this,
+														fn : function(sm) {
+															var form=this.down(
+															'form')
+															.getForm();
+															if (form.isDirty() && form.isValid()) {
+																var apply = Ext
+																		.getCmp('generalprofilebasicinformationapplybutton'
+																				+ this
+																						.getId());
+																apply.enable();
+																var reset = Ext
+																.getCmp('generalprofilebasicinformationresetbutton'
+																		+ this
+																				.getId());
+														reset.enable();
+															} else if(form.isDirty()){																var reset = Ext
+																var reset = Ext
+																.getCmp('generalprofilebasicinformationresetbutton'
+																		+ this
+																				.getId());
+														reset.enable();}else {
+																var apply = Ext
+																		.getCmp('generalprofilebasicinformationapplybutton'
+																				+ this
+																						.getId());
+																apply.disable();
+																var reset = Ext
+																.getCmp('generalprofilebasicinformationresetbutton'
+																		+ this
+																				.getId());
+														reset.disable();
+															}
 														}
 													}
-												} ],
-										items : [ {
-											xtype : 'primarypatientinformation'
-										} ]
-									},
-									{
-										id : 'medicalprofileoverview'
-												+ this.getId(),
-										items : [ patientSummaryTag ]
-									} ]
-						},{xtype:'EditPatientTree',id:'EditPatientTree'
-												+ this.getId().substring(11),    region:'west',
-											    margins: '5 0 0 0',
-											    cmargins: '5 5 0 0',
-											    width: 150,
-											    minSize: 100,
-											    maxSize: 150,
-											    title:'Manage Patient',collapsible : true,} ];
+												},
+												// Reset and Submit buttons
+												buttons : [
+														{
+															text : 'Reset',
+															id : 'generalprofilebasicinformationresetbutton'
+																	+ this
+																			.getId(),
+																			disabled : true,
+															handler : function() {
+																this
+																		.up(
+																				'form')
+																		.getForm()
+																		.reset();
+															}
+														},
+														{
+															text : 'Apply',
+															id : 'generalprofilebasicinformationapplybutton'
+																	+ this
+																			.getId(),
+															formBind : true, // only
+															// enabled
+															// once the
+															// form is
+															// valid
+															disabled : true,
+															handler : function() {
+																var form = this
+																		.up(
+																				'form')
+																		.getForm();
+																if (form
+																		.isValid()) {
+																	form
+																			.submit({
+																				success : function(
+																						form,
+																						action) {
+																					Ext.Msg
+																							.alert(
+																									'Success',
+																									action.result.msg);
+																				},
+																				failure : function(
+																						form,
+																						action) {
+																					Ext.Msg
+																							.alert(
+																									'Failed',
+																									action.result.msg);
+																				}
+																			});
+																}
+															}
+														} ],
+												items : [ {
+													xtype : 'primarypatientinformation'
+												} ]
+											},
+											{
+												id : 'medicalprofileoverview'
+														+ this.getId(),
+												items : [ patientSummaryTag ]
+											} ]
+								},
+								{
+									xtype : 'EditPatientTree',
+									id : 'EditPatientTree'
+											+ this.getId().substring(11),
+									region : 'west',
+									margins : '5 0 0 0',
+									cmargins : '5 5 0 0',
+									width : 150,
+									minSize : 100,
+									maxSize : 150,
+									title : 'Manage Patient',
+									collapsible : true,
+								} ];
 						this.callParent(arguments);
 					}
 				});

@@ -41,7 +41,6 @@ Ext.define('MA.view.patient.Tree', {
 	} ],
 	rootVisible : false,
 	initComponent : function() {
-		// this.items = [];
 		this.callParent(arguments);
 	}
 });

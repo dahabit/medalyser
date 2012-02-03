@@ -26,35 +26,8 @@ Ext.define('MA.controller.MainPanel', {
 
 	views : [ 'mainpanel.Toolbar' ],
 	init : function() {
-		this.control({
-			'mainpaneltree' : {
-				itemclick : this.selectPanel
-
-			}
-		});
-		// if
-		// (Ext.ClassManager.isCreated('MA.store.AdminSettings')){console.log('class
-		// is created')}
-		// Ext.create('MA.store.Patients',{storeId:'Patients'});
-		// console.log(mystore);
-		// Ext.data.StoreManager.register(mystore);
-		// this.stores=
-		// new MA.store.AdminSettings;
-		// if
-		// (Ext.ClassManager.isCreated('MA.store.AdminSettings')){console.log('class
-		// is created')}else{console.log('class is undefined')}
-		// console.log(Ext.getStore('AdminSettings'));
 	}// eof init function
 	,
-	selectPanel : function(node, record, item, index, event) {
-		
-		// get current active tab's child id
-		var currentCard=record.data.id+Ext.getCmp('centertabpanel').getActiveTab().id;
-		//console.log(node.getId());
-		Ext.getCmp('centertabpanel').getActiveTab().getLayout()
-				.setActiveItem(currentCard);
-		//TODO:if form contains unsubmitted values,display a warning to the user to save patient's data before leaving current tab
-	},
 	// get All the child elements or id of a Panel in Extjs 4
 	getAllChilden : function(panel) {
 		/*

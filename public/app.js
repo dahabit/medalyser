@@ -17,6 +17,14 @@
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
+Ext.Loader.setConfig({
+	'enabled': true,
+	'paths': {
+		'Ext.ux.form.field': 'app/plugins/ux/form/field',
+		'Ext.ux.grid.plugin': 'app/plugins/ux/grid/plugin',
+		'Ext.ux': 'app/plugins/ux'
+	}
+});
 Ext
 		.application({
 			name : 'MA',

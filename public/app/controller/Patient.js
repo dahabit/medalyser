@@ -46,6 +46,12 @@ Ext.define('MA.controller.Patient', {
 				activate : this.tabActive
 			}
 		});
+		this.control({
+			'EditPatientTree' : {
+				itemclick : this.selectPanel
+
+			}
+		});
 	},
 	gridContextMenu : function(view, record, item, index, e, options) {
 		e.stopEvent();
@@ -95,7 +101,7 @@ Ext.define('MA.controller.Patient', {
 			//Ext.getCmp('lefttreepanel').doLayout();
 		}
 		;
-		// Ext.getCmp('centertabpanel').doLayout();
+		 Ext.getCmp('centertabpanel').doLayout();
 		Ext.getCmp('centertabpanel').setActiveTab(
 				'EditPatient' + record.get('userid'));
 		// expand treepanel
@@ -173,6 +179,21 @@ Ext.define('MA.controller.Patient', {
 /*		var tree=Ext.getCmp('mainpaneltree');
 		tree.store.load(Ext.getStore('mainpaneltree'));
 		tree.expand();*/
+	},	selectPanel : function(node, record, item, index, event) {
+		//Currently active edittab
+		var currentTab=Ext.getCmp('centertabpanel').getActiveTab();
+		// generate current card's id
+		var currentCard=record.data.id+currentTab.id;
+		//console.log(currentTab.id);
+		//TODO:if form contains unsubmitted values,display a warning to the user to save patient's data before leaving current tab
+		var form=currentTab.down('form').getForm();
+        if (form.isDirty()) {
+            Ext.MessageBox.alert('Some Patient Data Has Been Modified','To switch to other tabs,please choose to undo changes or apply new changes to the current page.');
+            return false;
+        }
+;
+		currentTab.down('panel').getLayout().setActiveItem(currentCard);
+		
 	}
 
 /*
