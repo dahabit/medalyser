@@ -217,9 +217,4 @@ Ext.define('MA.controller.Patient', {
 		currentTab.down('panel').getLayout().setActiveItem(currentCard);
 		
 	}
-
-/*
- * ,refs: [ { ref: 'usersPanel', selector: 'panel' } ],
- */
-
 });

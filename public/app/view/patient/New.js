@@ -65,17 +65,11 @@ Ext
 									var exp = /^.*\.(jpg|JPG|png|PNG|gif|GIF)$/;
 									return exp.test(fileName);
 								}
-								var wizardPanel = Ext.getCmp(
-										'card-wizard-panel').getForm();
-								// TODO:validation is not working
-								// correctly.rejects valid file types.
-								/*
-								 * if
-								 * (!validateFileExtension(Ext.getDom('newPic').value)) {
-								 * Ext.MessageBox .alert('Change Picture', 'Only
-								 * Photos with JPG GIF or PNG extension are
-								 * supported.'); return; }
-								 */
+								  if
+								  (!validateFileExtension(Ext.getCmp('newPic').value)) {
+								  Ext.MessageBox .alert('Change Picture', 'Only Photos with JPG GIF or PNG extension are supported.'); return; }
+									var wizardPanel = Ext.getCmp(
+									'card-wizard-panel').getForm();
 								wizardPanel
 										.submit({
 											url : 'index.php/newpatientwizard/submitform',
@@ -189,7 +183,7 @@ Ext
 						var card_0 = {
 							xtype : 'primarypatientinformation',
 							id : 'card-0',
-							html : '<h1>Welcome to the New Patient Wizard!</h1><p>Step 1 of 4</p><p>Please click the "Next" button to continue...</p>',
+							html : '<p>Step 1 of 4</p><p>Please click the "Next" button to continue...</p>',
 							title : 'Step 1'
 						};// eof CARD 0
 

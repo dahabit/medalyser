@@ -31,18 +31,6 @@ Ext
 					height : 520,
 					closable : true,
 					initComponent : function() {
-						// photo upload and display:
-						var picBox = {
-							columnWidth : '100 px',
-							bodyStyle : 'padding:10px',
-							items : [ {
-								xtype : 'box',
-								autoEl : {
-									tag : 'div',
-									html : '<img id="pic" src="" class="img-contact" />'
-								}
-							} ]
-						};
 						this.items = [ {
 							xtype : 'form',
 							id : 'adminsettingsedit',
@@ -64,40 +52,31 @@ Ext
 											},
 											defaultType : 'textfield',
 
-											items : [
+											items : [{
+												xtype : 'container',
+												height : 0,
+												width : 0,
+												id:'adminavatarbox',
+											},
 													{
 														xtype : 'hiddenfield',
-														name : 'personaldetails[userid]',
+														name : 'userid',
 														value : '',
 														allowBlank : false
 													},
-													picBox/*
-															 * , { xtype:
-															 * 'textfield',
-															 * fieldLabel:
-															 * 'Current',
-															 * labelSeparator:
-															 * '', name:
-															 * 'personaldetails[currPic]',
-															 * id:'currPic',
-															 * readOnly: true,
-															 * disabled:true,
-															 * anchor:'100%' }
-															 */,
 													{
 														xtype : 'textfield',
 														fieldLabel : 'Profile photo',
 														labelSeparator : '',
-														name : 'personaldetails[newPic]',
-														id : 'newPic',
+														name : 'profilephoto',
+														id : 'newAdminPic',
 														style : 'width: 300px',
-														inputType : 'file',
-														allowBlank : false
+														inputType : 'file'
 													},
 													{
 														xtype : 'datefield',
 														fieldLabel : 'Birthdate',
-														name : 'personaldetails[birthdate]',
+														name : 'birthdate',
 														maxValue : new Date(), // limited
 														// to
 														// the
@@ -113,12 +92,12 @@ Ext
 														items : [
 																{
 																	boxLabel : 'Female',
-																	name : 'personaldetails[sex]',
+																	name : 'sex',
 																	inputValue : '0'
 																},
 																{
 																	boxLabel : 'Male',
-																	name : 'personaldetails[sex]',
+																	name : 'sex',
 																	inputValue : '1'
 																} ]
 													},
@@ -130,52 +109,65 @@ Ext
 													{
 														xtype : 'textfield',
 														flex : 1,
-														name : 'personaldetails[firstname]',
-														emptyText : 'First',
+														name : 'firstname',
+														fieldLabel:'First Name',
 														msgTarget : 'under',
 														allowBlank : false
 													},
 													{
 														xtype : 'textfield',
 														flex : .4,
-														name : 'personaldetails[middlename]',
-														emptyText : 'Middle'
+														name : 'middlename',
+														fieldLabel:'Middle Name',
 													},
 													{
 														xtype : 'textfield',
 														flex : 1,
-														name : 'personaldetails[lastname]',
+														name : 'lastname',
 														msgTarget : 'under',
-														emptyText : 'Last',
+														fieldLabel:'Last Name',
 														allowBlank : false
 													},
 													{
 														xtype : 'textfield',
 														inputType : 'password',
-														fieldLabel : 'Password',
-														name : 'personaldetails[password]',
+														fieldLabel : 'Old Password',
+														name : 'oldpassword',
 														minLength : 6,
 														maxLength : 32,
 														minLengthText : 'Password must be at least 6 characters long.',
 														maxLengthText : 'Maximum Password length is 36 characters.',
-														msgTarget : 'under'
+														msgTarget : 'under',
+														emptyText:'Enter old password here.'
+
+													},
+													{
+														xtype : 'textfield',
+														inputType : 'password',
+														fieldLabel : 'Password',
+														name : 'password',
+														minLength : 6,
+														maxLength : 32,
+														minLengthText : 'Password must be at least 6 characters long.',
+														maxLengthText : 'Maximum Password length is 36 characters.',
+														msgTarget : 'under',
+														emptyText:'New password for your account'
 
 													},
 													{
 														xtype : 'textfield',
 														fieldLabel : 'Email',
-														name : 'personaldetails[email]',
+														name : 'primaryemail',
 														vtype : 'email',
 														allowBlank : false,
-														value : 'sdf',
 														msgTarget : 'under'
 													},
 													{
 														xtype : 'combo',
-														name : 'personaldetails[language]',
+														name : 'language',
 														fieldLabel : 'Language',
 														mode : 'local',
-														store : 'Language',
+														store :Ext.create('MA.store.Languages'),
 														displayField : 'name',
 														valueField : 'id',
 														value : 'sdfsdf',
@@ -183,13 +175,14 @@ Ext
 														forceSelection : true,
 														typeAhead : true,
 														msgTarget : 'under'
-													},
+													}/*,
 													{
 														xtype : 'combo',
-														name : 'personaldetails[country]',
+														name : 'country',
 														fieldLabel : 'Country',
 														mode : 'local',
-														store : 'Countries',
+														store : Ext
+														.create('MA.store.Countries'),
 														displayField : 'name',
 														valueField : 'id',
 														value : 'sdfsdf',
@@ -197,7 +190,7 @@ Ext
 														typeAhead : true,
 														forceSelection : true,
 														msgTarget : 'under'
-													} ]
+													}*/ ]
 										},
 										{
 											title : 'Appearance',
@@ -209,7 +202,7 @@ Ext
 
 											items : [ {
 												xtype : 'combo',
-												name : 'Appearance[extjstemplate]',
+												name : 'extjstemplate',
 												fieldLabel : 'Template',
 												mode : 'local',
 												store : 'ExtjsTemplate',
@@ -228,19 +221,19 @@ Ext
 									{
 										text : 'Save',
 										handler : function() {
-											// TODO:validation is not working
-											// correctly.rejects valid file
-											// types.
-											function validateFileExtension(
-													fileName) {
+											function validateFileExtension(fileName) {
 												var exp = /^.*\.(jpg|JPG|png|PNG|gif|GIF)$/;
 												return exp.test(fileName);
 											}
 											var settingsForm = Ext.getCmp(
 													'adminsettingsedit')
 													.getForm();
-											if (!validateFileExtension(Ext
-													.getDom('newPic').value)) {
+											console.log(validateFileExtension(Ext
+													.getCmp('newAdminPic').rawValue))
+													console.log(Ext
+													.getCmp('newAdminPic').rawValue)
+											if (validateFileExtension(Ext
+													.getCmp('newAdminPic').rawValue)==false && Ext.getCmp('newAdminPic').rawValue!='' && Ext.getCmp('newAdminPic').rawValue!=undefined) {
 												Ext.MessageBox
 														.alert(
 																'Change Picture',
@@ -259,24 +252,16 @@ Ext
 
 														success : function(
 																form, action) {
-															// Show a dialog
-															// using config
-															// options:
-															Ext.Msg
-																	.show({
-																		title : 'Make changes?',
-																		msg : 'You will need to re sign in to make changes in effect. Would you like to save your changes?',
-																		buttons : Ext.Msg.YESNO,
-																		fn : function(
-																				btn,
-																				text) {
-																			if (btn == 'YES') {
-																				window.location = './account/logout';
-																			}
-																		},
-																		animateTarget : 'elId',
-																		icon : Ext.window.MessageBox.QUESTION
-																	});
+															Ext.Ajax
+															.request({
+																url : './account/reset',
+																success : function() {
+																	window.location = './';
+																},
+																failure : function() {
+																	window.location = './';
+																}
+															});
 														},
 														failure : function(
 																form, action) {

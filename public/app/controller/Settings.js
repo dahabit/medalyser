@@ -1,32 +1,71 @@
 /**
-*THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * @version 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION;LOSS OF HEALTH IN ANY FORM) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * @version
  * @author Mehdi Fanai
  * @copyright Copyright (C) 2011 Mehdi Fanai. All rights reserved.
  * @license GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link http://www.MedAlyser.com
  */
 Ext.define('MA.controller.Settings', {
-    extend: 'Ext.app.Controller',
+	extend : 'Ext.app.Controller',
 
-    stores: ['ExtjsTemplate'],
-    views: ['settings.Edit']
+	stores : [ 'ExtjsTemplate' ],
+	views : [ 'settings.Edit' ]
+	,
+	init : function() {
+		this.control({
+			'#adminsettingsedit' : {
+				'render' : function(form) {
+					//load form values
+					form.loadRecord(
+							Ext.getStore('AdminSettings')
+									.getAt('0'));
+					//load admin photo or avatar
+					if (!Ext.getStore('AdminSettings')
+							.getAt('0').get(
+									'profilephoto')) {
+						var profilePhoto = './assets/icons/admin/profile.png';
+					} else {
+						var profilePhoto = './documents/admins/'
+								+ +Ext
+										.getStore(
+												'AdminSettings')
+										.getAt('0')
+										.get('userid')
+								+ '/images/profile/'
+								+ Ext
+										.getStore(
+												'AdminSettings')
+										.getAt('0')
+										.get(
+												'profilephoto');
+					}
+					;
+					Ext
+							.getCmp('adminavatarbox')
+							.add(
+									{
+										xtype : 'container',
+										html : '<div style="float:left;margin-right:10px"><img  id="adminprofilepic" src="'
+												+ profilePhoto
+												+ '"  /></div>',
+										width : 250
+									});
+				}
+			}
+		});
 
- /*   ,refs: [
-        {
-            ref: 'usersPanel',
-            selector: 'panel'
-        }
-    ],*/
+	}
 
 });

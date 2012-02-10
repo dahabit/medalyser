@@ -24,6 +24,7 @@ Ext
 					alias : 'widget.EditPatient',
 					requires : [ 'app.view.microviews.container.PrimaryPatientInformation' ],
 					layout : 'border',
+					width:900,
 					// stateId : 'state.EditPatient',
 					getStore : function(fieldName) {
 						return Ext.getStore(
@@ -145,6 +146,8 @@ Ext
 									collapsible : false,
 									region : 'center',
 									margins : '5 0 0 0',
+									//Any Container using the Border layout must have a child item with region:'center'. The child item in the center region will always be resized to fill the remaining space not used by the other regions in the layout.
+									region:'center',
 									items : [
 											// Basic information=Card number 0
 											{
@@ -231,7 +234,7 @@ Ext
 									minSize : 100,
 									maxSize : 150,
 									title : 'Manage Patient',
-									collapsible : true,
+									collapsible : true
 								} ];
 						this.callParent(arguments);
 					}

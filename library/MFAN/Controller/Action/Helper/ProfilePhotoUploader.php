@@ -22,8 +22,8 @@ class MFAN_Controller_Action_Helper_ProfilePhotoUploader extends Zend_Controller
     private $fileName;
     public function upload ($profileType = 'patient', $useId)
     {
-        //create folder stracture for the new patient
-        $structure = PUBLIC_PATH . '/documents/patients/' . $useId .
+        //create folder stracture for the new user
+        $structure = PUBLIC_PATH . '/documents/'.$profileType.'/' . $useId .
          '/images/profile/';
         //only create folder structure if didnt exist
         if (! file_exists($structure)) {
