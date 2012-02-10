@@ -154,45 +154,6 @@ Ext
 												trackResetOnLoad : true,
 												id : 'generalprofilebasicinformation'
 														+ this.getId(),
-												listeners : {
-													//is fired when the form is dirty(field values are modified)
-													dirtychange : {
-														scope : this,
-														fn : function(sm) {
-															var form=this.down(
-															'form')
-															.getForm();
-															if (form.isDirty() && form.isValid()) {
-																var apply = Ext
-																		.getCmp('generalprofilebasicinformationapplybutton'
-																				+ this
-																						.getId());
-																apply.enable();
-																var reset = Ext
-																.getCmp('generalprofilebasicinformationresetbutton'
-																		+ this
-																				.getId());
-														reset.enable();
-															} else if(form.isDirty()){																var reset = Ext
-																var reset = Ext
-																.getCmp('generalprofilebasicinformationresetbutton'
-																		+ this
-																				.getId());
-														reset.enable();}else {
-																var apply = Ext
-																		.getCmp('generalprofilebasicinformationapplybutton'
-																				+ this
-																						.getId());
-																apply.disable();
-																var reset = Ext
-																.getCmp('generalprofilebasicinformationresetbutton'
-																		+ this
-																				.getId());
-														reset.disable();
-															}
-														}
-													}
-												},
 												// Reset and Submit buttons
 												buttons : [
 														{

@@ -52,6 +52,7 @@ Ext.define('MA.controller.Patient', {
 
 			}
 		});
+
 	},
 	gridContextMenu : function(view, record, item, index, e, options) {
 		e.stopEvent();
@@ -84,12 +85,13 @@ Ext.define('MA.controller.Patient', {
 	},
 	editUser : function(grid, record) {
 		this.rec = record;
+		this.editPatientId='EditPatient' + record.get('userid');
 		// only create a new tab if patient is not created
 		// previously
 		if (!Ext.getCmp('EditPatient' + record.get('userid'))) {
 			Ext.getCmp('centertabpanel').add({
 				xtype : 'EditPatient',
-				id : 'EditPatient' + record.get('userid'),
+				id : this.editPatientId,
 				title : record.get('firstname') + ' ' + record.get('lastname'),
 				tabConfig : {
 					tooltip : 'Enter patient thumb+primitive data here.'
@@ -175,7 +177,27 @@ Ext.define('MA.controller.Patient', {
 		if (tree){tree.collapse();}
 	},
 	editActive: function(){
-		
+		//enable and disable patient's basic profile information buttons automatically, only when form values are modified(dirty)
+		var currentFormId='#generalprofilebasicinformation'+this.editPatientId;
+		var currentForm=Ext.ComponentQuery.query(currentFormId);
+		currentForm[0].on(
+	            'dirtychange', function(form) {
+					if (form.isDirty() && form.isValid()) {
+						var apply = form.owner.query('button[text=Apply]');
+						apply[0].enable();
+						var reset = form.owner.query('button[text=Reset]');
+				reset[0].enable();
+					} else if(form.isDirty()){
+						var reset = form.owner.query('button[text=Reset]');
+				reset[0].enable();}else {
+					var apply = form.owner.query('button[text=Apply]');
+						apply[0].disable();
+						var reset = form.owner.query('button[text=Reset]');
+				reset[0].disable();
+					}
+	            }
+	        
+		);
 /*		var tree=Ext.getCmp('mainpaneltree');
 		tree.store.load(Ext.getStore('mainpaneltree'));
 		tree.expand();*/
