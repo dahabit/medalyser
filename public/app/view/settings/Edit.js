@@ -228,10 +228,6 @@ Ext
 											var settingsForm = Ext.getCmp(
 													'adminsettingsedit')
 													.getForm();
-											console.log(validateFileExtension(Ext
-													.getCmp('newAdminPic').rawValue))
-													console.log(Ext
-													.getCmp('newAdminPic').rawValue)
 											if (validateFileExtension(Ext
 													.getCmp('newAdminPic').rawValue)==false && Ext.getCmp('newAdminPic').rawValue!='' && Ext.getCmp('newAdminPic').rawValue!=undefined) {
 												Ext.MessageBox

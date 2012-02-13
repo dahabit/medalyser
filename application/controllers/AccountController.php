@@ -192,6 +192,7 @@ class AccountController extends Zend_Controller_Action {
 				$ProfilePhotoUploader = new MFAN_Controller_Action_Helper_ProfilePhotoUploader ();
 				$ProfilePhotoUploader->upload ( 'admin', $submitedUserId );
 					$allFormElements = $this->getRequest ()->getParams ();
+					$allFormElements ['updated'] = new DateTime ( "now" );
 					//create a new password only if old one matches saved one
 					//create a new password only if a new password is submitted
 					// unset ZF array elements
